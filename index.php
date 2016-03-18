@@ -15,7 +15,7 @@ use Illuminate\Container\Container;
 
 use Laztopaz\EmojiRestfulAPI\DatabaseConnection;
 use Laztopaz\EmojiRestfulAPI\EmojiController;
-use Laztopaz\EmojiRestfulAPI\Schema;
+use Laztopaz\EmojiRestfulAPI\OauthLogin;
 
 $app = new Slim\App(['settings' => [
     'debug' => true, 
@@ -26,9 +26,112 @@ $capsule = new Capsule;
 
 new DatabaseConnection($capsule);
 
-//new Schema();
-
 $emoji = new EmojiController();
+
+$login = new OauthLogin();
+
+/**
+ * This endpoint authenticate the user
+ *
+ * @aparams $request
+ *
+ * @params $response
+ *
+ * @return json $response
+ *
+ */
+
+$app->post('/auth/login', function ( $request, $response ) use ($login) {
+
+    $response = $response->withHeader(
+        'Content-type',
+        'application/json; charset=utf-8'
+    );
+
+    $parsedBody = $request->getParsedBody();
+   
+    $response->write(json_encode($login->authenticateUser($parsedBody))); // ['statuscode' => 404, 'response' => 'Not found']
+
+    return $response;
+
+});
+
+/**
+ * This endpoint authenticate the user
+ *
+ * @aparams $request
+ *
+ * @params $response
+ *
+ * @params $args
+ *
+ * @return json $response
+ *
+ */
+
+$app->get('/auth/logout', function ( $request, $response, $args ) {
+
+    $response = $response->withHeader(
+        'Content-type',
+        'application/json; charset=utf-8'
+    );
+   
+    $response->write(json_encode(['statuscode' => 404, 'response' => 'Not found']));
+
+    return $response;
+
+});
+
+
+/**
+ * This verb returns error 404
+ *
+ * @aparams $request
+ *
+ * @params $response
+ *
+ * @return json $response
+ *
+ */
+
+$app->get('/', function ( $request, $response ) {
+
+    $response = $response->withHeader(
+        'Content-type',
+        'application/json; charset=utf-8'
+    );
+   
+    $response->write(json_encode(['statuscode' => 404, 'response' => 'Not found']));
+
+    return $response;
+
+});
+
+/**
+ * This verb returns error 404
+ *
+ * @aparams $request
+ *
+ * @params $response
+ *
+ * @return json $response
+ *
+ */
+
+$app->post('/', function ( $request, $response ) {
+
+    $response = $response->withHeader(
+        'Content-type',
+        'application/json; charset=utf-8'
+    );
+
+    $parsedBody = $request->getParsedBody();
+   
+    $response->write(json_encode(['statuscode' => 404, 'response' => 'Not found'])
+);
+    return $response;
+
+});
 
 /**
  * This verb returns all emoji

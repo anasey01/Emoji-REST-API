@@ -12,9 +12,11 @@ use Laztopaz\EmojiRestfulAPI\Keyword;
 class EmojiController {
 
     /**
+     * 
      * This method list all emoji
      *
      * @return  json
+     * 
      */
     public function listAllEmoji()
     {
@@ -25,11 +27,13 @@ class EmojiController {
     }
 
     /**
+     * 
      * This method get a single emoji
      *
      * @params id
      *
      * @return json
+     * 
      */
     public function getSingleEmoji( $id )
     {
@@ -41,40 +45,35 @@ class EmojiController {
     }
 
     /**
+     * 
      * This method creates a new emoji
      *
      * @params $args
      *
      * @return  boolean true;
+     * 
      */
     public function createEmoji( $args )
     {
         if ( is_array($args) ) {
-            $name = $args['name'];
-            $char = $args['char'];
             $created_at = date('Y-m-d h:i:s');
-            $category = $args['category'];
-            $created_by = $args['owner'];
+            $emoji = Emoji::create(['name' => $args['name'], 'char' => $args['char'], 'created_at' => $created_at, 'category' => $args['category'], 'created_by' => $args['owner']]);
 
-            $response = Emoji::create(['name' => $name, 'char' => $char, 'created_at' => $created_at, 'category' => $category, 'created_by' => $created_by]);
+            return json_encode(['statuscode' => 200 ,'response' => $emoji]);
 
-            //Keyword::create(['emoji_id' => $response->id])
-
-            //return json_encode(['statuscode' => 200 ,'response' => $response]);
-
-
-            //  //$hash = password_hash($args['password'], PASSWORD_BCRYPT);
         }
     }
 
     /**
+     * 
      * This method updates an emoji
      *
      * @params $id
      *
      * @params $data
      *
-     * @return  boolean true
+     * @return  json
+     * 
      */
     public function updateEmojiByPutVerb( $data, $id )
     {
@@ -85,13 +84,14 @@ class EmojiController {
     }
 
     /**
+     * 
      * This method updates an emoji partially
      *
      * @params $id
      *
      * @params $data
      *
-     * @return  boolean true
+     * @return json
      */
     public function updateEmojiByPatchVerb( $data, $id )
     {
@@ -106,7 +106,7 @@ class EmojiController {
      *
      * @params $id
      *
-     * @return  boolean true
+     * @return json
      */
     public function deleteEmoji( $id )
     {
@@ -115,6 +115,14 @@ class EmojiController {
         }
 
     }
+
+    /**
+     * This method format emoji result
+     *
+     * @params $emojis
+     *
+     * @return array $emojis
+     */
 
     private function formatEmoji(array $emojis)
     {
