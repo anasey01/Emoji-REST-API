@@ -50,7 +50,7 @@ $app->post('/auth/login', function ( $request, $response ) use ($login) {
 
     $parsedBody = $request->getParsedBody();
    
-    $response->write(json_encode($login->authenticateUser($parsedBody))); // ['statuscode' => 404, 'response' => 'Not found']
+    $response->write(json_encode($login->authenticateUser($parsedBody))); 
 
     return $response;
 
