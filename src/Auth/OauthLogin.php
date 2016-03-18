@@ -20,20 +20,66 @@ class OauthLogin {
      * @return json jwt
      * 
      */
-    public function authenticateUser(array $loginParams)
+    public function authenticateUser( array $loginParams )
     {
         if (is_array($loginParams)) {
             $user = User::where('username', '=', $loginParams['username'])->get();
             $user = $user->first();
-            
+
             $userInfo = ['id' => $user->id, 'username' => $user->username, 'email' => $user->email];
 
             if (password_verify($loginParams['password'], $user->password)) {
-                return json_encode(['statuscode' => 200, 'response' => 'loggedin']);
+                //return json_encode(['statuscode' => 200, 'response' => 'loggedin']);
+                return $this->buildAcessToken( $userInfo );
             }
 
             return json_encode(['statuscode' => 400, 'response' => 'Bad request']);
         }
+    }
+
+    /**
+     * 
+     * This method builds an access token for a login user;
+     *
+     * @params $userData
+     *
+     * @return string $token
+     * 
+     */
+    private function buildAcessToken( array $userData )
+    {
+        $tokenId    = base64_encode(mcrypt_create_iv(32));
+        $issuedAt   = time();
+        $notBefore  = $issuedAt + 10;  //Adding 10 seconds
+        $expire     = $notBefore + 2592000; // Adding 30 days in seconds 60*60*24*30
+        $serverName = $_SERVER['HTTP_HOST']; // Retrieve the server name
+
+        /**
+         *
+         * Create the token as an array 
+         */
+        $data = [
+            'iat'  => $issuedAt,         // Issued at: time when the token was generated
+            'jti'  => $tokenId,          // Json Token Id: an unique identifier for the token
+            'iss'  => $serverName,       // Issuer
+            'nbf'  => $notBefore,        // Not before
+            'exp'  => $expire,           // Expire
+            $userData                    // User Information retrieved from the database
+        ];
+
+        $loadEnv = DatabaseConnection::loadEnv(); // load environment variable
+
+        $secretKey = base64_decode(getenv('secret'));
+
+        $jwt = JWT::encode(
+        $data,      //Data to be encoded in the JWT
+        $secretKey, // The signing key
+        'HS512'     // Algorithm used to sign the token
+        );
+        $unencodedArray = ['jwt' => $jwt];
+
+        return json_encode($unencodedArray);
+    
     }
 
 }
