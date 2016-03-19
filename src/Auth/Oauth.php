@@ -42,11 +42,12 @@ class Oauth {
             $_SESSION['userinfo'] = $userInfo;
 
             if (password_verify($loginParams['password'], $user->password)) {
-
                 $token = $this->buildAcessToken($userInfo);
-                return $response->withJson(['status'],200)->withAddedHeader('token', $token);
+
+                return $response->withJson(['status'],200)->withAddedHeader('token', $token)->with($token);
                 
             }
+
             return $response->withJson(['status'],400);
         }
 
@@ -67,7 +68,30 @@ class Oauth {
         unset($_SESSION['userinfo']);
         session_destroy();
 
-        return $response->withJson(['status'],200)->withAddedHeader('token', $token);
+        return $response->withJson(['status'],200);
+
+    }
+
+    /**
+     *
+     * This method serves as middleware that authenticate users
+     *
+     * @param $request
+     *
+     * @param json $response
+     */
+    public function middleware(Request $request, Response $response)
+    { 
+        $authHeader = $request->getHeader('token');
+
+        $loadEnv = DatabaseConnection::loadEnv();
+
+        $secretKey = base64_decode(getenv('secret'));
+
+        //decode the JWT using the key from config
+        //$decodedToken = JWT::decode($jwt, $secretKey, array('HS512'));
+
+        return json_encode($authHeader);
 
     }
 
@@ -85,7 +109,7 @@ class Oauth {
         $tokenId    = base64_encode(mcrypt_create_iv(32));
         $issuedAt   = time();
         $notBefore  = $issuedAt + 10;  //Adding 10 seconds
-        $expire     = $notBefore + 1460977200; // Adding 30 days in seconds 60*60*24*30
+        $expire     = $notBefore + strtotime('+1 month', date('Y-m-d h:i:s')); // Adding 30 days
         $serverName = $_SERVER['HTTP_HOST']; // Retrieve the server name
 
         /**

@@ -18,7 +18,7 @@ class EmojiController {
 
     public function __construct()
     {
-        $this->auth = new OauthLogin();
+        $this->auth = new Oauth();
     }
 
     /**
@@ -61,6 +61,7 @@ class EmojiController {
     public function getSingleEmoji(Response $response, $args)
     {
         $id  = $args['id'];
+        
         $emoji = Emoji::where('id', '=', $id)->with('keywords', 'category', 'created_by')->get();
         $emoji = $emoji->toArray();
 
@@ -87,8 +88,6 @@ class EmojiController {
     {
         $requestParams = $request->getParsedBody();
 
-        $token = $this->auth->buildAcessToken($_SESSION['userinfo']);
-
         $emojiKeyword = $requestParams['keywords'];
 
         if (is_array($requestParams)) {
@@ -108,10 +107,10 @@ class EmojiController {
                 // Create emoji keywords
                 $createdKeyword = $this->createEmojiKeywords($emoji->id, $emojiKeyword);
 
-                return $response->withJson(['status'], 201)->withAddedHeader('token', $token);
+                return $response->withJson(['status'], 201);
             }
 
-            return $response->withJson(['status'], 204)->withAddedHeader('token', $token);
+            return $response->withJson(['status'], 204);
 
         }
 
@@ -135,22 +134,20 @@ class EmojiController {
         if (is_array($upateParams)) {
             $id = $args['id'];
 
-            $token = $this->auth->buildAcessToken($_SESSION['userinfo']);
-
             $emoji = Emoji::find($id);
     
             if ($emoji->id) {
                 $emoji->name = $upateParams['name'];
                 $emoji->char = $upateParams['char'];
                 $emoji->category = $upateParams['category'];
-                $emoji->updated_at = date('Y-m-d h:i:s');
+                $emoji->updated_at =  ;
                 $emoji->save();
 
-                return $response->withJson(['status'], 201)->withAddedHeader('token', $token);
+                return $response->withJson(['status'], 201);
 
             }
 
-            return $response->withJson(['status'], 404)->withAddedHeader('token', $token);
+            return $response->withJson(['status'], 404);
 
         }
 
@@ -175,19 +172,17 @@ class EmojiController {
         if (is_array($upateParams)) {
             $id = $args['id'];
 
-            $token = $this->auth->buildAcessToken($_SESSION['userinfo']);
-
             $emoji = Emoji::find($id);
             if ($emoji->id) {
                 $emoji->name = $upateParams['name'];
                 $emoji->updated_at = date('Y-m-d h:i:s');
                 $emoji->save();
 
-                return $response->withJson(['status'], 201)->withAddedHeader('token', $token);
+                return $response->withJson(['status'], 201);
 
             }
 
-            return $response->withJson(['status'], 404)->withAddedHeader('token', $token);
+            return $response->withJson(['status'], 404);
 
         }
 
@@ -211,15 +206,15 @@ class EmojiController {
         $emoji = Emoji::find(1);
         if ($emoji->id) {
             $emoji->delete();
-
             // Delete keywords assciated with the emoji
             Keyword::where('emoji_id', '=', $id)->delete();
 
-            return $response->withJson(['status'], 204)->withAddedHeader('token', $token);
+            return $response->withJson(['status'], 204);
 
         }
 
-        return $response->withJson(['status'], 404)->withAddedHeader('token', $token);
+        return $response->withJson(['status'], 404);
+
     }
 
     /**
