@@ -61,7 +61,7 @@ class EmojiController {
     public function getSingleEmoji(Response $response, $args)
     {
         $id  = $args['id'];
-        
+
         $emoji = Emoji::where('id', '=', $id)->with('keywords', 'category', 'created_by')->get();
         $emoji = $emoji->toArray();
 
@@ -140,7 +140,7 @@ class EmojiController {
                 $emoji->name = $upateParams['name'];
                 $emoji->char = $upateParams['char'];
                 $emoji->category = $upateParams['category'];
-                $emoji->updated_at =  ;
+                $emoji->updated_at = date('Y-m-d h:i:s');
                 $emoji->save();
 
                 return $response->withJson(['status'], 201);
