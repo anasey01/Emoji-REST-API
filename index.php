@@ -30,7 +30,7 @@ new DatabaseConnection($capsule);
 
 $emoji = new EmojiController;
 
-$login = new OauthLogin;
+$login = new Oauth;
 
 /**
  * This verb returns error 404
