@@ -90,6 +90,8 @@ $app->post('/auth/login', function (Request $request, Response $response) use ($
  *
  */
 $app->get('/auth/logout', function (Request $request, Response $response, $args) use ($auth) {
+    return $auth->middleware($request, $response);
+    
     return $auth->logoutUser($request, $response, $args);
 
 });
