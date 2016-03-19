@@ -15,7 +15,7 @@ use Illuminate\Container\Container;
 
 use Laztopaz\EmojiRestfulAPI\DatabaseConnection;
 use Laztopaz\EmojiRestfulAPI\EmojiController;
-use Laztopaz\EmojiRestfulAPI\OauthLogin;
+use Laztopaz\EmojiRestfulAPI\Oauth;
 
 $app = new Slim\App([
     'settings' => [
@@ -30,7 +30,7 @@ new DatabaseConnection($capsule);
 
 $emoji = new EmojiController;
 
-$login = new Oauth;
+$auth = new Oauth;
 
 /**
  * This verb returns error 404
@@ -42,7 +42,7 @@ $login = new Oauth;
  * @return json $response
  *
  */
-$app->get('/', function (Request $request, Response $response) {
+$app->get('/', function (Request $request, Response $response) use ($auth) {
     return $response->withJson(['status'], 404);
 
 });
@@ -72,8 +72,8 @@ $app->post('/', function (Request $request, Response $response) {
  * @return json $response
  *
  */
-$app->post('/auth/login', function (Request $request, Response $response) use ($login) {
-    return $login->loginUser($request, $response); 
+$app->post('/auth/login', function (Request $request, Response $response) use ($auth) {
+    return $auth->loginUser($request, $response); 
 
 });
 
@@ -89,8 +89,8 @@ $app->post('/auth/login', function (Request $request, Response $response) use ($
  * @return json $response
  *
  */
-$app->get('/auth/logout', function (Request $request, Response $response, $args) use ($login) {
-    return $login->logoutUser($request, $response, $args);
+$app->get('/auth/logout', function (Request $request, Response $response, $args) use ($auth) {
+    return $auth->logoutUser($request, $response, $args);
 
 });
 
