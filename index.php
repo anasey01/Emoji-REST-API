@@ -28,9 +28,9 @@ $capsule = new Capsule;
 
 new DatabaseConnection($capsule);
 
-$emoji = new EmojiController();
+$emoji = new EmojiController;
 
-$login = new OauthLogin();
+$login = new OauthLogin;
 
 /**
  * This verb returns error 404
