@@ -73,7 +73,7 @@ $app->post('/', function (Request $request, Response $response) {
  *
  */
 $app->post('/auth/login', function (Request $request, Response $response) use ($login) {
-    return $login->authenticateUser($request, $response); 
+    return $login->loginUser($request, $response); 
 
 });
 
@@ -90,7 +90,7 @@ $app->post('/auth/login', function (Request $request, Response $response) use ($
  *
  */
 $app->get('/auth/logout', function (Request $request, Response $response, $args) use ($login) {
-    return $login->deAuthenticateUser($request, $response, $args);
+    return $login->logoutUser($request, $response, $args);
 
 });
 
