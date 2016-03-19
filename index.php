@@ -16,6 +16,7 @@ use Illuminate\Container\Container;
 use Laztopaz\EmojiRestfulAPI\DatabaseConnection;
 use Laztopaz\EmojiRestfulAPI\EmojiController;
 use Laztopaz\EmojiRestfulAPI\Oauth;
+use Laztopaz\EmojiRestfulAPI\Middleware;
 
 $app = new Slim\App([
     'settings' => [
@@ -89,12 +90,17 @@ $app->post('/auth/login', function (Request $request, Response $response) use ($
  * @return json $response
  *
  */
-$app->get('/auth/logout', function (Request $request, Response $response, $args) use ($auth) {
-    return $auth->middleware($request, $response);
-    
-    return $auth->logoutUser($request, $response, $args);
 
-});
+
+$app->get('/auth/logout', function (Request $request, Response $response, $args) use ($auth) {
+
+    //$userInfo = (array) $payload['dat'];
+
+    //$userId = $userInfo['id'];
+
+    return $auth->logoutUser($request, $response, $args)->withJson(['status'], 200);
+
+})->add(new Middleware);
 
 /**
  * This verb returns all emoji
@@ -139,7 +145,7 @@ $app->get('/emojis/{id}', function (Request $request, Response $response, $args)
 $app->post('/emojis', function (Request $request, Response $response) use ($emoji) {
     return $emoji->createEmoji($request, $response);
 
-});
+})->add(new Middleware);
 
 /**
  * This verb updatess an emoji using put verb
@@ -158,7 +164,7 @@ $app->post('/emojis', function (Request $request, Response $response) use ($emoj
 $app->put('/emojis/{id}', function (Request $request, Response $response, $args) use ($emoji) {
     return $emoji->updateEmojiByPutVerb($request, $response, $args);
 
-});
+})->add(new Middleware);
 
 /**
  * This verb updatess an emoji using put verb
@@ -175,7 +181,7 @@ $app->put('/emojis/{id}', function (Request $request, Response $response, $args)
 $app->patch('/emojis/{id}', function (Request $request, Response $response, $args) use ($emoji) {
     return $emoji->updateEmojiByPatchVerb($request, $response, $args);
 
-});
+})->add(new Middleware);
 
 /**
  * This verb updatess an emoji using put verb
@@ -192,6 +198,6 @@ $app->patch('/emojis/{id}', function (Request $request, Response $response, $arg
 $app->delete('/emojis/{id}', function (Request $request, Response $response, $args) use ( $emoji ) {
     return $emoji->deleteEmoji($request, $response, $args);
 
-});
+})->add(new Middleware);
 
 $app->run();
