@@ -63,38 +63,10 @@ class Oauth {
      */
     public function logoutUser(Request $request, Response $response, $args)
     {
-        $token = $this->buildAcessToken($_SESSION['userinfo']);
-
-        unset($_SESSION['userinfo']);
-        session_destroy();
-
-        return $response->withJson(['status'],200);
-
+        //return $response->withJson(['status'],200);
+        //
+        return $response;
     }
-
-    /**
-     *
-     * This method serves as middleware that authenticate users
-     *
-     * @param $request
-     *
-     * @param json $response
-     */
-    public function middleware(Request $request, Response $response)
-    { 
-        $authHeader = $request->getHeader('token');
-
-        $loadEnv = DatabaseConnection::loadEnv();
-
-        $secretKey = base64_decode(getenv('secret'));
-
-        //decode the JWT using the key from config
-        //$decodedToken = JWT::decode($jwt, $secretKey, array('HS512'));
-
-        return json_encode($authHeader);
-
-    }
-
     /**
      * 
      * This method builds an access token for a login user;
@@ -122,7 +94,7 @@ class Oauth {
             'iss'  => $serverName,       // Issuer
             'nbf'  => $notBefore,        // Not before
             'exp'  => $expire,           // Expire
-            $userData                    // User Information retrieved from the database
+            'dat'  => $userData                    // User Information retrieved from the database
         ];
 
         $loadEnv = DatabaseConnection::loadEnv();
