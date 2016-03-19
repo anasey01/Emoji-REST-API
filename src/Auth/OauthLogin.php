@@ -29,7 +29,7 @@ class OauthLogin {
      * @return json jwt
      * 
      */
-    public function authenticateUser(Request $request, Response $response)
+    public function loginUser(Request $request, Response $response)
     {
         $loginParams = $request->getParsedBody();
 
@@ -60,7 +60,7 @@ class OauthLogin {
      *
      * @return $reponse
      */
-    public function deAuthenticateUser(Request $request, Response $response, $args)
+    public function logoutUser(Request $request, Response $response, $args)
     {
         $token = $this->buildAcessToken($_SESSION['userinfo']);
 
