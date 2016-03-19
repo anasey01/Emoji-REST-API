@@ -11,7 +11,7 @@ use \Firebase\JWT\JWT;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
-class OauthLogin {
+class Oauth {
 
     public function __construct()
     {

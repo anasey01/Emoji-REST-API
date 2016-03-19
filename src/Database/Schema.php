@@ -11,6 +11,10 @@ use Illuminate\Database\Schema\Blueprint;
 
 class Schema 
 {
+    /**
+     * This method migrates all database schema when this class is instatiated
+     * 
+     */
     public function __construct()
     {
         $this->createUser();
@@ -19,10 +23,12 @@ class Schema
         $this->createEmoji();
     }
 
+    /**
+     * This method create users schema
+     * 
+     */
     public function createUser()
     {
-        //Schema::dropIfExists('users');
-
         Capsule::schema()->create('users', function($table) {
             $table->increments('id');
             $table->string('firstname');
@@ -35,10 +41,12 @@ class Schema
 
     }
 
+    /**
+     * This method creates keyword schema
+     * 
+     */
     public function createKeyword()
     {
-        //Schema::dropIfExists('keywords');
-
         Capsule::schema()->create('keywords', function($table) {
             $table->increments('id');
             $table->integer('emoji_id');
@@ -48,27 +56,32 @@ class Schema
 
     }
 
+    /**
+     * This method creates emoji category schema
+     * 
+     */
     public function createCategory()
     {
-        //Schema::dropIfExists('categories');
-
         Capsule::schema()->create('categories', function($table) {
             $table->increments('id');
             $table->string('category_name');
             $table->timestamps();
         });
+
     }
 
+    /**
+     * This method creates emoji  schema
+     * 
+     */
     public function createEmoji()
     {
-        //Schema::dropIfExists('emojis');
-
         Capsule::schema()->create('emojis', function($table) {
             $table->increments('id');
             $table->string('name');
             $table->string('char');
             $table->string('category');
-            $table->string('created_§by');
+            $table->string('created_by');
             $table->timestamps();
         });
 
