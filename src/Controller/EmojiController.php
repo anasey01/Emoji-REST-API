@@ -6,79 +6,152 @@
 
 namespace Laztopaz\EmojiRestfulAPI;
 
+use \Psr\Http\Message\ServerRequestInterface as Request;
+use \Psr\Http\Message\ResponseInterface as Response;
+
 use Laztopaz\EmojiRestfulAPI\Emoji;
 use Laztopaz\EmojiRestfulAPI\Keyword;
 
 class EmojiController {
 
+    private $auth;
+
+    public function __construct()
+    {
+        $this->auth = new OauthLogin();
+    }
+
     /**
      * 
-     * This method list all emoji
+     * This method list all emojis
      *
-     * @return  json
+     * @param $response
+     * 
+     * @return json $emojis
      * 
      */
-    public function listAllEmoji()
+    public function listAllEmoji(Response $response)
     {
         $emojis = Emoji::with('keywords','category', 'created_by')->get();
         $emojis = $emojis->toArray();
 
-        return json_encode($this->formatEmoji($emojis));
+        if (count($emojis) > 0) {
+            return $response
+            ->withJson(['status'], 200)
+            ->write(json_encode(
+                $this->formatEmoji($emojis)
+            ));
+        }
+
+        return $response->withJson(['status'], 404);
+
     }
 
     /**
      * 
      * This method get a single emoji
      *
-     * @params id
+     * @param $response
      *
-     * @return json
+     * @param $args
+     *
+     * @return json $emoji
      * 
      */
-    public function getSingleEmoji( $id )
+    public function getSingleEmoji(Response $response, $args)
     {
-        $emoji = Emoji::where('id', '=' , $id )->with('keywords','category', 'created_by')->get();
+        $id  = $args['id'];
+        $emoji = Emoji::where('id', '=', $id)->with('keywords', 'category', 'created_by')->get();
         $emoji = $emoji->toArray();
 
-        return json_encode($this->formatEmoji($emoji));
-        
+        if (count($emoji) > 0) {
+            return $response
+            ->withJson(['status'], 200)
+            ->write(json_encode($this->formatEmoji($emoji)));
+        }
+
+        return $response->withJson(['status'], 404);
+
     }
 
     /**
      * 
      * This method creates a new emoji
      *
-     * @params $args
+     * @param $args
      *
-     * @return  boolean true;
+     * @return json $response;
      * 
      */
-    public function createEmoji( $args )
+    public function createEmoji(Request $request, Response $response)
     {
-        if ( is_array($args) ) {
-            $created_at = date('Y-m-d h:i:s');
-            $emoji = Emoji::create(['name' => $args['name'], 'char' => $args['char'], 'created_at' => $created_at, 'category' => $args['category'], 'created_by' => $args['owner']]);
+        $requestParams = $request->getParsedBody();
 
-            return json_encode(['statuscode' => 200 ,'response' => $emoji]);
+        $token = $this->auth->buildAcessToken($_SESSION['userinfo']);
+
+        $emojiKeyword = $requestParams['keywords'];
+
+        if (is_array($requestParams)) {
+            $created_at = date('Y-m-d h:i:s');
+
+            $emoji = Emoji::create(
+                [
+                    'name' => $requestParams['name'], 
+                    'char' => $requestParams['char'], 
+                    'created_at' => $created_at, 
+                    'category' => $requestParams['category'], 
+                    'created_by' => $_SESSION['userinfo']['id']
+                ]
+            );
+
+            if ($emoji->id) {
+                // Create emoji keywords
+                $createdKeyword = $this->createEmojiKeywords($emoji->id, $emojiKeyword);
+
+                return $response->withJson(['status'], 201)->withAddedHeader('token', $token);
+            }
+
+            return $response->withJson(['status'], 204)->withAddedHeader('token', $token);
 
         }
+
     }
 
     /**
      * 
      * This method updates an emoji
      *
-     * @params $id
+     * @param $request
      *
-     * @params $data
+     * @param $response
      *
-     * @return  json
+     * @return json
      * 
      */
-    public function updateEmojiByPutVerb( $data, $id )
+    public function updateEmojiByPutVerb(Request $request, Response $response, $args)
     {
-        if ( is_array( $data ) && ( $id != "" ) ) {
-            return json_encode( ['id' => $id, 'data' => $data] );
+        $upateParams = $request->getParsedBody();
+
+        if (is_array($upateParams)) {
+            $id = $args['id'];
+
+            $token = $this->auth->buildAcessToken($_SESSION['userinfo']);
+
+            $emoji = Emoji::find($id);
+    
+            if ($emoji->id) {
+                $emoji->name = $upateParams['name'];
+                $emoji->char = $upateParams['char'];
+                $emoji->category = $upateParams['category'];
+                $emoji->updated_at = date('Y-m-d h:i:s');
+                $emoji->save();
+
+                return $response->withJson(['status'], 201)->withAddedHeader('token', $token);
+
+            }
+
+            return $response->withJson(['status'], 404)->withAddedHeader('token', $token);
+
         }
 
     }
@@ -87,16 +160,35 @@ class EmojiController {
      * 
      * This method updates an emoji partially
      *
-     * @params $id
+     * @param $request
      *
-     * @params $data
+     * @param $response
+     *
+     * @param $args
      *
      * @return json
      */
-    public function updateEmojiByPatchVerb( $data, $id )
+    public function updateEmojiByPatchVerb(Request $request, Response $response, $args)
     {
-        if ( is_array( $data ) && ( $id != "" ) ) {
-            return json_encode( ['id' => $id, 'data' => $data] );
+        $upateParams = $request->getParsedBody();
+
+        if (is_array($upateParams)) {
+            $id = $args['id'];
+
+            $token = $this->auth->buildAcessToken($_SESSION['userinfo']);
+
+            $emoji = Emoji::find($id);
+            if ($emoji->id) {
+                $emoji->name = $upateParams['name'];
+                $emoji->updated_at = date('Y-m-d h:i:s');
+                $emoji->save();
+
+                return $response->withJson(['status'], 201)->withAddedHeader('token', $token);
+
+            }
+
+            return $response->withJson(['status'], 404)->withAddedHeader('token', $token);
+
         }
 
     }
@@ -104,27 +196,70 @@ class EmojiController {
     /**
      * This method deletes an emoji 
      *
-     * @params $id
+     * @param $request
+     *
+     * @param $response
+     * 
+     * @param $args
      *
      * @return json
      */
-    public function deleteEmoji( $id )
+    public function deleteEmoji(Request $request, Response $response, $args)
     {
-        if ( $id != "") {
-            return json_encode( ['id' => $id] );
+        $id  = $args['id'];
+
+        $emoji = Emoji::find(1);
+        if ($emoji->id) {
+            $emoji->delete();
+
+            // Delete keywords assciated with the emoji
+            Keyword::where('emoji_id', '=', $id)->delete();
+
+            return $response->withJson(['status'], 204)->withAddedHeader('token', $token);
+
         }
 
+        return $response->withJson(['status'], 404)->withAddedHeader('token', $token);
+    }
+
+    /**
+     * This method creates emoji keywords
+     *
+     * @param $emoji_id
+     *
+     * @param $keywords
+     *
+     * @return $id
+     */
+    public function createEmojiKeywords($emoji_id, $keywords)
+    {
+        if ($keywords) {
+            $splittedKeywords = explode(",", $keywords);
+
+            $created_at = date('Y-m-d h:i:s');
+
+            foreach ($splittedKeywords as $keyword) {
+                $emojiKeyword = Keyword::create(
+                    [
+                        'emoji_id' => $emoji_id, 
+                        'keyword_name' => $keyword, 
+                        'created_at' => $created_at
+                    ]
+                );
+            }
+        }
+
+        return $emojiKeyword->id;
     }
 
     /**
      * This method format emoji result
      *
-     * @params $emojis
+     * @param $emojis
      *
      * @return array $emojis
      */
-
-    private function formatEmoji(array $emojis)
+    public  function formatEmoji(array $emojis)
     {
         foreach ($emojis as $key => &$value) {
             $value['created_by'] = $value['created_by']['firstname']." ".$value['created_by']['lastname'];

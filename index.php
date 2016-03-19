@@ -17,10 +17,12 @@ use Laztopaz\EmojiRestfulAPI\DatabaseConnection;
 use Laztopaz\EmojiRestfulAPI\EmojiController;
 use Laztopaz\EmojiRestfulAPI\OauthLogin;
 
-$app = new Slim\App(['settings' => [
-    'debug' => true, 
-    'displayErrorDetails' => true
-]]);
+$app = new Slim\App([
+    'settings' => [
+     'debug' => true, 
+     'displayErrorDetails' => true
+    ]
+]);
 
 $capsule = new Capsule; 
 
@@ -31,261 +33,162 @@ $emoji = new EmojiController();
 $login = new OauthLogin();
 
 /**
- * This endpoint authenticate the user
- *
- * @aparams $request
- *
- * @params $response
- *
- * @return json $response
- *
- */
-
-$app->post('/auth/login', function ( $request, $response ) use ($login) {
-
-    $response = $response->withHeader(
-        'Content-type',
-        'application/json; charset=utf-8'
-    );
-
-    $parsedBody = $request->getParsedBody();
-   
-    $response->write(json_encode($login->authenticateUser($parsedBody))); 
-
-    return $response;
-
-});
-
-/**
- * This endpoint authenticate the user
- *
- * @aparams $request
- *
- * @params $response
- *
- * @params $args
- *
- * @return json $response
- *
- */
-
-$app->get('/auth/logout', function ( $request, $response, $args ) {
-
-    $response = $response->withHeader(
-        'Content-type',
-        'application/json; charset=utf-8'
-    );
-   
-    $response->write(json_encode(['statuscode' => 404, 'response' => 'Not found']));
-
-    return $response;
-
-});
-
-
-/**
  * This verb returns error 404
  *
- * @aparams $request
+ * @param $request
  *
- * @params $response
+ * @param $response
  *
  * @return json $response
  *
  */
-
-$app->get('/', function ( $request, $response ) {
-
-    $response = $response->withHeader(
-        'Content-type',
-        'application/json; charset=utf-8'
-    );
-   
-    $response->write(json_encode(['statuscode' => 404, 'response' => 'Not found']));
-
-    return $response;
+$app->get('/', function (Request $request, Response $response) {
+    return $response->withJson(['status'], 404);
 
 });
 
 /**
  * This verb returns error 404
  *
- * @aparams $request
+ * @param $request
  *
- * @params $response
+ * @param $response
  *
  * @return json $response
  *
  */
+$app->post('/', function (Request $request, Response $response) {
+    return $response->withJson(['status'], 404);
 
-$app->post('/', function ( $request, $response ) {
+});
 
-    $response = $response->withHeader(
-        'Content-type',
-        'application/json; charset=utf-8'
-    );
+/**
+ * This endpoint authenticate the user
+ *
+ * @param $request
+ *
+ * @param $response
+ *
+ * @return json $response
+ *
+ */
+$app->post('/auth/login', function (Request $request, Response $response) use ($login) {
+    return $login->authenticateUser($request, $response); 
 
-    $parsedBody = $request->getParsedBody();
-   
-    $response->write(json_encode(['statuscode' => 404, 'response' => 'Not found'])
-);
-    return $response;
+});
+
+/**
+ * This endpoint authenticate the user
+ *
+ * @param $request
+ *
+ * @param $response
+ *
+ * @param $args
+ *
+ * @return json $response
+ *
+ */
+$app->get('/auth/logout', function (Request $request, Response $response, $args) use ($login) {
+    return $login->deAuthenticateUser($request, $response, $args);
 
 });
 
 /**
  * This verb returns all emoji
  *
- * @aparams $request
+ * @param $request
  *
- * @params $response
+ * @param $response
  *
  * @return json $response
  *
  */
-
-$app->get('/emojis', function ( $request, $response ) use ( $emoji ) {
-
-    $response = $response->withHeader(
-        'Content-type',
-        'application/json; charset=utf-8'
-    );
-   
-    $response->write($emoji->listAllEmoji());
-
-    return $response;
+$app->get('/emojis', function (Request $request, Response $response, $args ) use ($emoji) {
+    return $emoji->listAllEmoji($response);
 
 });
 
 /**
  * This verb returns a single emoji
  *
- * @aparams $request
+ * @param $response
  *
- * @params $response
- *
- * @params $args
+ * @param $args
  *
  * @return json $response
  *
  */
-$app->get('/emojis/{id}', function ( $request, $response, $args ) use ( $emoji ) {
-   
-    $response = $response->withHeader(
-        'Content-type',
-        'application/json; charset=utf-8'
-    );
-    $response->write( $emoji->getSingleEmoji($args['id']) );
-
-    return $response;
+$app->get('/emojis/{id}', function (Request $request, Response $response, $args) use ($emoji) {
+    return  $emoji->getSingleEmoji($response, $args);
 
 });
 
 /**
  * This verb creates a new  emoji
  *
- * @aparams $request
+ * @param $request
  *
- * @params $response
- *
- * @params $parsedBody
+ * @param $response
  *
  * @return json $response
  *
  */
-$app->post('/emojis', function ( $request, $response ) use ( $emoji ) {
-
-    $response = $response->withHeader(
-        'Content-type',
-        'application/json; charset=utf-8'
-    );
-
-    $parsedBody = $request->getParsedBody();
-   
-    $response->write($emoji->createEmoji($parsedBody));
-
-    return $response;
+$app->post('/emojis', function (Request $request, Response $response) use ($emoji) {
+    return $emoji->createEmoji($request, $response);
 
 });
 
 /**
  * This verb updatess an emoji using put verb
  *
- * @aparams $request
+ * @param $request
  *
- * @params $response
+ * @param $response
  *
- * @params $data
+ * @param $args
+ *
+ * @param $emoji
  *
  * @return json $response
  *
  */
-$app->put('/emojis/{id}', function ( $request, $response, $args ) use ( $emoji ) {
-
-    $response = $response->withHeader(
-        'Content-type',
-        'application/json; charset=utf-8'
-    );
-
-    $parsedBody = $request->getParsedBody();
-
-    //print_r($parsedBody);
-   
-    $response->write($emoji->updateEmojiByPutVerb($parsedBody, $args['id']));
-
-    return $response;
+$app->put('/emojis/{id}', function (Request $request, Response $response, $args) use ($emoji) {
+    return $emoji->updateEmojiByPutVerb($request, $response, $args);
 
 });
 
 /**
  * This verb updatess an emoji using put verb
  *
- * @aparams $request
+ * @param $request
  *
- * @params $response
+ * @param $response
  *
- * @params $data
+ * @param $data
  *
  * @return json $response
  *
  */
-$app->patch('/emojis/{id}', function ( $request, $response, $args ) use ( $emoji ) {
-
-    $response = $response->withHeader(
-        'Content-type',
-        'application/json; charset=utf-8'
-    );
-
-    $parsedBody = $request->getBody();
-   
-    $response->write($emoji->updateEmojiByPatchVerb($parsedBody, $args['id']));
-
-    return $response;
+$app->patch('/emojis/{id}', function (Request $request, Response $response, $args) use ($emoji) {
+    return $emoji->updateEmojiByPatchVerb($request, $response, $args);
 
 });
 
 /**
  * This verb updatess an emoji using put verb
  *
- * @aparams $request
+ * @param $request
  *
- * @params $response
+ * @param $response
  *
- * @params $args['id']
+ * @param $args
  *
  * @return json $response
  *
  */
-$app->delete('/emojis/{id}', function ( $request, $response, $args ) use ( $emoji ) {
-
-    $response = $response->withHeader(
-        'Content-type',
-        'application/json; charset=utf-8'
-    );
-   
-    $response->write($emoji->deleteEmoji($args['id']));
-
-    return $response;
+$app->delete('/emojis/{id}', function (Request $request, Response $response, $args) use ( $emoji ) {
+    return $emoji->deleteEmoji($request, $response, $args);
 
 });
 

@@ -13,7 +13,7 @@ class UserController
      * 
      * This method creates a user account 
      * 
-     * @params $data
+     * @param $data
      *
      * @return int $statuscode
      * 
