@@ -44,7 +44,7 @@ class Oauth {
             if (password_verify($loginParams['password'], $user->password)) {
                 $token = $this->buildAcessToken($userInfo);
 
-                return $response->withJson(['status'],200)->withAddedHeader('token', $token)->with($token);
+                return $response->withJson(['status'],200)->withAddedHeader('token', $token)->write($token);
                 
             }
 
@@ -109,7 +109,7 @@ class Oauth {
         $tokenId    = base64_encode(mcrypt_create_iv(32));
         $issuedAt   = time();
         $notBefore  = $issuedAt + 10;  //Adding 10 seconds
-        $expire     = $notBefore + strtotime('+1 month', date('Y-m-d h:i:s')); // Adding 30 days
+        $expire     = $notBefore + (float) strtotime('+30 days'); // Adding 30 days expiry date
         $serverName = $_SERVER['HTTP_HOST']; // Retrieve the server name
 
         /**
