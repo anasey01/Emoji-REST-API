@@ -13,13 +13,6 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 class Oauth {
 
-    public function __construct()
-    {
-        if (! isset($_SESSION)) {
-            session_start();
-        }
-    }
-
     /**
      * This method authenticate user and log them in if the supplied
      * credentials are valid
@@ -38,8 +31,6 @@ class Oauth {
             $user = $user->first();
 
             $userInfo = ['id' => $user->id, 'username' => $user->username, 'email' => $user->email];
-
-            $_SESSION['userinfo'] = $userInfo;
 
             if (password_verify($loginParams['password'], $user->password)) {
                 $token = $this->buildAcessToken($userInfo);
@@ -63,8 +54,6 @@ class Oauth {
      */
     public function logoutUser(Request $request, Response $response, $args)
     {
-        //return $response->withJson(['status'],200);
-        //
         return $response;
     }
     /**

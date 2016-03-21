@@ -12,6 +12,8 @@ use \Psr\Http\Message\ResponseInterface as Response;
 use Laztopaz\EmojiRestfulAPI\Emoji;
 use Laztopaz\EmojiRestfulAPI\Keyword;
 
+use \Firebase\JWT\JWT;
+
 class EmojiController {
 
     private $auth;
@@ -37,10 +39,8 @@ class EmojiController {
 
         if (count($emojis) > 0) {
             return $response
-            ->withJson(['status'], 200)
-            ->write(json_encode(
-                $this->formatEmoji($emojis)
-            ));
+            ->write(json_encode($this->formatEmoji($emojis)))
+            ->withJson(['status'], 200);
         }
 
         return $response->withJson(['status'], 404);
@@ -90,6 +90,8 @@ class EmojiController {
 
         $emojiKeyword = $requestParams['keywords'];
 
+        $userId = $this->getCurrentUserId($request);
+
         if (is_array($requestParams)) {
             $created_at = date('Y-m-d h:i:s');
 
@@ -99,12 +101,11 @@ class EmojiController {
                     'char' => $requestParams['char'], 
                     'created_at' => $created_at, 
                     'category' => $requestParams['category'], 
-                    'created_by' => $_SESSION['userinfo']['id']
+                    'created_by' => $userId
                 ]
             );
 
             if ($emoji->id) {
-                // Create emoji keywords
                 $createdKeyword = $this->createEmojiKeywords($emoji->id, $emojiKeyword);
 
                 return $response->withJson(['status'], 201);
@@ -263,6 +264,40 @@ class EmojiController {
         }
 
         return $emojis;
+
+    }
+
+    /**
+     * This method authenticate and return user id
+     */
+    public function getCurrentUserId($request)
+    {
+        $loadEnv = DatabaseConnection::loadEnv();
+
+        $authHeader = $request->getHeader('token');
+
+        try {
+            if (is_array($authHeader) && ! empty($authHeader)) {
+                $jwtoken = $authHeader[0];
+
+                $secretKey = base64_decode(getenv('secret'));
+
+                $jwt = json_decode($jwtoken, true);
+
+                //decode the JWT using the key from config
+                $decodedToken = JWT::decode($jwt['jwt'], $secretKey, array('HS512'));
+
+                $tokenInfo = (array) $decodedToken;
+
+                $userInfo = (array) $tokenInfo['dat'];
+
+             return $userInfo['id'];
+
+            }
+
+        } catch (\Exception $e) {
+            return $response->withJson(['status' => $e->getMessage()], 401);
+        }
 
     }
 
