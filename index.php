@@ -87,11 +87,6 @@ $app->post('/auth/login', function (Request $request, Response $response) use ($
  */
 
 $app->get('/auth/logout', function (Request $request, Response $response, $args) use ($auth) {
-
-    //$userInfo = (array) $payload['dat'];
-
-    //$userId = $userInfo['id'];
-
     return $auth->logoutUser($request, $response, $args)->withJson(['status'], 200);
 
 })->add(new Middleware());
