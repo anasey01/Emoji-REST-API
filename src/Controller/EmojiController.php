@@ -17,9 +17,9 @@ class EmojiController
 {
     private $auth;
 
-    public function __construct()
+    public function __construct(Oauth $auth)
     {
-        $this->auth = new Oauth();
+        $this->auth = $auth;
     }
 
     /**
