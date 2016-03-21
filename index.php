@@ -7,6 +7,7 @@ require 'vendor/autoload.php';
 
 use \Psr\Http\Message\ResponseInterface as Response;
 use \Psr\Http\Message\ServerRequestInterface as Request;
+
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Laztopaz\EmojiRestfulAPI\DatabaseConnection;
 use Laztopaz\EmojiRestfulAPI\EmojiController;
@@ -102,7 +103,7 @@ $app->get('/auth/logout', function (Request $request, Response $response, $args)
  * @return json $response
  *
  */
-$app->get('/emojis', function (Request $request, Response $response, $args) use ($emoji) {
+$app->get('/emojis', function (Request $request, Response $response) use ($emoji) {
     return $emoji->listAllEmoji($response);
 
 });
