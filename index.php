@@ -3,37 +3,32 @@
  * @author   Temitope Olotin <temitope.olotin@andela.com>
  * @license  <https://opensource.org/license/MIT> MIT
  */
-
 require 'vendor/autoload.php';
 
-use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
-
+use \Psr\Http\Message\ServerRequestInterface as Request;
 use Illuminate\Database\Capsule\Manager as Capsule;
-use Illuminate\Events\Dispatcher;
-use Illuminate\Container\Container;
-
 use Laztopaz\EmojiRestfulAPI\DatabaseConnection;
 use Laztopaz\EmojiRestfulAPI\EmojiController;
-use Laztopaz\EmojiRestfulAPI\Oauth;
 use Laztopaz\EmojiRestfulAPI\Middleware;
+use Laztopaz\EmojiRestfulAPI\Oauth;
 
 $app = new Slim\App([
     'settings' => [
-     'debug' => true, 
-     'displayErrorDetails' => true
-    ]
+     'debug'               => true,
+     'displayErrorDetails' => true,
+    ],
 ]);
 
-$capsule = new Capsule; 
+$capsule = new Capsule();
 
 new DatabaseConnection($capsule);
 
-$emoji = new EmojiController;
+$emoji = new EmojiController();
 
-$auth = new Oauth;
+$auth = new Oauth();
 
-/**
+/*
  * This verb returns error 404
  *
  * @param $request
@@ -48,7 +43,7 @@ $app->get('/', function (Request $request, Response $response) use ($auth) {
 
 });
 
-/**
+/*
  * This verb returns error 404
  *
  * @param $request
@@ -63,7 +58,7 @@ $app->post('/', function (Request $request, Response $response) {
 
 });
 
-/**
+/*
  * This endpoint authenticate the user
  *
  * @param $request
@@ -74,11 +69,11 @@ $app->post('/', function (Request $request, Response $response) {
  *
  */
 $app->post('/auth/login', function (Request $request, Response $response) use ($auth) {
-    return $auth->loginUser($request, $response); 
+    return $auth->loginUser($request, $response);
 
 });
 
-/**
+/*
  * This endpoint authenticate the user
  *
  * @param $request
@@ -91,13 +86,12 @@ $app->post('/auth/login', function (Request $request, Response $response) use ($
  *
  */
 
-
 $app->get('/auth/logout', function (Request $request, Response $response, $args) use ($auth) {
     return $auth->logoutUser($request, $response, $args)->withJson(['status'], 200);
 
-})->add(new Middleware);
+})->add(new Middleware());
 
-/**
+/*
  * This verb returns all emoji
  *
  * @param $request
@@ -107,12 +101,12 @@ $app->get('/auth/logout', function (Request $request, Response $response, $args)
  * @return json $response
  *
  */
-$app->get('/emojis', function (Request $request, Response $response, $args ) use ($emoji) {
+$app->get('/emojis', function (Request $request, Response $response, $args) use ($emoji) {
     return $emoji->listAllEmoji($response);
 
 });
 
-/**
+/*
  * This verb returns a single emoji
  *
  * @param $response
@@ -127,7 +121,7 @@ $app->get('/emojis/{id}', function (Request $request, Response $response, $args)
 
 });
 
-/**
+/*
  * This verb creates a new  emoji
  *
  * @param $request
@@ -140,9 +134,9 @@ $app->get('/emojis/{id}', function (Request $request, Response $response, $args)
 $app->post('/emojis', function (Request $request, Response $response) use ($emoji) {
     return $emoji->createEmoji($request, $response);
 
-})->add(new Middleware);
+})->add(new Middleware());
 
-/**
+/*
  * This verb updatess an emoji using put verb
  *
  * @param $request
@@ -159,9 +153,9 @@ $app->post('/emojis', function (Request $request, Response $response) use ($emoj
 $app->put('/emojis/{id}', function (Request $request, Response $response, $args) use ($emoji) {
     return $emoji->updateEmojiByPutVerb($request, $response, $args);
 
-})->add(new Middleware);
+})->add(new Middleware());
 
-/**
+/*
  * This verb updatess an emoji using put verb
  *
  * @param $request
@@ -176,9 +170,9 @@ $app->put('/emojis/{id}', function (Request $request, Response $response, $args)
 $app->patch('/emojis/{id}', function (Request $request, Response $response, $args) use ($emoji) {
     return $emoji->updateEmojiByPatchVerb($request, $response, $args);
 
-})->add(new Middleware);
+})->add(new Middleware());
 
-/**
+/*
  * This verb updatess an emoji using put verb
  *
  * @param $request
@@ -190,9 +184,9 @@ $app->patch('/emojis/{id}', function (Request $request, Response $response, $arg
  * @return json $response
  *
  */
-$app->delete('/emojis/{id}', function (Request $request, Response $response, $args) use ( $emoji ) {
+$app->delete('/emojis/{id}', function (Request $request, Response $response, $args) use ($emoji) {
     return $emoji->deleteEmoji($request, $response, $args);
 
-})->add(new Middleware);
+})->add(new Middleware());
 
 $app->run();

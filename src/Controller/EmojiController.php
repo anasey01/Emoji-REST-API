@@ -3,7 +3,6 @@
  * @author   Temitope Olotin <temitope.olotin@andela.com>
  * @license  <https://opensource.org/license/MIT> MIT
  */
-
 namespace Laztopaz\EmojiRestfulAPI;
 
 use \Psr\Http\Message\ServerRequestInterface as Request;
@@ -14,8 +13,8 @@ use Laztopaz\EmojiRestfulAPI\Keyword;
 
 use \Firebase\JWT\JWT;
 
-class EmojiController {
-
+class EmojiController
+{
     private $auth;
 
     public function __construct()
@@ -24,17 +23,15 @@ class EmojiController {
     }
 
     /**
-     * 
-     * This method list all emojis
+     * This method list all emojis.
      *
      * @param $response
-     * 
+     *
      * @return json $emojis
-     * 
      */
     public function listAllEmoji(Response $response)
     {
-        $emojis = Emoji::with('keywords','category', 'created_by')->get();
+        $emojis = Emoji::with('keywords', 'category', 'created_by')->get();
         $emojis = $emojis->toArray();
 
         if (count($emojis) > 0) {
@@ -44,23 +41,19 @@ class EmojiController {
         }
 
         return $response->withJson(['status'], 404);
-
     }
 
     /**
-     * 
-     * This method get a single emoji
+     * This method get a single emoji.
      *
      * @param $response
-     *
      * @param $args
      *
      * @return json $emoji
-     * 
      */
     public function getSingleEmoji(Response $response, $args)
     {
-        $id  = $args['id'];
+        $id = $args['id'];
 
         $emoji = Emoji::where('id', '=', $id)->with('keywords', 'category', 'created_by')->get();
         $emoji = $emoji->toArray();
@@ -72,17 +65,14 @@ class EmojiController {
         }
 
         return $response->withJson(['status'], 404);
-
     }
 
     /**
-     * 
-     * This method creates a new emoji
+     * This method creates a new emoji.
      *
      * @param $args
      *
      * @return json $response;
-     * 
      */
     public function createEmoji(Request $request, Response $response)
     {
@@ -112,21 +102,16 @@ class EmojiController {
             }
 
             return $response->withJson(['status'], 204);
-
         }
-
     }
 
     /**
-     * 
-     * This method updates an emoji
+     * This method updates an emoji.
      *
      * @param $request
-     *
      * @param $response
      *
      * @return json
-     * 
      */
     public function updateEmojiByPutVerb(Request $request, Response $response, $args)
     {
@@ -136,7 +121,7 @@ class EmojiController {
             $id = $args['id'];
 
             $emoji = Emoji::find($id);
-    
+
             if ($emoji->id) {
                 $emoji->name = $upateParams['name'];
                 $emoji->char = $upateParams['char'];
@@ -145,23 +130,17 @@ class EmojiController {
                 $emoji->save();
 
                 return $response->withJson(['status'], 201);
-
             }
 
             return $response->withJson(['status'], 404);
-
         }
-
     }
 
     /**
-     * 
-     * This method updates an emoji partially
+     * This method updates an emoji partially.
      *
      * @param $request
-     *
      * @param $response
-     *
      * @param $args
      *
      * @return json
@@ -180,29 +159,24 @@ class EmojiController {
                 $emoji->save();
 
                 return $response->withJson(['status'], 201);
-
             }
 
             return $response->withJson(['status'], 404);
-
         }
-
     }
 
     /**
-     * This method deletes an emoji 
+     * This method deletes an emoji.
      *
      * @param $request
-     *
      * @param $response
-     * 
      * @param $args
      *
      * @return json
      */
     public function deleteEmoji(Request $request, Response $response, $args)
     {
-        $id  = $args['id'];
+        $id = $args['id'];
 
         $emoji = Emoji::find(1);
         if ($emoji->id) {
@@ -211,18 +185,15 @@ class EmojiController {
             Keyword::where('emoji_id', '=', $id)->delete();
 
             return $response->withJson(['status'], 204);
-
         }
 
         return $response->withJson(['status'], 404);
-
     }
 
     /**
-     * This method creates emoji keywords
+     * This method creates emoji keywords.
      *
      * @param $emoji_id
-     *
      * @param $keywords
      *
      * @return $id
@@ -230,16 +201,16 @@ class EmojiController {
     public function createEmojiKeywords($emoji_id, $keywords)
     {
         if ($keywords) {
-            $splittedKeywords = explode(",", $keywords);
+            $splittedKeywords = explode(',', $keywords);
 
             $created_at = date('Y-m-d h:i:s');
 
             foreach ($splittedKeywords as $keyword) {
                 $emojiKeyword = Keyword::create(
                     [
-                        'emoji_id' => $emoji_id, 
-                        'keyword_name' => $keyword, 
-                        'created_at' => $created_at
+                        'emoji_id'     => $emoji_id,
+                        'keyword_name' => $keyword,
+                        'created_at'   => $created_at,
                     ]
                 );
             }
@@ -249,21 +220,54 @@ class EmojiController {
     }
 
     /**
-     * This method format emoji result
+     * This method format emoji result.
      *
      * @param $emojis
      *
      * @return array $emojis
      */
-    public  function formatEmoji(array $emojis)
+    public function formatEmoji(array $emojis)
     {
         foreach ($emojis as $key => &$value) {
-            $value['created_by'] = $value['created_by']['firstname']." ".$value['created_by']['lastname'];
+            $value['created_by'] = $value['created_by']['firstname'].' '.$value['created_by']['lastname'];
             $value['category'] = $value['category']['category_name'];
-            $value['keywords'] = array_map(function($key){ return $key["keyword_name"]; }, $value['keywords']);
+            $value['keywords'] = array_map(function ($key) { return $key['keyword_name']; }, $value['keywords']);
         }
 
         return $emojis;
+    }
+
+    /**
+     * This method authenticate and return user id
+     */
+    public function getCurrentUserId($request)
+    {
+        $loadEnv = DatabaseConnection::loadEnv();
+
+        $authHeader = $request->getHeader('token');
+
+        try {
+            if (is_array($authHeader) && ! empty($authHeader)) {
+                $jwtoken = $authHeader[0];
+
+                $secretKey = base64_decode(getenv('secret'));
+
+                $jwt = json_decode($jwtoken, true);
+
+                //decode the JWT using the key from config
+                $decodedToken = JWT::decode($jwt['jwt'], $secretKey, array('HS512'));
+
+                $tokenInfo = (array) $decodedToken;
+
+                $userInfo = (array) $tokenInfo['dat'];
+
+             return $userInfo['id'];
+
+            }
+
+        } catch (\Exception $e) {
+            return $response->withJson(['status' => $e->getMessage()], 401);
+        }
 
     }
 
