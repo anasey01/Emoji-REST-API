@@ -23,11 +23,16 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
 {
     protected $app;
     protected $response;
+    protected $emojis;
 
     public function setUp()
     {
         $app = new \Slim\App();
         $this->app = $app;
+
+        $auth = new Oauth();
+
+        $emoji = new EmojiController($auth);
 
     }
 
