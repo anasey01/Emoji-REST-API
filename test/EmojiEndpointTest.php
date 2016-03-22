@@ -149,4 +149,38 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
 
     }
 
+    public function testuserLogout()
+    {
+        $env = Environment::mock([
+            'REQUEST_METHOD' => 'GET',
+            'REQUEST_URI' => '/auth/logout',
+            'CONTENT_TYPE' => 'application/json',
+            'PATH_INFO'      => '/auth',
+            ]);
+
+        $req = Request::createFromEnvironment($env);
+        $this->app->getContainer()['request'] = $req;
+        $response = $this->app->run(true);
+
+        $data = json_decode($response->getBody(), true);
+        $this->assertSame($response->getStatusCode(), 401);
+    }
+
+    public function testuserLogin()
+    {
+        $env = Environment::mock([
+            'REQUEST_METHOD' => 'GET',
+            'REQUEST_URI' => '/auth/login',
+            'CONTENT_TYPE' => 'application/json',
+            'PATH_INFO'      => '/auth',
+            ]);
+
+        $req = Request::createFromEnvironment($env);
+        $this->app->getContainer()['request'] = $req;
+        $response = $this->app->run(true);
+
+        $data = json_decode($response->getBody(), true);
+        $this->assertSame($response->getStatusCode(), 405);
+    }
+
 }
