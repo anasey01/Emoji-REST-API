@@ -172,7 +172,7 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
     }
 
     public function testGetAllEmojiReturnEmojisWithStatusCode200()
-     {
+    {
         $emoji = Emoji::get();
         
         $env = Environment::mock([
