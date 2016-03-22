@@ -19,10 +19,8 @@ $capsule = new Capsule();
 
 new DatabaseConnection($capsule);
 
-$auth = new Oauth();
+$emoji = new EmojiController(new Oauth());
 
-$emoji = new EmojiController($auth);
-
-$app = new SlimRouteApp($auth, $emoji);
+$app = new SlimRouteApp(new Oauth(), $emoji);
 
 $app->setUpSlimApp()->run();
