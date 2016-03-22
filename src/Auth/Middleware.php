@@ -27,7 +27,7 @@ class Middleware
                 $jwt = json_decode($jwtoken, true);
 
                 //decode the JWT using the key from config
-                $decodedToken = JWT::decode($jwt['jwt'], $secretKey, ['HS512']);
+                JWT::decode($jwt['jwt'], $secretKey, ['HS512']);
 
                 return $next($request, $response);
             }
