@@ -36,8 +36,8 @@ class EmojiController
 
         if (count($emojis) > 0) {
             return $response
-            ->write(json_encode($this->formatEmoji($emojis)))
-            ->withJson(['status'], 200);
+            ->withJson($this->formatEmoji($emojis), 200);
+
         }
 
         return $response->withJson(['status'], 404);
@@ -60,11 +60,11 @@ class EmojiController
 
         if (count($emoji) > 0) {
             return $response
-            ->withJson(['status'], 200)
-            ->write(json_encode($this->formatEmoji($emoji)));
+            ->withJson($this->formatEmoji($emoji), 200);
+
         }
 
-        return $response->withJson(['status'], 404);
+        return $response->withStatus(404);
     }
 
     /**
@@ -98,10 +98,10 @@ class EmojiController
             if ($emoji->id) {
                 $createdKeyword = $this->createEmojiKeywords($emoji->id, $emojiKeyword);
 
-                return $response->withJson(['status'], 201);
+                return $response->withJson($emoji->toArray(), 201);
             }
 
-            return $response->withJson(['status'], 204);
+            return $response->withStatus(204);
         }
     }
 
@@ -129,10 +129,10 @@ class EmojiController
                 $emoji->updated_at = date('Y-m-d h:i:s');
                 $emoji->save();
 
-                return $response->withJson(['status'], 201);
+                return $response->withJson($emoji->toArray(), 201);
             }
 
-            return $response->withJson(['status'], 404);
+            return $response->withStatus(404);
         }
     }
 
@@ -158,10 +158,10 @@ class EmojiController
                 $emoji->updated_at = date('Y-m-d h:i:s');
                 $emoji->save();
 
-                return $response->withJson(['status'], 201);
+                return $response->withJson($emoji->toArray(), 201);
             }
 
-            return $response->withJson(['status'], 404);
+            return $response->withStatus(404);
         }
     }
 
@@ -187,7 +187,7 @@ class EmojiController
             return $response->withJson(['status'], 204);
         }
 
-        return $response->withJson(['status'], 404);
+        return $response->withStatus(404);
     }
 
     /**
@@ -267,6 +267,7 @@ class EmojiController
 
         } catch (\Exception $e) {
             return $response->withJson(['status' => $e->getMessage()], 401);
+
         }
 
     }

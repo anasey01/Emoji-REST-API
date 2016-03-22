@@ -32,7 +32,7 @@ class SlimRouteApp
             'debug' => true,
             'displayErrorDetails' => true,
             ],]);
-        
+
         $this->runEmojiRoute();
     }
 
@@ -57,7 +57,7 @@ class SlimRouteApp
         *
         */
         $this->slimApp->get('/', function (Request $request, Response $response) {
-            return $response->withJson(['status'], 404);
+            return $response->withStatus(404);
 
         });
 
@@ -72,7 +72,7 @@ class SlimRouteApp
         *
         */
         $this->slimApp->post('/', function (Request $request, Response $response) {
-            return $response->withJson(['status'], 404);
+            return $response->withStatus(404);
 
         });
 
@@ -105,7 +105,7 @@ class SlimRouteApp
         */
 
         $this->slimApp->get('/auth/logout', function (Request $request, Response $response, $args) use ($auth) {
-            return $auth->logoutUser($request, $response, $args)->withJson(['status'], 200);
+            return $auth->logoutUser($request, $response, $args)->withStatus(200);
 
         })->add(new Middleware());
 
@@ -135,7 +135,7 @@ class SlimRouteApp
         *
         */
         $this->slimApp->get('/emojis/{id}', function (Request $request, Response $response, $args) use ($emoji) {
-            return  $emoji->getSingleEmoji($response, $args)->withJson(['status'], 200);
+            return $emoji->getSingleEmoji($response, $args);
 
         });
 
