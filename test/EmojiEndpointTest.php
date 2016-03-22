@@ -18,6 +18,10 @@ use Laztopaz\EmojiRestfulAPI\User;
 use Laztopaz\EmojiRestfulAPI\Oauth;
 use Laztopaz\EmojiRestfulAPI\Emoji;
 use Laztopaz\EmojiRestfulAPI\Keyword;
+use Laztopaz\EmojiRestfulAPI\SlimRouteApp;
+
+use Illuminate\Database\Capsule\Manager as Capsule;
+use Laztopaz\EmojiRestfulAPI\DatabaseConnection;
 
 class EmojiEndPointTest extends PHPUnit_Framework_TestCase
 {
@@ -27,12 +31,16 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $app = new \Slim\App();
-        $this->app = $app;
+        $capsule = new Capsule();
+        new DatabaseConnection($capsule);
 
         $auth = new Oauth();
 
         $emoji = new EmojiController($auth);
+
+        $app = new SlimRouteApp($auth, $emoji);
+
+        $this->app = $app->setUpSlimApp();
 
     }
 
@@ -105,10 +113,39 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('404', $this->response->getStatusCode());
     }
 
+    public function testgetAllEmoji()
+    {
+         $env = Environment::mock([
+            'REQUEST_METHOD' => 'GET',
+            'REQUEST_URI' => '/emojis',
+            'CONTENT_TYPE' => 'application/json',
+            'PATH_INFO'      => '/emojis',
+            ]);
+
+        $req = Request::createFromEnvironment($env);
+        $this->app->getContainer()['request'] = $req;
+        $response = $this->app->run(true);
+    
+        $data = json_decode($response->getBody(), true);
+        $this->assertSame($response->getStatusCode(), 200);
+
+    }
+
     public function testSingleEmoji()
     {
-        $this->get('/emojis/2', ['ACCEPT' => 'application/json']);
-        $this->assertEquals('404', $this->response->getStatusCode());
+         $env = Environment::mock([
+            'REQUEST_METHOD' => 'GET',
+            'REQUEST_URI' => '/emojis/9',
+            'CONTENT_TYPE' => 'application/json',
+            'PATH_INFO'      => '/emojis',
+            ]);
+
+        $req = Request::createFromEnvironment($env);
+        $this->app->getContainer()['request'] = $req;
+        $response = $this->app->run(true);
+
+        $data = json_decode($response->getBody(), true);
+        $this->assertSame($response->getStatusCode(), 200);
 
     }
 
