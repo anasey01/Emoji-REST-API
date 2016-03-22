@@ -50,6 +50,7 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
          $env = Environment::mock(array_merge([
             'REQUEST_METHOD' => $method,
             'PATH_INFO' => $path,
+            'CONTENT_TYPE' => 'application/json',
             'SERVER_NAME' => 'slim-test.dev',
             ], $options));
 
@@ -69,39 +70,7 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
         $this->request('GET', $path, $options);
     }
 
-    /**
-     * This method defines a post request for all emojis endpoint
-     * @param  $path
-     * @param  $options
-     * @return $request
-     */
-    public function post($path, $options = array())
-    {
-        $this->request('POST', $path, $options);
-    }
-
-    /**
-     * This method defines a put request for all emojis endpoint
-     * @param  $path
-     * @param  $options
-     * @return $request
-     */
-    public function put($path, $options = array())
-    {
-        $this->request('PUT', $path, $options);
-    }
-
-    /**
-     * This method defines a patch request for all emojis endpoint
-     * @param  $path
-     * @param  $options
-     * @return $request
-     */
-    public function patch($path, $options = array())
-    {
-        $this->request('PATCH', $path, $options);
-    }
-
+    
     /**
      * This method ascertain that emoji index page return status code 404
      * @param  void
@@ -181,6 +150,64 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
 
         $data = json_decode($response->getBody(), true);
         $this->assertSame($response->getStatusCode(), 405);
+    }
+
+     public function testGetSingleEmojiReturnsEmojiWithStatusCode200()
+     {
+        $emoji = Emoji::get()->first();
+        
+        $env = Environment::mock([
+            'REQUEST_METHOD' => 'GET',
+            'REQUEST_URI'    => '/emojis/'.$emoji->id,
+            'PATH_INFO'      => '/emojis',
+            ]);
+        $req = Request::createFromEnvironment($env);
+        $this->app->getContainer()['request'] = $req;
+        $response = $this->app->run(true);
+        $data = json_decode($response->getBody(), true);
+        
+        $this->assertSame($response->getStatusCode(), 200);
+        $this->assertSame($data[0]['id'], $emoji->id);
+        $this->assertSame($data[0]['name'], $emoji->name);
+    }
+
+    public function testGetAllEmojiReturnEmojisWithStatusCode200()
+     {
+        $emoji = Emoji::get();
+        
+        $env = Environment::mock([
+            'REQUEST_METHOD' => 'GET',
+            'REQUEST_URI'    => '/emojis',
+            'PATH_INFO'      => '/emojis',
+            ]);
+        $req = Request::createFromEnvironment($env);
+        $this->app->getContainer()['request'] = $req;
+        $response = $this->app->run(true);
+        $data = json_decode($response->getBody(), true);
+        
+        $this->assertSame($response->getStatusCode(), 200);
+        $this->assertEquals(count($data), 2);
+    }
+
+    public function testThatLoginCredentialWhereUsedToLogin()
+    {
+
+        $env = Environment::mock([
+            'REQUEST_METHOD' => 'POST',
+            'REQUEST_URI' => '/auth/login',
+            'CONTENT_TYPE' => 'application/x-www-form-urlencoded',
+            'PATH_INFO'      => '/auth',
+            ]);
+
+        $req = Request::createFromEnvironment($env);
+        $req = $req->withParsedBody(['username' => 'laztopaz','password' => 'tope0852']);
+
+        $this->app->getContainer()['request'] = $req;
+        $response = $this->app->run(true);
+
+        $data = json_decode($response->getBody(), true);
+        
+        $this->assertSame($response->getStatusCode(), 200);
     }
 
 }

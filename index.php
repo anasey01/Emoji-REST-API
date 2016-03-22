@@ -14,7 +14,6 @@ use Laztopaz\EmojiRestfulAPI\EmojiController;
 use Laztopaz\EmojiRestfulAPI\SlimRouteApp;
 use Laztopaz\EmojiRestfulAPI\Oauth;
 
-
 $capsule = new Capsule();
 
 new DatabaseConnection($capsule);
