@@ -105,4 +105,11 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('404', $this->response->getStatusCode());
     }
 
+    public function testSingleEmoji()
+    {
+        $this->get('/emojis/2', ['ACCEPT' => 'application/json']);
+        $this->assertEquals('404', $this->response->getStatusCode());
+
+    }
+
 }
