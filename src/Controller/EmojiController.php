@@ -77,10 +77,7 @@ class EmojiController
     public function createEmoji(Request $request, Response $response)
     {
         $requestParams = $request->getParsedBody();
-
-        var_dump($requestParams);
-        exit();
-
+        
         $emojiKeyword = $requestParams['keywords'];
 
         $userId = $this->getCurrentUserId($request);
