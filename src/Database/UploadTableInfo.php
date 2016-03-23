@@ -23,7 +23,7 @@ class UploadTableInfo
 
     public function createUser()
     {
-        $suer = new UserController();
+        $user = new UserController();
 
         $user->createUser([
             'firstname' => 'Temitope',
