@@ -178,7 +178,7 @@ class EmojiController
     {
         $id = $args['id'];
 
-        $emoji = Emoji::find(1);
+        $emoji = Emoji::find($id);
         if ($emoji->id) {
             $emoji->delete();
             // Delete keywords assciated with the emoji

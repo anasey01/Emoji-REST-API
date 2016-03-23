@@ -19,6 +19,7 @@ use Laztopaz\EmojiRestfulAPI\Oauth;
 use Laztopaz\EmojiRestfulAPI\Emoji;
 use Laztopaz\EmojiRestfulAPI\Keyword;
 use Laztopaz\EmojiRestfulAPI\SlimRouteApp;
+use Laztopaz\EmojiRestfulAPI\Schema;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Laztopaz\EmojiRestfulAPI\DatabaseConnection;
@@ -32,7 +33,10 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         $capsule = new Capsule();
+        
         new DatabaseConnection($capsule);
+
+        new Schema;
 
         $auth = new Oauth();
 
@@ -171,6 +175,35 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
         $this->assertSame($data[0]['name'], $emoji->name);
     }
 
+    public function testPostEmoji()
+     {
+        
+        $env = Environment::mock([
+            'REQUEST_METHOD' => 'POST',
+            'REQUEST_URI'    => '/emojis',
+            'PATH_INFO'      => '/emojis',
+            ]);
+
+        $req = Request::createFromEnvironment($env);
+        $req = $req->withParsedBody(Emoji::create(
+                [
+                    'name' => 'FACE WITH TEARS OF JOY', 
+                    'char' => '/u{1F602}', 
+                    'created_at' => date('Y-m-d h:i:s'), 
+                    'category' => 1, 
+                    'created_by' => 1
+                ]
+            ));
+        $this->app->getContainer()['request'] = $req;
+        $response = $this->app->run(true);
+
+        $data = json_decode($response->getBody(), true);
+
+        $this->assertSame($response->getStatusCode(), 200);
+        $this->assertSame($data[0]['char'], $emoji->id);
+        $this->assertSame($data[0]['name'], $emoji->name);
+    }
+
     public function testGetAllEmojiReturnEmojisWithStatusCode200()
     {
         $emoji = Emoji::get();
@@ -191,7 +224,6 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
 
     public function testThatLoginCredentialWhereUsedToLogin()
     {
-
         $env = Environment::mock([
             'REQUEST_METHOD' => 'POST',
             'REQUEST_URI' => '/auth/login',
