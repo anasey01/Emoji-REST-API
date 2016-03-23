@@ -30,7 +30,7 @@ class UploadTableInfo
             'lastname'  => 'Olotin',
             'username' => 'laztopaz',
             'password' => 'tope0852',
-            'email' => 'temitope.olotin@andela.com'
+            'email' => 'temitope.olotin@andela.com',
             'created_at' => date('Y-m-d h:i:s'), 
             'updated_at' => date('Y-m-d h:i:s')
             ]);
