@@ -136,7 +136,7 @@ class SlimRouteApp
         */
         $this->slimApp->get('/emojis/{id}', function (Request $request, Response $response, $args) use ($emoji) {
             return $emoji->getSingleEmoji($response, $args);
-
+            
         });
 
         /*

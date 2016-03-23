@@ -37,13 +37,12 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
 
         new DatabaseConnection($capsule);
 
-        new Schema();
+        //new Schema;
+        //new UploadTableInfo;
 
-        $auth = new Oauth();
+        $auth = new Oauth;
 
         $emoji = new EmojiController($auth);
-
-        $tableUpdate = new UploadTableInfo();
 
         $app = new SlimRouteApp($auth, $emoji);
 
@@ -161,8 +160,7 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
 
      public function testGetSingleEmojiReturnsEmojiWithStatusCode200()
      {
-        $emoji = Emoji::get()->first();
-        
+        $emoji = Emoji::get()->first();        
         $env = Environment::mock([
             'REQUEST_METHOD' => 'GET',
             'REQUEST_URI'    => '/emojis/'.$emoji->id,
@@ -172,7 +170,7 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
         $this->app->getContainer()['request'] = $req;
         $response = $this->app->run(true);
         $data = json_decode($response->getBody(), true);
-        
+
         $this->assertSame($response->getStatusCode(), 200);
         $this->assertSame($data[0]['id'], $emoji->id);
         $this->assertSame($data[0]['name'], $emoji->name);
@@ -184,11 +182,11 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
         $env = Environment::mock([
             'REQUEST_METHOD' => 'POST',
             'REQUEST_URI'    => '/emojis',
-            'PATH_INFO'      => '/emojis',
+            'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
             ]);
 
         $req = Request::createFromEnvironment($env);
-        $req = $req->withParsedBody(Emoji::create(
+        $req = $req->withParsedBody(
                 [
                     'name' => 'FACE WITH TEARS OF JOY', 
                     'char' => '/u{1F602}', 
@@ -196,8 +194,9 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
                     'category' => 1, 
                     'created_by' => 1
                 ]
-            ));
+            );
         $this->app->getContainer()['request'] = $req;
+
         $response = $this->app->run(true);
 
         $data = json_decode($response->getBody(), true);
@@ -220,9 +219,8 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
         $this->app->getContainer()['request'] = $req;
         $response = $this->app->run(true);
         $data = json_decode($response->getBody(), true);
-        
         $this->assertSame($response->getStatusCode(), 200);
-        $this->assertEquals(count($data), 2);
+        $this->assertGreaterThan(count($data), 0);
     }
 
     public function testThatLoginCredentialWhereUsedToLogin()

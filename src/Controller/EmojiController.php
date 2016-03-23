@@ -78,6 +78,9 @@ class EmojiController
     {
         $requestParams = $request->getParsedBody();
 
+        var_dump($requestParams);
+        exit();
+
         $emojiKeyword = $requestParams['keywords'];
 
         $userId = $this->getCurrentUserId($request);

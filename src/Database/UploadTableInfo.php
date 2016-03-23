@@ -24,7 +24,6 @@ class UploadTableInfo
     public function createUser()
     {
         $user = new UserController();
-
         $user->createUser([
             'firstname' => 'Temitope',
             'lastname'  => 'Olotin',
@@ -43,34 +42,29 @@ class UploadTableInfo
 
         $userId = 1;
 
-            $created_at = date('Y-m-d h:i:s');
+        $created_at = date('Y-m-d h:i:s');
 
-            $emoji = Emoji::create(
-                [
-                    'name' => 'GRINNING FACE', 
-                    'char' => '\u{1F600}', 
-                    'created_at' => $created_at, 
-                    'category' => 1, 
-                    'created_by' => $userId
-                ]
-            );
+        $emoji = Emoji::create([
+            'name' => 'GRINNING FACE', 
+            'char' => '\u{1F600}', 
+            'created_at' => $created_at, 
+            'category' => 1, 
+            'created_by' => $userId
+        ]);
 
-            if ($emoji->id) {
-                $createdKeyword = $this->createEmojiKeywords($emoji->id, $emojiKeyword);
-            }
-
+        if ($emoji->id) {
+            $createdKeyword = $this->createEmojiKeywords($emoji->id, $emojiKeyword);
+        }
     }
 
     public function createCategory()
     {
         $created_at = date('Y-m-d h:i:s');
 
-        $category = Category::create(
-                [
-                    'category_name' => 'people', 
-                    'created_at' => $created_at
-                ]
-            );
+        $category = Category::create([
+            'category_name' => 'people', 
+            'created_at' => $created_at
+        ]);
 
     }
 
@@ -82,13 +76,11 @@ class UploadTableInfo
             $created_at = date('Y-m-d h:i:s');
 
             foreach ($splittedKeywords as $keyword) {
-                $emojiKeyword = Keyword::create(
-                    [
-                        'emoji_id'     => $emoji_id,
-                        'keyword_name' => $keyword,
-                        'created_at'   => $created_at,
-                    ]
-                );
+                $emojiKeyword = Keyword::create([
+                    'emoji_id'     => $emoji_id,
+                    'keyword_name' => $keyword,
+                    'created_at'   => $created_at
+                ]);
             }
         }
 
