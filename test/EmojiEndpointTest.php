@@ -19,6 +19,7 @@ use Laztopaz\EmojiRestfulAPI\Oauth;
 use Laztopaz\EmojiRestfulAPI\Emoji;
 use Laztopaz\EmojiRestfulAPI\Keyword;
 use Laztopaz\EmojiRestfulAPI\SlimRouteApp;
+use Laztopaz\EmojiRestfulAPI\Schema;
 use Laztopaz\EmojiRestfulAPI\UploadTableInfo;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
@@ -35,6 +36,8 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
         $capsule = new Capsule();
 
         new DatabaseConnection($capsule);
+
+        new Schema();
 
         $auth = new Oauth();
 
