@@ -12,14 +12,26 @@ matrix:
 
 install: travis_retry composer install --no-interaction --prefer-source
 
+dist: trusty
+sudo: required
+addons:
+  apt:
+    packages:
+    - mysql-server-5.6
+    - mysql-client-core-5.6
+    - mysql-client-5.6
+
 script:
   - mkdir -p build/logs
   - php vendor/bin/phpunit -c phpunit.xml.dist
   - phpunit --coverage-text --coverage-clover=coverage.clover
   - phpunit --coverage-clover build/logs/clover.xml
 
+services:
+  - mysql
+
 before_script:
-  - mysql -e 'create database emoji;'
+  - mysql -u root -e 'create database emoji;'
 
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
