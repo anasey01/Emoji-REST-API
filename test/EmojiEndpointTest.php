@@ -37,8 +37,8 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
 
         new DatabaseConnection($capsule);
 
-        new Schema;
-        new UploadTableInfo;
+        //new Schema;
+        //new UploadTableInfo;
 
         $auth = new Oauth;
 
@@ -162,6 +162,26 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
         $this->assertSame($response->getStatusCode(), 401);
     }
 
+    private function getCurrentToken()
+    {
+        $env = Environment::mock([
+            'REQUEST_METHOD' => 'POST',
+            'REQUEST_URI' => '/auth/login',
+            'CONTENT_TYPE' => 'application/x-www-form-urlencoded',
+            'PATH_INFO'      => '/auth',
+            ]);
+
+        $req = Request::createFromEnvironment($env);
+        $req = $req->withParsedBody(['username' => 'laztopaz','password' => 'tope0852']);
+
+        $this->app->getContainer()['request'] = $req;
+        $response = $this->app->run(true);
+
+        $data = json_decode($response->getBody(), true);
+
+        return $data['token'];
+    }
+
     public function testuserLogin()
     {
         $env = Environment::mock([
@@ -189,7 +209,10 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
             ]);
 
         $req = Request::createFromEnvironment($env);
-        $req = $req->withParsedBody(['username' => 'laztopaz','password' => 'tope0852']);
+        $req = $req->withParsedBody([
+            'username' => 'laztopaz',
+            'password' => 'tope0852'
+        ]);
 
         $this->app->getContainer()['request'] = $req;
         $response = $this->app->run(true);
@@ -204,10 +227,13 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
 
     public function testPostEmoji()
     {
+        $token = $this->getCurrentToken();
+
         $env = Environment::mock([
             'REQUEST_METHOD' => 'POST',
             'REQUEST_URI'    => '/emojis',
-            'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+            'CONTENT_TYPE' => 'application/x-www-form-urlencoded',
+            'token'     => $token
             ]);
 
         $req = Request::createFromEnvironment($env);
@@ -217,16 +243,17 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
                     'char' => '/u{1F602}', 
                     'created_at' => date('Y-m-d h:i:s'), 
                     'category' => 1, 
-                    'created_by' => 1
-                ]
-            );
+                    'created_by' => 1,
+                    'keywords' => 'eye,face,grin,person'
+                ]);
+
         $this->app->getContainer()['request'] = $req;
 
         $response = $this->app->run(true);
 
         $data = json_decode($response->getBody(), true);
 
-        $this->assertSame($response->getStatusCode(), 200);
+        $this->assertSame($response->getStatusCode(), 201);
         $this->assertSame($data[0]['char'], $emoji->id);
         $this->assertSame($data[0]['name'], $emoji->name);
     }

@@ -33,7 +33,7 @@ class Oauth {
             if (password_verify($loginParams['password'], $user->password)) {
                 $token = $this->buildAcessToken($userInfo);
 
-                return $response->withAddedHeader('token', $token)->withJson(['token' => $token], 200);
+                return $response->withAddedHeader('token', $token)->withStatus(200)->write($token);
             }
 
             return $response->withJson(['status'], 400);
