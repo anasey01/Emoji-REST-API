@@ -41,6 +41,7 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
         new DatabaseConnection($capsule);
 
         new Schema;
+        
         new UploadTableInfo;
 
         $auth = new Oauth;

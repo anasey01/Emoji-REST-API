@@ -25,15 +25,17 @@ class Schema
      */
     public function createUser()
     {
-        Capsule::schema()->create('users', function ($table) {
-            $table->increments('id');
-            $table->string('firstname');
-            $table->string('lastname');
-            $table->string('username');
-            $table->string('password');
-            $table->string('email')->unique();
-            $table->timestamps();
-        });
+        if (! Capsule::schema()->hasTable('users')) {
+            Capsule::schema()->create('users', function ($table) {
+                $table->increments('id');
+                $table->string('firstname');
+                $table->string('lastname');
+                $table->string('username');
+                $table->string('password');
+                $table->string('email')->unique();
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -41,12 +43,14 @@ class Schema
      */
     public function createKeyword()
     {
-        Capsule::schema()->create('keywords', function ($table) {
-            $table->increments('id');
-            $table->integer('emoji_id');
-            $table->string('keyword_name');
-            $table->timestamps();
-        });
+        if (! Capsule::schema()->hasTable('keywords')) {
+            Capsule::schema()->create('keywords', function ($table) {
+                $table->increments('id');
+                $table->integer('emoji_id');
+                $table->string('keyword_name');
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -54,12 +58,13 @@ class Schema
      */
     public function createCategory()
     {
-        Capsule::schema()->create('categories', function ($table) {
-            $table->increments('id');
-            $table->string('category_name');
-            $table->timestamps();
-        });
-
+        if (! Capsule::schema()->hasTable('categories')) {
+            Capsule::schema()->create('categories', function ($table) {
+                $table->increments('id');
+                $table->string('category_name');
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -67,13 +72,16 @@ class Schema
      */
     public function createEmoji()
     {
-        Capsule::schema()->create('emojis', function ($table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->string('char');
-            $table->string('category');
-            $table->string('created_by');
-            $table->timestamps();
-        });
+        if (! Capsule::schema()->hasTable('categories')) {
+            Capsule::schema()->create('emojis', function ($table) {
+                $table->increments('id');
+                $table->string('name');
+                $table->string('char');
+                $table->string('category');
+                $table->string('created_by');
+                $table->timestamps();
+            });
+        }
     }
+    
 }
