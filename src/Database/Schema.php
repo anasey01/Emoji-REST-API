@@ -59,7 +59,6 @@ class Schema
             $table->string('category_name');
             $table->timestamps();
         });
-
     }
 
     /**
