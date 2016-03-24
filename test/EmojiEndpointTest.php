@@ -35,7 +35,7 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
     {
         $capsule = new Capsule();
 
-        //new DatabaseConnection($capsule);
+        new DatabaseConnection($capsule);
 
         new Schema;
         new UploadTableInfo;
