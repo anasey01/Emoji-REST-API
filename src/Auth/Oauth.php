@@ -3,7 +3,6 @@
  * @author   Temitope Olotin <temitope.olotin@andela.com>
  * @license  <https://opensource.org/license/MIT> MIT
  */
-
 namespace Laztopaz\EmojiRestfulAPI;
 
 use Laztopaz\EmojiRestfulAPI\User;
@@ -15,12 +14,11 @@ class Oauth {
 
     /**
      * This method authenticate user and log them in if the supplied
-     * credentials are valid
-     * 
-     * @param  array  $loginParams
-     * 
+     * credentials are valid.
+     *
+     * @param array $loginParams
+     *
      * @return json jwt
-     * 
      */
     public function loginUser(Request $request, Response $response)
     {
@@ -35,11 +33,10 @@ class Oauth {
             if (password_verify($loginParams['password'], $user->password)) {
                 $token = $this->buildAcessToken($userInfo);
 
-                return $response->withJson(['status'],200)->withAddedHeader('token', $token)->write($token);
-                
+                return $response->withAddedHeader('token', $token)->withStatus(200)->write($token);
             }
 
-            return $response->withJson(['status'],400);
+            return $response->withJson(['status'], 400);
         }
 
     }
@@ -56,26 +53,25 @@ class Oauth {
     {
         return $response;
     }
+
     /**
-     * 
-     * This method builds an access token for a login user;
+     * This method builds an access token for a login user;.
      *
      * @param $userData
      *
      * @return string $token
-     * 
      */
     public function buildAcessToken(array $userData)
     {
-        $tokenId    = base64_encode(mcrypt_create_iv(32));
-        $issuedAt   = time();
-        $notBefore  = $issuedAt + 10;  //Adding 10 seconds
-        $expire     = $notBefore + (float) strtotime('+30 days'); // Adding 30 days expiry date
-        $serverName = $_SERVER['HTTP_HOST']; // Retrieve the server name
+        $tokenId = base64_encode(mcrypt_create_iv(32));
+        $issuedAt = time();
+        $notBefore = $issuedAt + 10;  //Adding 10 seconds
+        $expire = $notBefore + (float) strtotime('+30 days'); // Adding 30 days expiry date
+        $serverName = "http://sweatemoji.com/api"; // Retrieve the server name
 
-        /**
+        /*
          *
-         * Create the token params as an array 
+         * Create the token params as an array
          */
         $data = [
             'iat'  => $issuedAt,         // Issued at: time when the token was generated
@@ -83,7 +79,8 @@ class Oauth {
             'iss'  => $serverName,       // Issuer
             'nbf'  => $notBefore,        // Not before
             'exp'  => $expire,           // Expire
-            'dat'  => $userData                    // User Information retrieved from the database
+
+            'dat'  => $userData                   // User Information retrieved from the database
         ];
 
         $loadEnv = DatabaseConnection::loadEnv();
@@ -98,7 +95,5 @@ class Oauth {
         $unencodedArray = ['jwt' => $jwt];
 
         return json_encode($unencodedArray);
-    
     }
-
 }
