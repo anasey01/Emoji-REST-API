@@ -1,0 +1,22 @@
+
+
+Code Coverage Report:     
+  2016-03-23 06:49:19     
+                          
+ Summary:                 
+  Classes: 54.55% (6/11)  
+  Methods: 38.71% (12/31) 
+  Lines:   36.49% (81/222)
+
+\Laztopaz\EmojiRestfulAPI::DatabaseConnection
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 21/ 21)
+\Laztopaz\EmojiRestfulAPI::Emoji
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% (  3/  3)
+\Laztopaz\EmojiRestfulAPI::EmojiController
+  Methods:  20.00% ( 2/10)   Lines:  16.47% ( 14/ 85)
+\Laztopaz\EmojiRestfulAPI::Middleware
+  Methods:   0.00% ( 0/ 1)   Lines:  45.45% (  5/ 11)
+\Laztopaz\EmojiRestfulAPI::Oauth
+  Methods:   0.00% ( 0/ 3)   Lines:  42.86% ( 12/ 28)
+\Laztopaz\EmojiRestfulAPI::SlimRouteApp
+  Methods: 100.00% ( 4/ 4)   Lines: 100.00% ( 23/ 23)

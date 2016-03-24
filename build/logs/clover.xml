@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1458715759">
+  <project timestamp="1458715759">
+    <package name="Laztopaz\EmojiRestfulAPI">
+      <file name="/Users/andeladev/Code/emojiRestfulAPI/src/Auth/Middleware.php">
+        <class name="Middleware" namespace="Laztopaz\EmojiRestfulAPI">
+          <metrics methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="11" coveredstatements="5" elements="12" coveredelements="5"/>
+        </class>
+        <line num="15" type="method" name="__invoke" crap="6.60" count="2"/>
+        <line num="17" type="stmt" count="2"/>
+        <line num="19" type="stmt" count="2"/>
+        <line num="22" type="stmt" count="2"/>
+        <line num="23" type="stmt" count="0"/>
+        <line num="25" type="stmt" count="0"/>
+        <line num="27" type="stmt" count="0"/>
+        <line num="30" type="stmt" count="0"/>
+        <line num="32" type="stmt" count="2"/>
+        <line num="34" type="stmt" count="0"/>
+        <line num="35" type="stmt" count="0"/>
+        <line num="38" type="stmt" count="2"/>
+        <metrics loc="40" ncloc="34" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="11" coveredstatements="5" elements="12" coveredelements="5"/>
+      </file>
+      <file name="/Users/andeladev/Code/emojiRestfulAPI/src/Auth/Oauth.php">
+        <class name="Oauth" namespace="Laztopaz\EmojiRestfulAPI">
+          <metrics methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="28" coveredstatements="12" elements="31" coveredelements="12"/>
+        </class>
+        <line num="23" type="method" name="loginUser" crap="3.24" count="1"/>
+        <line num="25" type="stmt" count="1"/>
+        <line num="27" type="stmt" count="1"/>
+        <line num="28" type="stmt" count="1"/>
+        <line num="29" type="stmt" count="1"/>
+        <line num="31" type="stmt" count="1"/>
+        <line num="33" type="stmt" count="1"/>
+        <line num="34" type="stmt" count="1"/>
+        <line num="36" type="stmt" count="0"/>
+        <line num="39" type="stmt" count="0"/>
+        <line num="41" type="stmt" count="0"/>
+        <line num="50" type="method" name="logoutUser" crap="2" count="0"/>
+        <line num="52" type="stmt" count="0"/>
+        <line num="62" type="method" name="buildAcessToken" crap="1.35" count="1"/>
+        <line num="64" type="stmt" count="1"/>
+        <line num="65" type="stmt" count="1"/>
+        <line num="66" type="stmt" count="1"/>
+        <line num="67" type="stmt" count="1"/>
+        <line num="68" type="stmt" count="1"/>
+        <line num="75" type="stmt" count="0"/>
+        <line num="76" type="stmt" count="0"/>
+        <line num="77" type="stmt" count="0"/>
+        <line num="78" type="stmt" count="0"/>
+        <line num="79" type="stmt" count="0"/>
+        <line num="80" type="stmt" count="0"/>
+        <line num="83" type="stmt" count="0"/>
+        <line num="85" type="stmt" count="0"/>
+        <line num="87" type="stmt" count="0"/>
+        <line num="90" type="stmt" count="0"/>
+        <line num="92" type="stmt" count="0"/>
+        <line num="94" type="stmt" count="0"/>
+        <metrics loc="96" ncloc="42" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="28" coveredstatements="12" elements="31" coveredelements="12"/>
+      </file>
+      <file name="/Users/andeladev/Code/emojiRestfulAPI/src/Controller/EmojiController.php">
+        <class name="EmojiController" namespace="Laztopaz\EmojiRestfulAPI">
+          <metrics methods="10" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="85" coveredstatements="14" elements="95" coveredelements="16"/>
+        </class>
+        <line num="20" type="method" name="__construct" crap="1" count="9"/>
+        <line num="22" type="stmt" count="9"/>
+        <line num="23" type="stmt" count="9"/>
+        <line num="32" type="method" name="listAllEmoji" crap="2.03" count="2"/>
+        <line num="34" type="stmt" count="2"/>
+        <line num="35" type="stmt" count="2"/>
+        <line num="37" type="stmt" count="2"/>
+        <line num="39" type="stmt" count="2"/>
+        <line num="43" type="stmt" count="0"/>
+        <line num="54" type="method" name="getSingleEmoji" crap="2.02" count="2"/>
+        <line num="56" type="stmt" count="2"/>
+        <line num="58" type="stmt" count="2"/>
+        <line num="59" type="stmt" count="2"/>
+        <line num="61" type="stmt" count="2"/>
+        <line num="63" type="stmt" count="2"/>
+        <line num="67" type="stmt" count="0"/>
+        <line num="77" type="method" name="createEmoji" crap="12" count="0"/>
+        <line num="79" type="stmt" count="0"/>
+        <line num="81" type="stmt" count="0"/>
+        <line num="83" type="stmt" count="0"/>
+        <line num="85" type="stmt" count="0"/>
+        <line num="86" type="stmt" count="0"/>
+        <line num="88" type="stmt" count="0"/>
+        <line num="90" type="stmt" count="0"/>
+        <line num="91" type="stmt" count="0"/>
+        <line num="92" type="stmt" count="0"/>
+        <line num="93" type="stmt" count="0"/>
+        <line num="94" type="stmt" count="0"/>
+        <line num="98" type="stmt" count="0"/>
+        <line num="99" type="stmt" count="0"/>
+        <line num="101" type="stmt" count="0"/>
+        <line num="104" type="stmt" count="0"/>
+        <line num="106" type="stmt" count="0"/>
+        <line num="116" type="method" name="updateEmojiByPutVerb" crap="12" count="0"/>
+        <line num="118" type="stmt" count="0"/>
+        <line num="120" type="stmt" count="0"/>
+        <line num="121" type="stmt" count="0"/>
+        <line num="123" type="stmt" count="0"/>
+        <line num="125" type="stmt" count="0"/>
+        <line num="126" type="stmt" count="0"/>
+        <line num="127" type="stmt" count="0"/>
+        <line num="128" type="stmt" count="0"/>
+        <line num="129" type="stmt" count="0"/>
+        <line num="130" type="stmt" count="0"/>
+        <line num="132" type="stmt" count="0"/>
+        <line num="135" type="stmt" count="0"/>
+        <line num="137" type="stmt" count="0"/>
+        <line num="148" type="method" name="updateEmojiByPatchVerb" crap="12" count="0"/>
+        <line num="150" type="stmt" count="0"/>
+        <line num="152" type="stmt" count="0"/>
+        <line num="153" type="stmt" count="0"/>
+        <line num="155" type="stmt" count="0"/>
+        <line num="156" type="stmt" count="0"/>
+        <line num="157" type="stmt" count="0"/>
+        <line num="158" type="stmt" count="0"/>
+        <line num="159" type="stmt" count="0"/>
+        <line num="161" type="stmt" count="0"/>
+        <line num="164" type="stmt" count="0"/>
+        <line num="166" type="stmt" count="0"/>
+        <line num="177" type="method" name="deleteEmoji" crap="6" count="0"/>
+        <line num="179" type="stmt" count="0"/>
+        <line num="181" type="stmt" count="0"/>
+        <line num="182" type="stmt" count="0"/>
+        <line num="183" type="stmt" count="0"/>
+        <line num="185" type="stmt" count="0"/>
+        <line num="187" type="stmt" count="0"/>
+        <line num="190" type="stmt" count="0"/>
+        <line num="201" type="method" name="createEmojiKeywords" crap="12" count="0"/>
+        <line num="203" type="stmt" count="0"/>
+        <line num="204" type="stmt" count="0"/>
+        <line num="206" type="stmt" count="0"/>
+        <line num="208" type="stmt" count="0"/>
+        <line num="209" type="stmt" count="0"/>
+        <line num="211" type="stmt" count="0"/>
+        <line num="212" type="stmt" count="0"/>
+        <line num="213" type="stmt" count="0"/>
+        <line num="219" type="stmt" count="0"/>
+        <line num="229" type="method" name="formatEmoji" crap="2" count="4"/>
+        <line num="231" type="stmt" count="4"/>
+        <line num="232" type="stmt" count="4"/>
+        <line num="233" type="stmt" count="4"/>
+        <line num="237" type="stmt" count="4"/>
+        <line num="243" type="method" name="getCurrentUserId" crap="20" count="0"/>
+        <line num="245" type="stmt" count="0"/>
+        <line num="247" type="stmt" count="0"/>
+        <line num="250" type="stmt" count="0"/>
+        <line num="251" type="stmt" count="0"/>
+        <line num="253" type="stmt" count="0"/>
+        <line num="255" type="stmt" count="0"/>
+        <line num="258" type="stmt" count="0"/>
+        <line num="260" type="stmt" count="0"/>
+        <line num="262" type="stmt" count="0"/>
+        <line num="264" type="stmt" count="0"/>
+        <line num="268" type="stmt" count="0"/>
+        <line num="269" type="stmt" count="0"/>
+        <line num="273" type="stmt" count="0"/>
+        <metrics loc="275" ncloc="201" classes="1" methods="10" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="86" coveredstatements="15" elements="96" coveredelements="17"/>
+      </file>
+      <file name="/Users/andeladev/Code/emojiRestfulAPI/src/Controller/UserController.php">
+        <class name="UserController" namespace="Laztopaz\EmojiRestfulAPI">
+          <metrics methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="10" coveredstatements="0" elements="11" coveredelements="0"/>
+        </class>
+        <line num="17" type="method" name="createUser" crap="12" count="0"/>
+        <line num="18" type="stmt" count="0"/>
+        <line num="19" type="stmt" count="0"/>
+        <line num="20" type="stmt" count="0"/>
+        <line num="22" type="stmt" count="0"/>
+        <line num="24" type="stmt" count="0"/>
+        <line num="25" type="stmt" count="0"/>
+        <line num="26" type="stmt" count="0"/>
+        <line num="28" type="stmt" count="0"/>
+        <line num="29" type="stmt" count="0"/>
+        <line num="30" type="stmt" count="0"/>
+        <metrics loc="31" ncloc="20" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="10" coveredstatements="0" elements="11" coveredelements="0"/>
+      </file>
+      <file name="/Users/andeladev/Code/emojiRestfulAPI/src/Database/DatabaseConnection.php">
+        <class name="DatabaseConnection" namespace="Laztopaz\EmojiRestfulAPI">
+          <metrics methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="21" coveredstatements="21" elements="24" coveredelements="24"/>
+        </class>
+        <line num="20" type="method" name="__construct" crap="1" count="9"/>
+        <line num="22" type="stmt" count="9"/>
+        <line num="23" type="stmt" count="9"/>
+        <line num="24" type="stmt" count="9"/>
+        <line num="25" type="stmt" count="9"/>
+        <line num="31" type="method" name="setUpDatabase" crap="1" count="9"/>
+        <line num="33" type="stmt" count="9"/>
+        <line num="35" type="stmt" count="9"/>
+        <line num="36" type="stmt" count="9"/>
+        <line num="37" type="stmt" count="9"/>
+        <line num="38" type="stmt" count="9"/>
+        <line num="39" type="stmt" count="9"/>
+        <line num="40" type="stmt" count="9"/>
+        <line num="41" type="stmt" count="9"/>
+        <line num="42" type="stmt" count="9"/>
+        <line num="43" type="stmt" count="9"/>
+        <line num="47" type="stmt" count="9"/>
+        <line num="48" type="stmt" count="9"/>
+        <line num="49" type="stmt" count="9"/>
+        <line num="55" type="method" name="loadEnv" crap="2" count="9"/>
+        <line num="57" type="stmt" count="9"/>
+        <line num="58" type="stmt" count="9"/>
+        <line num="59" type="stmt" count="9"/>
+        <line num="61" type="stmt" count="9"/>
+        <metrics loc="62" ncloc="44" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="21" coveredstatements="21" elements="24" coveredelements="24"/>
+      </file>
+      <file name="/Users/andeladev/Code/emojiRestfulAPI/src/Database/Schema.php">
+        <class name="Schema" namespace="Laztopaz\EmojiRestfulAPI">
+          <metrics methods="6" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="37" coveredstatements="0" elements="43" coveredelements="0"/>
+        </class>
+        <line num="15" type="method" name="__construct" crap="2" count="0"/>
+        <line num="16" type="stmt" count="0"/>
+        <line num="17" type="stmt" count="0"/>
+        <line num="18" type="stmt" count="0"/>
+        <line num="19" type="stmt" count="0"/>
+        <line num="20" type="stmt" count="0"/>
+        <line num="21" type="stmt" count="0"/>
+        <line num="26" type="method" name="createUser" crap="2" count="0"/>
+        <line num="27" type="stmt" count="0"/>
+        <line num="29" type="stmt" count="0"/>
+        <line num="30" type="stmt" count="0"/>
+        <line num="31" type="stmt" count="0"/>
+        <line num="32" type="stmt" count="0"/>
+        <line num="33" type="stmt" count="0"/>
+        <line num="34" type="stmt" count="0"/>
+        <line num="35" type="stmt" count="0"/>
+        <line num="36" type="stmt" count="0"/>
+        <line num="37" type="stmt" count="0"/>
+        <line num="42" type="method" name="createKeyword" crap="2" count="0"/>
+        <line num="43" type="stmt" count="0"/>
+        <line num="45" type="stmt" count="0"/>
+        <line num="46" type="stmt" count="0"/>
+        <line num="47" type="stmt" count="0"/>
+        <line num="48" type="stmt" count="0"/>
+        <line num="49" type="stmt" count="0"/>
+        <line num="50" type="stmt" count="0"/>
+        <line num="55" type="method" name="createCategory" crap="2" count="0"/>
+        <line num="56" type="stmt" count="0"/>
+        <line num="58" type="stmt" count="0"/>
+        <line num="59" type="stmt" count="0"/>
+        <line num="60" type="stmt" count="0"/>
+        <line num="61" type="stmt" count="0"/>
+        <line num="62" type="stmt" count="0"/>
+        <line num="67" type="method" name="createEmoji" crap="2" count="0"/>
+        <line num="68" type="stmt" count="0"/>
+        <line num="69" type="method" name="anonymous function" crap="2" count="0"/>
+        <line num="70" type="stmt" count="0"/>
+        <line num="71" type="stmt" count="0"/>
+        <line num="72" type="stmt" count="0"/>
+        <line num="73" type="stmt" count="0"/>
+        <line num="74" type="stmt" count="0"/>
+        <line num="75" type="stmt" count="0"/>
+        <line num="76" type="stmt" count="0"/>
+        <line num="77" type="stmt" count="0"/>
+        <metrics loc="78" ncloc="59" classes="1" methods="6" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="38" coveredstatements="0" elements="44" coveredelements="0"/>
+      </file>
+      <file name="/Users/andeladev/Code/emojiRestfulAPI/src/Model/Category.php">
+        <class name="Category" namespace="Laztopaz\EmojiRestfulAPI">
+          <metrics methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </class>
+        <metrics loc="21" ncloc="14" classes="1" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      </file>
+      <file name="/Users/andeladev/Code/emojiRestfulAPI/src/Model/Emoji.php">
+        <class name="Emoji" namespace="Laztopaz\EmojiRestfulAPI">
+          <metrics methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="6" coveredelements="6"/>
+        </class>
+        <line num="17" type="method" name="keywords" crap="1" count="4"/>
+        <line num="19" type="stmt" count="4"/>
+        <line num="25" type="method" name="category" crap="1" count="4"/>
+        <line num="27" type="stmt" count="4"/>
+        <line num="33" type="method" name="created_by" crap="1" count="4"/>
+        <line num="35" type="stmt" count="4"/>
+        <metrics loc="37" ncloc="24" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="6" coveredelements="6"/>
+      </file>
+      <file name="/Users/andeladev/Code/emojiRestfulAPI/src/Model/Keyword.php">
+        <class name="Keyword" namespace="Laztopaz\EmojiRestfulAPI">
+          <metrics methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </class>
+        <metrics loc="21" ncloc="14" classes="1" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      </file>
+      <file name="/Users/andeladev/Code/emojiRestfulAPI/src/Model/User.php">
+        <class name="User" namespace="Laztopaz\EmojiRestfulAPI">
+          <metrics methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </class>
+        <metrics loc="21" ncloc="14" classes="1" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      </file>
+      <file name="/Users/andeladev/Code/emojiRestfulAPI/src/Route/SlimRouteApp.php">
+        <class name="SlimRouteApp" namespace="Laztopaz\EmojiRestfulAPI">
+          <metrics methods="4" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="23" coveredstatements="23" elements="27" coveredelements="27"/>
+        </class>
+        <line num="9" type="stmt" count="1"/>
+        <line num="26" type="method" name="__construct" crap="1" count="9"/>
+        <line num="28" type="stmt" count="9"/>
+        <line num="29" type="stmt" count="9"/>
+        <line num="30" type="stmt" count="9"/>
+        <line num="34" type="stmt" count="9"/>
+        <line num="36" type="stmt" count="9"/>
+        <line num="37" type="stmt" count="9"/>
+        <line num="39" type="method" name="setUpSlimApp" crap="1" count="9"/>
+        <line num="41" type="stmt" count="9"/>
+        <line num="44" type="method" name="runEmojiRoute" crap="1" count="9"/>
+        <line num="46" type="stmt" count="9"/>
+        <line num="47" type="stmt" count="9"/>
+        <line num="60" type="stmt" count="1"/>
+        <line num="62" type="stmt" count="9"/>
+        <line num="77" type="stmt" count="9"/>
+        <line num="90" type="stmt" count="1"/>
+        <line num="92" type="stmt" count="9"/>
+        <line num="110" type="stmt" count="9"/>
+        <line num="123" type="stmt" count="2"/>
+        <line num="125" type="stmt" count="9"/>
+        <line num="138" type="stmt" count="2"/>
+        <line num="140" type="stmt" count="9"/>
+        <line num="155" type="stmt" count="9"/>
+        <line num="174" type="stmt" count="9"/>
+        <line num="191" type="stmt" count="9"/>
+        <line num="205" type="method" name="anonymous function" crap="1" count="9"/>
+        <line num="208" type="stmt" count="9"/>
+        <line num="209" type="stmt" count="9"/>
+        <metrics loc="210" ncloc="96" classes="1" methods="4" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="25" coveredstatements="25" elements="29" coveredelements="29"/>
+      </file>
+    </package>
+    <metrics files="11" loc="892" ncloc="562" classes="11" methods="31" coveredmethods="12" conditionals="0" coveredconditionals="0" statements="222" coveredstatements="81" elements="253" coveredelements="93"/>
+  </project>
+</coverage>
