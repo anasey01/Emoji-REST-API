@@ -65,6 +65,7 @@ class Schema
                 $table->timestamps();
             });
         }
+
     }
 
     /**

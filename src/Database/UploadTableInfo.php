@@ -3,17 +3,10 @@
  * @author   Temitope Olotin <temitope.olotin@andela.com>
  * @license  <https://opensource.org/license/MIT> MIT
  */
-
 namespace Laztopaz\EmojiRestfulAPI;
 
-use Laztopaz\EmojiRestfulAPI\Emoji;
-use Laztopaz\EmojiRestfulAPI\Keyword;
-use Laztopaz\EmojiRestfulAPI\UserController;
-
-
-class UploadTableInfo 
+class UploadTableInfo
 {
-
     public function __construct()
     {
         $this->createUser();
@@ -25,15 +18,14 @@ class UploadTableInfo
     {
         $user = new UserController();
         $user->createUser([
-            'firstname' => 'Temitope',
-            'lastname'  => 'Olotin',
-            'username' => 'laztopaz',
-            'password' => 'tope0852',
-            'email' => 'temitope.olotin@andela.com',
-            'created_at' => date('Y-m-d h:i:s'), 
-            'updated_at' => date('Y-m-d h:i:s')
+            'firstname'  => 'Temitope',
+            'lastname'   => 'Olotin',
+            'username'   => 'laztopaz',
+            'password'   => 'tope0852',
+            'email'      => 'temitope.olotin@andela.com',
+            'created_at' => date('Y-m-d h:i:s'),
+            'updated_at' => date('Y-m-d h:i:s'),
             ]);
-
     }
 
     public function createEmoji()
@@ -45,11 +37,11 @@ class UploadTableInfo
         $created_at = date('Y-m-d h:i:s');
 
         $emoji = Emoji::create([
-            'name' => 'GRINNING FACE', 
-            'char' => '\u{1F600}', 
-            'created_at' => $created_at, 
-            'category' => 1, 
-            'created_by' => $userId
+            'name'       => 'GRINNING FACE',
+            'char'       => '\u{1F600}',
+            'created_at' => $created_at,
+            'category'   => 1,
+            'created_by' => $userId,
         ]);
 
         if ($emoji->id) {
@@ -62,10 +54,9 @@ class UploadTableInfo
         $created_at = date('Y-m-d h:i:s');
 
         $category = Category::create([
-            'category_name' => 'people', 
-            'created_at' => $created_at
+            'category_name' => 'people',
+            'created_at'    => $created_at,
         ]);
-
     }
 
     public function createEmojiKeywords($emoji_id, $keywords)
@@ -79,7 +70,7 @@ class UploadTableInfo
                 $emojiKeyword = Keyword::create([
                     'emoji_id'     => $emoji_id,
                     'keyword_name' => $keyword,
-                    'created_at'   => $created_at
+                    'created_at'   => $created_at,
                 ]);
             }
         }

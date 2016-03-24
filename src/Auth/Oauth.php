@@ -5,13 +5,12 @@
  */
 namespace Laztopaz\EmojiRestfulAPI;
 
-use Laztopaz\EmojiRestfulAPI\User;
-use \Firebase\JWT\JWT;
-use \Psr\Http\Message\ServerRequestInterface as Request;
-use \Psr\Http\Message\ResponseInterface as Response;
+use Firebase\JWT\JWT;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
-class Oauth {
-
+class Oauth
+{
     /**
      * This method authenticate user and log them in if the supplied
      * credentials are valid.
@@ -38,12 +37,10 @@ class Oauth {
 
             return $response->withJson(['status'], 400);
         }
-
     }
 
     /**
-     *
-     * This method logout the user
+     * This method logout the user.
      *
      * @param $args logout
      *
@@ -67,7 +64,7 @@ class Oauth {
         $issuedAt = time();
         $notBefore = $issuedAt;  //Adding 10 seconds
         $expire = $notBefore + (float) strtotime('+30 days'); // Adding 30 days expiry date
-        $serverName = "http://sweatemoji.com/api"; // Retrieve the server name
+        $serverName = 'http://sweatemoji.com/api'; // Retrieve the server name
 
         /*
          *
@@ -80,7 +77,7 @@ class Oauth {
             'nbf'  => $notBefore,        // Not before
             'exp'  => $expire,           // Expire
 
-            'dat'  => $userData                   // User Information retrieved from the database
+            'dat'  => $userData,                   // User Information retrieved from the database
         ];
 
         $loadEnv = DatabaseConnection::loadEnv();
