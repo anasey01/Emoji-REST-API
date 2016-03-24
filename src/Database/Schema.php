@@ -73,7 +73,7 @@ class Schema
      */
     public function createEmoji()
     {
-        if (! Capsule::schema()->hasTable('categories')) {
+        if (! Capsule::schema()->hasTable('emojis')) {
             Capsule::schema()->create('emojis', function ($table) {
                 $table->increments('id');
                 $table->string('name');
