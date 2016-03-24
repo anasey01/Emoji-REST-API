@@ -37,7 +37,7 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
 
         new DatabaseConnection($capsule);
 
-        //new Schema;
+        new Schema;
         //new UploadTableInfo;
 
         $auth = new Oauth;
@@ -76,7 +76,28 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
         $this->request('GET', $path, $options);
     }
 
-    
+    /**
+     * This method defines a get request for all emojis endpoint
+     * @param  $path
+     * @param  $options
+     * @return $request
+     */
+    public function post($path, $options = array())
+    {
+        $this->request('POST', $path, $options);
+    }
+
+    /**
+     * This method ascertain that emoji index page return status code 404
+     * @param  void
+     * @return booleaan true
+     */
+    public function testPostIndex()
+    {
+        $this->post('/', ['ACCEPT' => 'application/json']);
+        $this->assertEquals('404', $this->response->getStatusCode());
+    }
+
     /**
      * This method ascertain that emoji index page return status code 404
      * @param  void
@@ -110,7 +131,7 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
     {
          $env = Environment::mock([
             'REQUEST_METHOD' => 'GET',
-            'REQUEST_URI' => '/emojis/9',
+            'REQUEST_URI' => '/emojis/1',
             'CONTENT_TYPE' => 'application/json',
             'PATH_INFO'      => '/emojis',
             ]);
