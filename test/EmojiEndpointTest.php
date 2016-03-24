@@ -172,7 +172,7 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
             ]);
 
         $req = Request::createFromEnvironment($env);
-        $req = $req->withParsedBody(['username' => 'laztopaz', 'password' => 'tope0852']);
+        $req = $req->withParsedBody(['username' => 'Jacob', 'password' => 'pyjac2016']);
 
         $this->app->getContainer()['request'] = $req;
         $response = $this->app->run(true);
@@ -317,7 +317,7 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
 
         $env = Environment::mock([
             'REQUEST_METHOD'     => 'DELETE',
-            'REQUEST_URI'        => '/emojis/1GIT ',
+            'REQUEST_URI'        => '/emojis/1',
             'CONTENT_TYPE'       => 'application/x-www-form-urlencoded',
             'HTTP_AUTHORIZATION' => json_encode(['jwt' => $token]),
             ]);
