@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="Emoji Test Suite" tests="10" assertions="13" failures="0" errors="0" time="0.936905">
-    <testsuite name="Laztopaz\EmojiRestfulAPI\Test\EmojiEndPointTest" file="/Users/andeladev/Code/emojiRestfulAPI/test/EmojiEndpointTest.php" tests="10" assertions="13" failures="0" errors="0" time="0.936905">
-      <testcase name="testPostIndex" class="Laztopaz\EmojiRestfulAPI\Test\EmojiEndPointTest" file="/Users/andeladev/Code/emojiRestfulAPI/test/EmojiEndpointTest.php" line="98" assertions="1" time="0.063465"/>
-      <testcase name="testIndex" class="Laztopaz\EmojiRestfulAPI\Test\EmojiEndPointTest" file="/Users/andeladev/Code/emojiRestfulAPI/test/EmojiEndpointTest.php" line="110" assertions="1" time="0.022289"/>
-      <testcase name="testgetAllEmoji" class="Laztopaz\EmojiRestfulAPI\Test\EmojiEndPointTest" file="/Users/andeladev/Code/emojiRestfulAPI/test/EmojiEndpointTest.php" line="117" assertions="1" time="0.178635"/>
-      <testcase name="testSingleEmoji" class="Laztopaz\EmojiRestfulAPI\Test\EmojiEndPointTest" file="/Users/andeladev/Code/emojiRestfulAPI/test/EmojiEndpointTest.php" line="135" assertions="1" time="0.070743"/>
-      <testcase name="testuserLogout" class="Laztopaz\EmojiRestfulAPI\Test\EmojiEndPointTest" file="/Users/andeladev/Code/emojiRestfulAPI/test/EmojiEndpointTest.php" line="153" assertions="1" time="0.032595"/>
-      <testcase name="testuserLogin" class="Laztopaz\EmojiRestfulAPI\Test\EmojiEndPointTest" file="/Users/andeladev/Code/emojiRestfulAPI/test/EmojiEndpointTest.php" line="190" assertions="1" time="0.027218"/>
-      <testcase name="testThatLoginCredentialWhereUsedToLogin" class="Laztopaz\EmojiRestfulAPI\Test\EmojiEndPointTest" file="/Users/andeladev/Code/emojiRestfulAPI/test/EmojiEndpointTest.php" line="207" assertions="2" time="0.118327"/>
-      <testcase name="testPostEmoji" class="Laztopaz\EmojiRestfulAPI\Test\EmojiEndPointTest" file="/Users/andeladev/Code/emojiRestfulAPI/test/EmojiEndpointTest.php" line="233" assertions="1" time="0.181555"/>
-      <testcase name="testGetSingleEmojiReturnsEmojiWithStatusCode200" class="Laztopaz\EmojiRestfulAPI\Test\EmojiEndPointTest" file="/Users/andeladev/Code/emojiRestfulAPI/test/EmojiEndpointTest.php" line="264" assertions="3" time="0.074600"/>
-      <testcase name="testGetAllEmojiReturnEmojisWithStatusCode200" class="Laztopaz\EmojiRestfulAPI\Test\EmojiEndPointTest" file="/Users/andeladev/Code/emojiRestfulAPI/test/EmojiEndpointTest.php" line="282" assertions="1" time="0.167478"/>
+  <testsuite name="Emoji Test Suite" tests="13" assertions="16" failures="0" errors="0" time="1.749310">
+    <testsuite name="Laztopaz\EmojiRestfulAPI\Test\EmojiEndpointTest" file="/Users/andeladev/Code/emojiRestfulAPI/test/EmojiEndpointTest.php" tests="13" assertions="16" failures="0" errors="0" time="1.749310">
+      <testcase name="testPostIndex" class="Laztopaz\EmojiRestfulAPI\Test\EmojiEndpointTest" file="/Users/andeladev/Code/emojiRestfulAPI/test/EmojiEndpointTest.php" line="95" assertions="1" time="0.085026"/>
+      <testcase name="testIndex" class="Laztopaz\EmojiRestfulAPI\Test\EmojiEndpointTest" file="/Users/andeladev/Code/emojiRestfulAPI/test/EmojiEndpointTest.php" line="108" assertions="1" time="0.039500"/>
+      <testcase name="testgetAllEmoji" class="Laztopaz\EmojiRestfulAPI\Test\EmojiEndpointTest" file="/Users/andeladev/Code/emojiRestfulAPI/test/EmojiEndpointTest.php" line="114" assertions="1" time="0.241278"/>
+      <testcase name="testSingleEmoji" class="Laztopaz\EmojiRestfulAPI\Test\EmojiEndpointTest" file="/Users/andeladev/Code/emojiRestfulAPI/test/EmojiEndpointTest.php" line="131" assertions="1" time="0.075559"/>
+      <testcase name="testuserLogout" class="Laztopaz\EmojiRestfulAPI\Test\EmojiEndpointTest" file="/Users/andeladev/Code/emojiRestfulAPI/test/EmojiEndpointTest.php" line="148" assertions="1" time="0.044568"/>
+      <testcase name="testuserLogin" class="Laztopaz\EmojiRestfulAPI\Test\EmojiEndpointTest" file="/Users/andeladev/Code/emojiRestfulAPI/test/EmojiEndpointTest.php" line="185" assertions="1" time="0.038118"/>
+      <testcase name="testThatLoginCredentialWhereUsedToLogin" class="Laztopaz\EmojiRestfulAPI\Test\EmojiEndpointTest" file="/Users/andeladev/Code/emojiRestfulAPI/test/EmojiEndpointTest.php" line="202" assertions="2" time="0.134957"/>
+      <testcase name="testPostEmoji" class="Laztopaz\EmojiRestfulAPI\Test\EmojiEndpointTest" file="/Users/andeladev/Code/emojiRestfulAPI/test/EmojiEndpointTest.php" line="228" assertions="1" time="0.273387"/>
+      <testcase name="testPutEmoji" class="Laztopaz\EmojiRestfulAPI\Test\EmojiEndpointTest" file="/Users/andeladev/Code/emojiRestfulAPI/test/EmojiEndpointTest.php" line="259" assertions="1" time="0.160072"/>
+      <testcase name="testPatchEmoji" class="Laztopaz\EmojiRestfulAPI\Test\EmojiEndpointTest" file="/Users/andeladev/Code/emojiRestfulAPI/test/EmojiEndpointTest.php" line="288" assertions="1" time="0.164751"/>
+      <testcase name="testDeleteEmoji" class="Laztopaz\EmojiRestfulAPI\Test\EmojiEndpointTest" file="/Users/andeladev/Code/emojiRestfulAPI/test/EmojiEndpointTest.php" line="314" assertions="1" time="0.165178"/>
+      <testcase name="testGetSingleEmojiReturnsEmojiWithStatusCode200" class="Laztopaz\EmojiRestfulAPI\Test\EmojiEndpointTest" file="/Users/andeladev/Code/emojiRestfulAPI/test/EmojiEndpointTest.php" line="336" assertions="3" time="0.090112"/>
+      <testcase name="testGetAllEmojiReturnEmojisWithStatusCode200" class="Laztopaz\EmojiRestfulAPI\Test\EmojiEndpointTest" file="/Users/andeladev/Code/emojiRestfulAPI/test/EmojiEndpointTest.php" line="354" assertions="1" time="0.236804"/>
     </testsuite>
   </testsuite>
 </testsuites>

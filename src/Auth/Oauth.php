@@ -77,7 +77,7 @@ class Oauth
             'nbf'  => $notBefore,        // Not before
             'exp'  => $expire,           // Expire
 
-            'dat'  => $userData,                   // User Information retrieved from the database
+            'dat'  => $userData         // User Information retrieved from the database
         ];
 
         $loadEnv = DatabaseConnection::loadEnv();

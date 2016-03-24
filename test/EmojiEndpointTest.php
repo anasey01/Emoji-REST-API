@@ -34,7 +34,7 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
         new DatabaseConnection($capsule);
 
         new Schema();
-        new UploadTableInfo();
+        //new UploadTableInfo();
 
         $auth = new Oauth();
 
@@ -254,6 +254,83 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
         $data = json_decode($response->getBody(), true);
 
         $this->assertSame($response->getStatusCode(), 201);
+    }
+
+    public function testPutEmoji()
+    {
+        $token = $this->getCurrentToken();
+
+        $env = Environment::mock([
+            'REQUEST_METHOD'     => 'PUT',
+            'REQUEST_URI'        => '/emojis/1',
+            'CONTENT_TYPE'       => 'application/x-www-form-urlencoded',
+            'HTTP_AUTHORIZATION' => json_encode(['jwt' => $token]),
+            ]);
+
+        $req = Request::createFromEnvironment($env);
+        $req = $req->withParsedBody(
+                [
+                    'name'       => 'SMILING FACE WITH OPEN MOUTH',
+                    'char'       => '/u{1F603}',
+                    'created_at' => date('Y-m-d h:i:s'),
+                    'category'   => 1
+                ]);
+
+        $this->app->getContainer()['request'] = $req;
+
+        $response = $this->app->run(true);
+
+        $data = json_decode($response->getBody(), true);
+
+        $this->assertSame($response->getStatusCode(), 201);
+    }
+
+    public function testPatchEmoji()
+    {
+        $token = $this->getCurrentToken();
+
+        $env = Environment::mock([
+            'REQUEST_METHOD'     => 'PATCH',
+            'REQUEST_URI'        => '/emojis/1',
+            'CONTENT_TYPE'       => 'application/x-www-form-urlencoded',
+            'HTTP_AUTHORIZATION' => json_encode(['jwt' => $token]),
+            ]);
+
+        $req = Request::createFromEnvironment($env);
+        $req = $req->withParsedBody(
+                [
+                    'name'       => 'WINKING FACE'
+                ]);
+
+        $this->app->getContainer()['request'] = $req;
+
+        $response = $this->app->run(true);
+
+        $data = json_decode($response->getBody(), true);
+
+        $this->assertSame($response->getStatusCode(), 201);
+    }
+
+    public function testDeleteEmoji()
+    {
+        $token = $this->getCurrentToken();
+
+        $env = Environment::mock([
+            'REQUEST_METHOD'     => 'DELETE',
+            'REQUEST_URI'        => '/emojis/1GIT ',
+            'CONTENT_TYPE'       => 'application/x-www-form-urlencoded',
+            'HTTP_AUTHORIZATION' => json_encode(['jwt' => $token]),
+            ]);
+
+        $req = Request::createFromEnvironment($env);
+        
+        $this->app->getContainer()['request'] = $req;
+
+        $response = $this->app->run(true);
+
+        $data = json_decode($response->getBody(), true);
+
+        $this->assertSame($response->getStatusCode(), 204);
     }
 
     public function testGetSingleEmojiReturnsEmojiWithStatusCode200()
