@@ -25,7 +25,7 @@ class Schema
      */
     public function createUser()
     {
-        if (! Capsule::schema()->hasTable('users')) {
+        if (!Capsule::schema()->hasTable('users')) {
             Capsule::schema()->create('users', function ($table) {
                 $table->increments('id');
                 $table->string('firstname');
@@ -43,7 +43,7 @@ class Schema
      */
     public function createKeyword()
     {
-        if (! Capsule::schema()->hasTable('keywords')) {
+        if (!Capsule::schema()->hasTable('keywords')) {
             Capsule::schema()->create('keywords', function ($table) {
                 $table->increments('id');
                 $table->integer('emoji_id');
@@ -58,14 +58,13 @@ class Schema
      */
     public function createCategory()
     {
-        if (! Capsule::schema()->hasTable('categories')) {
+        if (!Capsule::schema()->hasTable('categories')) {
             Capsule::schema()->create('categories', function ($table) {
                 $table->increments('id');
                 $table->string('category_name');
                 $table->timestamps();
             });
         }
-
     }
 
     /**
@@ -73,7 +72,7 @@ class Schema
      */
     public function createEmoji()
     {
-        if (! Capsule::schema()->hasTable('emojis')) {
+        if (!Capsule::schema()->hasTable('emojis')) {
             Capsule::schema()->create('emojis', function ($table) {
                 $table->increments('id');
                 $table->string('name');
@@ -84,5 +83,4 @@ class Schema
             });
         }
     }
-    
 }
