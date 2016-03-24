@@ -3,20 +3,12 @@
  * @author   Temitope Olotin <temitope.olotin@andela.com>
  * @license  <https://opensource.org/license/MIT> MIT
  */
-
 namespace Laztopaz\EmojiRestfulAPI;
 
 require 'vendor/autoload.php';
 
-use \Psr\Http\Message\ResponseInterface as Response;
-use \Psr\Http\Message\ServerRequestInterface as Request;
-
-use Illuminate\Database\Capsule\Manager as Capsule;
-use Laztopaz\EmojiRestfulAPI\DatabaseConnection;
-use Laztopaz\EmojiRestfulAPI\EmojiController;
-use Laztopaz\EmojiRestfulAPI\Middleware;
-use Laztopaz\EmojiRestfulAPI\Oauth;
-
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 class SlimRouteApp
 {
     protected $auth;
@@ -29,9 +21,9 @@ class SlimRouteApp
         $this->emoji = $emoji;
         $this->slimApp = new \Slim\App([
             'settings' => [
-            'debug' => true,
+            'debug'               => true,
             'displayErrorDetails' => true,
-            ],]);
+            ], ]);
 
         $this->runEmojiRoute();
     }
@@ -42,7 +34,7 @@ class SlimRouteApp
     }
 
     public function runEmojiRoute()
-    {  
+    {
         $auth = $this->auth;
         $emoji = $this->emoji;
 
@@ -207,5 +199,4 @@ class SlimRouteApp
 
         })->add(new Middleware());
     }
-
 }
