@@ -33,7 +33,7 @@ class Oauth {
             if (password_verify($loginParams['password'], $user->password)) {
                 $token = $this->buildAcessToken($userInfo);
 
-                return $response->withJson(['status'], 200)->withAddedHeader('token', $token)->write($token);
+                return $response->withAddedHeader('token', $token)->withJson(['token' => $token], 200);
             }
 
             return $response->withJson(['status'], 400);
@@ -65,7 +65,7 @@ class Oauth {
         $issuedAt = time();
         $notBefore = $issuedAt + 10;  //Adding 10 seconds
         $expire = $notBefore + (float) strtotime('+30 days'); // Adding 30 days expiry date
-        $serverName = $_SERVER['HTTP_HOST']; // Retrieve the server name
+        $serverName = "http://sweatemoji.com/api"; // Retrieve the server name
 
         /*
          *
