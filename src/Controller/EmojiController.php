@@ -79,17 +79,15 @@ class EmojiController
      * 
      */
     public function createEmoji(Request $request, Response $response)
-    {
+    { 
         $requestParams = $request->getParsedBody();
 
         $emojiKeyword = $requestParams['keywords'];
 
-        $userId = $this->getCurrentUserId($request);
+        $userId = $this->getCurrentUserId($request, $response);
 
         if (is_array($requestParams)) {
         
-            $createdKeyword = $this->createEmojiKeywords($emoji->id, $emojiKeyword);
-
             $created_at = date('Y-m-d h:i:s');
 
             $emoji = Emoji::create(
@@ -103,7 +101,10 @@ class EmojiController
             );
 
             if ($emoji->id) {
+                $createdKeyword = $this->createEmojiKeywords($emoji->id, $emojiKeyword);
+
                 return $response->withJson($emoji->toArray(), 201);
+
             }
 
             return $response->withStatus(204);
@@ -112,7 +113,6 @@ class EmojiController
     }
 
     /**
-<<<<<<< HEAD
      * 
      * This method updates an emoji
      *
@@ -255,20 +255,20 @@ class EmojiController
     /**
      * This method authenticate and return user id
      */
-    public function getCurrentUserId($request)
+    public function getCurrentUserId($request, $response)
     {
         $loadEnv = DatabaseConnection::loadEnv();
 
-        $jwtoken = $request->getServerParams()['token'];
+        $jwtoken = $request->getHeader('HTTP_AUTHORIZATION');
 
         try {
              if (isset($jwtoken)) {
                 $secretKey = base64_decode(getenv('secret'));
 
-                $jwt = json_decode($jwtoken, true);
+                $jwt = json_decode($jwtoken[0], true);
 
                 //decode the JWT using the key from config
-                JWT::decode($jwt['jwt'], $secretKey, ['HS512']);
+                $decodedToken = JWT::decode($jwt['jwt'], $secretKey, ['HS512']);
 
                 $tokenInfo = (array) $decodedToken;
 

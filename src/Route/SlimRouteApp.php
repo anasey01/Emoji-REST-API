@@ -150,7 +150,7 @@ class SlimRouteApp
         *
         */
         $this->slimApp->post('/emojis', function (Request $request, Response $response) use ($emoji) {
-            return $emoji->createEmoji($request, $response)->withJson(['status'], 200);
+            return $emoji->createEmoji($request, $response);
 
         })->add(new Middleware());
 

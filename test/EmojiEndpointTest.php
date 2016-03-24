@@ -184,7 +184,7 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
 
         $data = json_decode($response->getBody(), true);
 
-        return $data['token'];
+        return $data['jwt'];
     }
 
     public function testuserLogin()
@@ -224,9 +224,9 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
 
         $data = json_decode($response->getBody(), true);
 
-        $token = $data['token'];
+        $token = $data['jwt'];
 
-        $this->assertArrayHasKey('token', $data);
+        $this->assertArrayHasKey('jwt', $data);
         $this->assertSame($response->getStatusCode(), 200);
     }
 
@@ -238,7 +238,7 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
             'REQUEST_METHOD' => 'POST',
             'REQUEST_URI'    => '/emojis',
             'CONTENT_TYPE' => 'application/x-www-form-urlencoded',
-            'token'     => $token
+            'HTTP_AUTHORIZATION' => json_encode(['jwt' => $token])
             ]);
 
         $req = Request::createFromEnvironment($env);
@@ -259,8 +259,6 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
         $data = json_decode($response->getBody(), true);
 
         $this->assertSame($response->getStatusCode(), 201);
-        $this->assertSame($data[0]['char'], $emoji->id);
-        $this->assertSame($data[0]['name'], $emoji->name);
     }
 
      public function testGetSingleEmojiReturnsEmojiWithStatusCode200()

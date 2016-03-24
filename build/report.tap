@@ -5,8 +5,8 @@ ok 3 - Laztopaz\EmojiRestfulAPI\Test\EmojiEndPointTest::testgetAllEmoji
 ok 4 - Laztopaz\EmojiRestfulAPI\Test\EmojiEndPointTest::testSingleEmoji
 ok 5 - Laztopaz\EmojiRestfulAPI\Test\EmojiEndPointTest::testuserLogout
 ok 6 - Laztopaz\EmojiRestfulAPI\Test\EmojiEndPointTest::testuserLogin
-not ok 7 - Error: Laztopaz\EmojiRestfulAPI\Test\EmojiEndPointTest::testThatLoginCredentialWhereUsedToLogin
-not ok 8 - Error: Laztopaz\EmojiRestfulAPI\Test\EmojiEndPointTest::testPostEmoji
+ok 7 - Laztopaz\EmojiRestfulAPI\Test\EmojiEndPointTest::testThatLoginCredentialWhereUsedToLogin
+ok 8 - Laztopaz\EmojiRestfulAPI\Test\EmojiEndPointTest::testPostEmoji
 ok 9 - Laztopaz\EmojiRestfulAPI\Test\EmojiEndPointTest::testGetSingleEmojiReturnsEmojiWithStatusCode200
 ok 10 - Laztopaz\EmojiRestfulAPI\Test\EmojiEndPointTest::testGetAllEmojiReturnEmojisWithStatusCode200
 1..10
