@@ -37,8 +37,8 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
 
         new DatabaseConnection($capsule);
 
-        new Schema;
-        new UploadTableInfo;
+        //new Schema;
+        //new UploadTableInfo;
 
         $auth = new Oauth;
 
@@ -144,7 +144,7 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
     public function testuserLogin()
     {
         $env = Environment::mock([
-            'REQUEST_METHOD' => 'GET',
+            'REQUEST_METHOD' => 'POST',
             'REQUEST_URI' => '/auth/login',
             'CONTENT_TYPE' => 'application/json',
             'PATH_INFO'      => '/auth',
@@ -155,30 +155,34 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
         $response = $this->app->run(true);
 
         $data = json_decode($response->getBody(), true);
-        $this->assertSame($response->getStatusCode(), 405);
+        $this->assertSame($response->getStatusCode(), 200);
     }
 
-     public function testGetSingleEmojiReturnsEmojiWithStatusCode200()
-     {
-        $emoji = Emoji::get()->first();        
+    public function testThatLoginCredentialWhereUsedToLogin()
+    {
         $env = Environment::mock([
-            'REQUEST_METHOD' => 'GET',
-            'REQUEST_URI'    => '/emojis/'.$emoji->id,
-            'PATH_INFO'      => '/emojis',
+            'REQUEST_METHOD' => 'POST',
+            'REQUEST_URI' => '/auth/login',
+            'CONTENT_TYPE' => 'application/x-www-form-urlencoded',
+            'PATH_INFO'      => '/auth',
             ]);
+
         $req = Request::createFromEnvironment($env);
+        $req = $req->withParsedBody(['username' => 'laztopaz','password' => 'tope0852']);
+
         $this->app->getContainer()['request'] = $req;
         $response = $this->app->run(true);
+
         $data = json_decode($response->getBody(), true);
 
+        $token = $data['token'];
+
+        $this->assertArrayHasKey('token', $data);
         $this->assertSame($response->getStatusCode(), 200);
-        $this->assertSame($data[0]['id'], $emoji->id);
-        $this->assertSame($data[0]['name'], $emoji->name);
     }
 
     public function testPostEmoji()
-     {
-        
+    {
         $env = Environment::mock([
             'REQUEST_METHOD' => 'POST',
             'REQUEST_URI'    => '/emojis',
@@ -206,6 +210,24 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
         $this->assertSame($data[0]['name'], $emoji->name);
     }
 
+     public function testGetSingleEmojiReturnsEmojiWithStatusCode200()
+     {
+        $emoji = Emoji::get()->first();        
+        $env = Environment::mock([
+            'REQUEST_METHOD' => 'GET',
+            'REQUEST_URI'    => '/emojis/'.$emoji->id,
+            'PATH_INFO'      => '/emojis',
+            ]);
+        $req = Request::createFromEnvironment($env);
+        $this->app->getContainer()['request'] = $req;
+        $response = $this->app->run(true);
+        $data = json_decode($response->getBody(), true);
+
+        $this->assertSame($response->getStatusCode(), 200);
+        $this->assertSame($data[0]['id'], $emoji->id);
+        $this->assertSame($data[0]['name'], $emoji->name);
+    }
+
     public function testGetAllEmojiReturnEmojisWithStatusCode200()
     {
         $emoji = Emoji::get();
@@ -219,27 +241,6 @@ class EmojiEndPointTest extends PHPUnit_Framework_TestCase
         $this->app->getContainer()['request'] = $req;
         $response = $this->app->run(true);
         $data = json_decode($response->getBody(), true);
-        $this->assertSame($response->getStatusCode(), 200);
-        $this->assertGreaterThan(count($data), 0);
-    }
-
-    public function testThatLoginCredentialWhereUsedToLogin()
-    {
-        $env = Environment::mock([
-            'REQUEST_METHOD' => 'POST',
-            'REQUEST_URI' => '/auth/login',
-            'CONTENT_TYPE' => 'application/x-www-form-urlencoded',
-            'PATH_INFO'      => '/auth',
-            ]);
-
-        $req = Request::createFromEnvironment($env);
-        $req = $req->withParsedBody(['username' => 'laztopaz','password' => 'tope0852']);
-
-        $this->app->getContainer()['request'] = $req;
-        $response = $this->app->run(true);
-
-        $data = json_decode($response->getBody(), true);
-        
         $this->assertSame($response->getStatusCode(), 200);
     }
 
