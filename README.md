@@ -104,7 +104,7 @@ Run this command on your terminal
 
 ## Contributing
 
-To contribute and extend the scope of this package, Please check out [CONTRIBUTING file](https://github.com/andela-tolotin/Emoji-REST-API/blob/test/contribution.md) for detailed contribution guidelines.
+To contribute and extend the scope of this package, Please check out [CONTRIBUTING file](https://github.com/andela-tolotin/Emoji-REST-API/blob/master/contribution.md) for detailed contribution guidelines.
 
 ## Credit
 
