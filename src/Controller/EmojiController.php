@@ -8,6 +8,7 @@ namespace Laztopaz\EmojiRestfulAPI;
 use Firebase\JWT\JWT;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 class EmojiController
 {
@@ -79,23 +80,24 @@ class EmojiController
         if (is_array($requestParams)) {
             $created_at = date('Y-m-d h:i:s');
 
-            $emoji = Emoji::create(
+            if (! $this->checkForDuplicateEmoji($requestParams['name'])) {
+                $emoji = Emoji::create(
                 [
                     'name'       => $requestParams['name'],
                     'char'       => $requestParams['char'],
                     'created_at' => $created_at,
                     'category'   => $requestParams['category'],
                     'created_by' => $userId,
-                ]
-            );
+                ]);
 
-            if ($emoji->id) {
-                $createdKeyword = $this->createEmojiKeywords($emoji->id, $emojiKeyword);
+                if ($emoji->id) {
+                    $createdKeyword = $this->createEmojiKeywords($emoji->id, $emojiKeyword);
 
-                return $response->withJson($emoji->toArray(), 201);
+                    return $response->withJson($emoji->toArray(), 201);
+                }
             }
 
-            return $response->withStatus(204);
+            return $response->withJson(['message' => 'Emoji cannot be duplicated'], 400);
         }
     }
 
@@ -256,5 +258,29 @@ class EmojiController
         } catch (\Exception $e) {
             return $response->withJson(['status' => $e->getMessage()], 401);
         }
+    }
+
+    /**
+     * This method checks for duplicate emoji
+     *
+     * @param $name
+     *
+     * @return boolean true
+     */
+    public function checkForDuplicateEmoji($emojiName)
+    {
+        if (isset($emojiName)) {
+            $emojiFound = Capsule::table('emojis')
+            ->where('name', '=', strtoupper($emojiName))
+            ->orWhere('name', '=', strtolower($emojiName))
+            ->orWhere('name', '=', ucwords($emojiName))
+            ->orWhere('name', '=', $emojiName)
+            ->get();
+            
+            if (count($emojiFound) > 0) {
+                return true;
+            }
+        }
+        return false;
     }
 }
