@@ -93,8 +93,19 @@ To delete an Emoji, you will need to send a DELETE request along side with acces
 ![delete an emoji](https://github.com/andela-tolotin/Emoji-REST-API/blob/master/screenshots/deleteemoji.png)
 
 
+## Testing
 
+Run this command on your terminal
 
+    $ composer test or phpunit test
+
+## Contributing
+
+To contribute and extend the scope of this package, Please check out [CONTRIBUTING file](https://github.com/andela-tolotin/Emoji-REST-API/blob/test/contribution.md) for detailed contribution guidelines.
+
+## Credit
+
+Emoji RESTful API Package is created and maintained by Temitope Olotin.
 
 
 
