@@ -31,6 +31,6 @@ class Middleware
             return $response->withJson(['status' => $e->getMessage()], 401);
         }
 
-        return $response->withJson(['status'], 401);
+        return $response->withJson(['message' => 'User unauthorized'], 401);
     }
 }
