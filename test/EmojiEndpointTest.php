@@ -330,7 +330,7 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
 
         $data = json_decode($response->getBody(), true);
 
-        $this->assertSame($response->getStatusCode(), 204);
+        $this->assertSame($response->getStatusCode(), 200);
     }
 
     public function testGetSingleEmojiReturnsEmojiWithStatusCode200()
