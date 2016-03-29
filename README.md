@@ -41,28 +41,28 @@ To this point we have several endpoints both the ones that requires authenticati
 
 # Naija Emoji Endpoints
 
-POST /auth/login                                           Logs a user in
-GET /auth/logout                                           Logs a user out
-GET /emojis                                                List all the created emojis.
-GET /emojis/{id}                                           Gets a single emoji 
-POST /emojis                                               Create a new emoji
-PUT /emojis/{id}                                           Updates an emoji
-PATCH /emojis/{id}                                         Partially updates an emoji
-DELETE /emojis/{id}                                        Deletes a single emoji
+- POST /auth/login                                           Logs a user in
+- GET /auth/logout                                           Logs a user out
+- GET /emojis                                                List all the created emojis.
+- GET /emojis/{id}                                           Gets a single emoji 
+- POST /emojis                                               Create a new emoji
+- PUT /emojis/{id}                                           Updates an emoji
+- PATCH /emojis/{id}                                         Partially updates an emoji
+- DELETE /emojis/{id}                                        Deletes a single emoji
 
 # Endpoints with access token
 
-GET /auth/logout                                           Logs a user out
-POST /emojis                                               Create a new emoji
-PUT /emojis/{id}                                           Updates an emoji
-PATCH /emojis/{id}                                         Partially updates an emoji
-DELETE /emojis/{id}                                        Deletes a single emoji
+- GET /auth/logout                                           Logs a user out
+- POST /emojis                                               Create a new emoji
+- PUT /emojis/{id}                                           Updates an emoji
+- PATCH /emojis/{id}                                         Partially updates an emoji
+- DELETE /emojis/{id}                                        Deletes a single emoji
 
 # Endpoints without  access token
 
-POST /auth/login                                           Logs a user in
-GET /emojis                                                List all the created emojis.
-GET /emojis/{id}                                           Gets a single emoji 
+- POST /auth/login                                           Logs a user in
+- GET /emojis                                                List all the created emojis.
+- GET /emojis/{id}                                           Gets a single emoji 
 
 
 To login a user and get access token

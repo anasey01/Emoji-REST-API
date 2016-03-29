@@ -179,7 +179,7 @@ class EmojiController
             // Delete keywords associated with the emoji
             Keyword::where('emoji_id', '=', $id)->delete();
 
-            return $response->withJson(['message' => 'Emoji was sucessfully deleted'], 204);
+            return $response->withJson(['message' => 'Emoji was sucessfully deleted'], 200);
         }
 
         return $response->withJson(['message' => 'Emoji cannot be deleted'], 404);
