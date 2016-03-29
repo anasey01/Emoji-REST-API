@@ -108,7 +108,7 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
     public function testIndex()
     {
         $this->get('/', ['ACCEPT' => 'application/json']);
-        $this->assertEquals('404', $this->response->getStatusCode());
+        $this->assertEquals('200', $this->response->getStatusCode());
     }
 
     public function testgetAllEmoji()
