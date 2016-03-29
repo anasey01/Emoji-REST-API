@@ -1,5 +1,5 @@
 {
-    "name": "Laztopaz/EmojiRestfulAPI",
+    "name": "laztopaz/emoji-restful-api",
     "description": "This package creates an Emoji Restful API using Slim framework.",
     "license": "MIT",
     "authors": [
