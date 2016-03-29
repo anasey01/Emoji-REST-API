@@ -83,13 +83,16 @@ To get a single emoji, you will also need to a send a GET request and the id of 
 
 To update multiple fields of an Emoji, you will need to send a PUT request 
 To update a single field of an Emoji, you will need to send a PATCH request and set the form encoding to x-www-form-url-encoded along side with access token as header along side with access token.
+
 ![put update an emoji](https://github.com/andela-tolotin/Emoji-REST-API/blob/master/screenshots/putupdateemoji.png)
 
 To update a single field of an Emoji, you will need to send a PATCH request and set the form encoding to x-www-form-url-encoded along side with access token as header.
+
 ![patch update an emoji](https://github.com/andela-tolotin/Emoji-REST-API/blob/master/screenshots/patchupdateemoji.png)
 
 
 To delete an Emoji, you will need to send a DELETE request along side with access token as header.
+
 ![delete an emoji](https://github.com/andela-tolotin/Emoji-REST-API/blob/master/screenshots/deleteemoji.png)
 
 
