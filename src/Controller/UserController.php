@@ -8,12 +8,8 @@ namespace Laztopaz\EmojiRestfulAPI;
 class UserController
 {
     /**
-     * This method creates a user account.
+     * This method creates a user account
      *
-     =======
-     * This method creates a user account.
-     *
-     >>>>>>> 59d00e685bf02dd02892708a7ff4c53c06c0437a
      * @param $data
      *
      * @return int $statuscode

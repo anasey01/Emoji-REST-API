@@ -30,7 +30,7 @@ class UploadTableInfo
 
     public function createEmoji()
     {
-        $emojiKeyword = 'eye,face,grin,person';
+        $emojiKeyword = 'eye, face, grin, person';
 
         $userId = 1;
 
@@ -38,7 +38,7 @@ class UploadTableInfo
 
         $emoji = Emoji::create([
             'name'       => 'GRINNING FACE',
-            'char'       => '\u{1F600}',
+            'char'       => '😀',
             'created_at' => $created_at,
             'category'   => 1,
             'created_by' => $userId,

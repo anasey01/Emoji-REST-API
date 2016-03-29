@@ -12,7 +12,7 @@ class User extends Model
     protected $fillable = ['firstname', 'lastname', 'username', 'email', 'password', 'created_by', 'created_at', 'updated_at'];
 
     /**
-     * Get creator of an emoji.
+     * Get creator of an emoji
      */
     public function emoji()
     {

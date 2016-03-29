@@ -12,7 +12,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 class Oauth
 {
     /**
-     * This method authenticate user and log them in if the supplied
+     * This method authenticate the user and log them in if the supplied
      * credentials are valid.
      *
      * @param array $loginParams
@@ -48,7 +48,7 @@ class Oauth
      */
     public function logoutUser(Request $request, Response $response, $args)
     {
-        return $response;
+        return $response->withJson(['message' => 'Logout successful'], 200);
     }
 
     /**
@@ -62,7 +62,7 @@ class Oauth
     {
         $tokenId = base64_encode(mcrypt_create_iv(32));
         $issuedAt = time();
-        $notBefore = $issuedAt;  //Adding 10 seconds
+        $notBefore = $issuedAt;
         $expire = $notBefore + (float) strtotime('+30 days'); // Adding 30 days expiry date
         $serverName = 'http://sweatemoji.com/api'; // Retrieve the server name
 

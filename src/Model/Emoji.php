@@ -12,9 +12,7 @@ class Emoji extends Model
     protected $fillable = ['name', 'char', 'category', 'created_by', 'created_at', 'updated_at'];
 
     /**
-     * Get emoji keywords.
-     =======
-     * Get emoji keywords.
+     * Get emoji keywords
      */
     public function keywords()
     {
@@ -22,9 +20,7 @@ class Emoji extends Model
     }
 
     /**
-     * Get emoji category.
-     =======
-     * Get emoji category.
+     * Get emoji category
      */
     public function category()
     {
@@ -32,9 +28,7 @@ class Emoji extends Model
     }
 
     /**
-     * Get emoji creator.
-     =======
-     * Get emoji creator.
+     * Get emoji creator
      */
     public function created_by()
     {

@@ -58,7 +58,7 @@ class EmojiController
             ->withJson($this->formatEmoji($emoji), 200);
         }
 
-        return $response->withStatus(404);
+        return $response->withJson(['message' => 'Emoji not found'], 404);
     }
 
     /**
@@ -123,10 +123,10 @@ class EmojiController
                 $emoji->updated_at = date('Y-m-d h:i:s');
                 $emoji->save();
 
-                return $response->withJson(['status'], 201);
+                return $response->withJson(['message' => 'Record updated successfully'], 201);
             }
 
-            return $response->withJson(['status'], 404);
+            return $response->withJson(['message' => 'Record cannot be updated'], 404);
         }
     }
 
@@ -154,7 +154,7 @@ class EmojiController
                 return $response->withJson($emoji->toArray(), 201);
             }
 
-            return $response->withStatus(404);
+            return $response->withJson(['message' => 'No record to update'], 404);
         }
     }
 
@@ -174,13 +174,13 @@ class EmojiController
         $emoji = Emoji::find($id);
         if ($emoji->id) {
             $emoji->delete();
-            // Delete keywords assciated with the emoji
+            // Delete keywords associated with the emoji
             Keyword::where('emoji_id', '=', $id)->delete();
 
-            return $response->withJson(['status'], 204);
+            return $response->withJson(['message' => 'Emoji was sucessfully deleted'], 204);
         }
 
-        return $response->withStatus(404);
+        return $response->withJson(['message' => 'Emoji cannot be deleted'], 404);
     }
 
     /**
@@ -212,7 +212,7 @@ class EmojiController
     }
 
     /**
-     * This method format emoji result.
+     * This method format emoji result
      *
      * @param $emojis
      *

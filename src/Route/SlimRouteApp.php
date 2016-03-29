@@ -50,7 +50,7 @@ class SlimRouteApp
         *
         */
         $this->slimApp->get('/', function (Request $request, Response $response) {
-            return $response->withStatus(404);
+            return $response->withJson(['message' => 'Welcome to Sweet Emoji'], 200);
 
         });
 
@@ -98,7 +98,7 @@ class SlimRouteApp
         */
 
         $this->slimApp->get('/auth/logout', function (Request $request, Response $response, $args) use ($auth) {
-            return $auth->logoutUser($request, $response, $args)->withStatus(200);
+            return $auth->logoutUser($request, $response, $args);
 
         })->add(new Middleware());
 

@@ -12,7 +12,7 @@ class Category extends Model
     protected $fillable = ['category_name', 'created_at', 'updated_at'];
 
     /**
-     * Get emoji category.
+     * Get emoji category
      */
     public function emoji()
     {

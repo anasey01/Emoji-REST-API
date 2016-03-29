@@ -12,7 +12,7 @@ class Keyword extends Model
     protected $fillable = ['emoji_id', 'keyword_name', 'created_at', 'updated_at'];
 
     /**
-     * Get emoji keywords.
+     * Get emoji keywords
      */
     public function emoji()
     {
