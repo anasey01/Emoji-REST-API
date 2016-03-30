@@ -4,6 +4,7 @@
  * @license  <https://opensource.org/license/MIT> MIT
  */
 require 'vendor/autoload.php';
+
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Laztopaz\EmojiRestfulAPI\DatabaseConnection;
 use Laztopaz\EmojiRestfulAPI\EmojiController;

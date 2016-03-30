@@ -8,9 +8,50 @@ namespace Laztopaz\EmojiRestfulAPI;
 use Firebase\JWT\JWT;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Illuminate\Database\Capsule\Manager as Capsule;
+use Laztopaz\EmojiRestfulAPI\UserController;
 
 class Oauth
 {
+
+    /**
+     * This method register a new user
+     *
+     * @param $request
+     * @param $response
+     *
+     * @return json response
+     */
+    public function registerUser(Request $request, Response $response)
+    {
+        $userParams = $request->getParsedBody();
+
+        if (is_array($userParams)) {
+            $user = new UserController();
+
+            if (!  $this->verifyUserRegistration($userParams['username'], $userParams['email'])) {
+                $boolResponse = $user->createUser([
+                    'firstname'  => $userParams['firstname'],
+                    'lastname'   => $userParams['lastname'],
+                    'username'   => $userParams['username'],
+                    'password'   => $userParams['password'],
+                    'email'      => $userParams['email'],
+                    'created_at' => date('Y-m-d h:i:s'),
+                    'updated_at' => date('Y-m-d h:i:s')
+                ]);
+
+                if ($boolResponse) {
+                    return $response->withJson(['message' => 'User successfully created'], 200);
+                }
+
+                return $response->withJson(['message' => 'User not created'], 400);
+            }
+
+            return $response->withJson(['message' => 'User already exists'], 400);
+        }
+
+    }
+
     /**
      * This method authenticate the user and log them in if the supplied
      * credentials are valid.
@@ -49,6 +90,34 @@ class Oauth
     public function logoutUser(Request $request, Response $response, $args)
     {
         return $response->withJson(['message' => 'Logout successful'], 200);
+    }
+
+    /**
+     * This method verifies a registered user
+     *
+     * @param $email
+     * @param $username
+     *
+     * @return boolean true
+     */
+    public function verifyUserRegistration($username, $email)
+    {
+        if (isset($username) && isset($email)) {
+            $userFound = Capsule::table('users')
+            ->where('username', '=', strtoupper($username))
+            ->orWhere('username', '=', strtolower($username))
+            ->orWhere('username', '=', ucwords($username))
+            ->where('email', '=', strtoupper($email))
+            ->orWhere('email', '=', strtolower($email))
+            ->orWhere('email', '=', ucwords($email))
+            ->get();
+
+            if (count($userFound) > 0) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -93,4 +162,5 @@ class Oauth
 
         return json_encode($unencodedArray);
     }
+
 }
