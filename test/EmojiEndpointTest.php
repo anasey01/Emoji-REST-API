@@ -182,6 +182,32 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
         return $data['jwt'];
     }
 
+    public function testCreateUser()
+    {
+        $env = Environment::mock([
+            'REQUEST_METHOD' => 'POST',
+            'REQUEST_URI'    => '/auth/register',
+            'CONTENT_TYPE'   => 'application/x-www-form-urlencoded',
+            'PATH_INFO'      => '/auth',
+            ]);
+        $req = Request::createFromEnvironment($env);
+        $req = $req->withParsedBody([
+            'firstname'  => 'Adegeye',
+            'lastname'   => 'Mayowa',
+            'username'   => 'Mayox',
+            'password'   => 'mayoxbaba',
+            'email'      => 'mayowa.adegeye@konga.com',
+            'created_at' => date('Y-m-d h:i:s'),
+            'updated_at' => date('Y-m-d h:i:s'),
+            ]);
+
+        $this->app->getContainer()['request'] = $req;
+        $response = $this->app->run(true);
+
+        $data = json_decode($response->getBody(), true);
+        $this->assertSame($response->getStatusCode(), 200);
+    }
+
     public function testuserLogin()
     {
         $env = Environment::mock([
