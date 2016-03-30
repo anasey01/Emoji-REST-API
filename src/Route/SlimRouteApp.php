@@ -70,6 +70,22 @@ class SlimRouteApp
         });
 
         /*
+        * This endpoint registers a new user
+        *
+        * @param $request
+        *
+        * @param $response
+        *
+        * @return json $response
+        *
+        */
+        $this->slimApp->post('/auth/register', function (Request $request, Response $response) use ($auth) {
+            return $auth->registerUser($request, $response);
+
+
+        });
+
+        /*
         * This endpoint authenticate the user
         *
         * @param $request
