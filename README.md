@@ -64,6 +64,11 @@ To this point we have several endpoints both the ones that requires authenticati
 - GET /emojis                                                List all the created emojis.
 - GET /emojis/{id}                                           Gets a single emoji 
 
+## Create User 
+
+You can create a user all you have to do is to send a POST request to the API endpoint
+
+![create user](https://github.com/andela-tolotin/Emoji-REST-API/blob/master/screenshots/createuser.png)
 
 ## User Login
 
@@ -83,7 +88,7 @@ To get all emojis, you will need to send a GET request to the API
 
 ![get all emojis](https://github.com/andela-tolotin/Emoji-REST-API/blob/master/screenshots/getallemojis.png)
 
-## Get single Emoji
+## Get a single Emoji
 
 To get a single emoji, you will also need to a send a GET request and the id of the emoji to be retrieved.
 
