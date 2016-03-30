@@ -65,21 +65,31 @@ To this point we have several endpoints both the ones that requires authenticati
 - GET /emojis/{id}                                           Gets a single emoji 
 
 
+## User Login
+
 For a user to be able to access some endpoints, a login access is required and after  a successful login, access token will be generated for the user. The user can now include the token in the header of the incoming POST request to be sent to the API.
 
 ![user login ](https://github.com/andela-tolotin/Emoji-REST-API/blob/master/screenshots/login.png)
+
+## Create Emoji
 
 To create an Emoji, you will need to send a POST request to the API along side with the token in order to create an Emoji.
 
 ![create an emoji](https://github.com/andela-tolotin/Emoji-REST-API/blob/master/screenshots/createemoji.png)
 
+## Get all Emoji
+
 To get all emojis, you will need to send a GET request to the API
 
 ![get all emojis](https://github.com/andela-tolotin/Emoji-REST-API/blob/master/screenshots/getallemojis.png)
 
+## Get single Emoji
+
 To get a single emoji, you will also need to a send a GET request and the id of the emoji to be retrieved.
 
 ![get single emoji](https://github.com/andela-tolotin/Emoji-REST-API/blob/master/screenshots/getsingleemoji.png)
+
+## Update an Emoji fully
 
 To update multiple fields of an Emoji, you will need to send a PUT request 
 To update a single field of an Emoji, you will need to send a PATCH request and set the form encoding to x-www-form-url-encoded along side with access token as header along side with access token.
@@ -88,8 +98,11 @@ To update a single field of an Emoji, you will need to send a PATCH request and 
 
 To update a single field of an Emoji, you will need to send a PATCH request and set the form encoding to x-www-form-url-encoded along side with access token as header.
 
+## Update an Emoji partially
+
 ![patch update an emoji](https://github.com/andela-tolotin/Emoji-REST-API/blob/master/screenshots/patchupdateemoji.png)
 
+## Delete an Emoji
 
 To delete an Emoji, you will need to send a DELETE request along side with access token as header.
 
