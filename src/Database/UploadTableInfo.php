@@ -18,11 +18,11 @@ class UploadTableInfo
     {
         $user = new UserController();
         $user->createUser([
-            'firstname'  => 'Jacob',
-            'lastname'   => 'Oyewole',
-            'username'   => 'Jacob',
-            'password'   => 'pyjac2016',
-            'email'      => 'jacob.oyewole@andela.com',
+            'firstname'  => 'Olotin',
+            'lastname'   => 'Temitope',
+            'username'   => 'laztopaz',
+            'password'   => 'tope0852',
+            'email'      => 'temitope.olotin@andela.com',
             'created_at' => date('Y-m-d h:i:s'),
             'updated_at' => date('Y-m-d h:i:s'),
         ]);
