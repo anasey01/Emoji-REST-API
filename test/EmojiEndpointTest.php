@@ -7,9 +7,6 @@ namespace Laztopaz\EmojiRestfulAPI\Test;
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-use Slim\App;
-use Slim\Http\Request;
-use Slim\Http\Environment;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Laztopaz\EmojiRestfulAPI\DatabaseConnection;
 use Laztopaz\EmojiRestfulAPI\Emoji;
@@ -19,6 +16,9 @@ use Laztopaz\EmojiRestfulAPI\Schema;
 use Laztopaz\EmojiRestfulAPI\SlimRouteApp;
 use Laztopaz\EmojiRestfulAPI\UploadTableInfo;
 use PHPUnit_Framework_TestCase;
+use Slim\App;
+use Slim\Http\Environment;
+use Slim\Http\Request;
 
 class EmojiEndpointTest extends PHPUnit_Framework_TestCase
 {
@@ -33,10 +33,10 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
 
         new DatabaseConnection($capsule);
 
-        //new Schema;
-        //new UploadTableInfo;
+        new Schema;
+        new UploadTableInfo;
 
-        $auth = new Oauth;
+        $auth = new Oauth();
 
         $emoji = new EmojiController($auth);
 
@@ -199,8 +199,8 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
 
         $req = Request::createFromEnvironment($env);
         $req = $req->withParsedBody([
-            'username' => 'laztopaz', 
-            'password' => 'tope0852'
+            'username' => 'laztopaz',
+            'password' => 'tope0852',
         ]);
 
         $this->app->getContainer()['request'] = $req;
@@ -302,7 +302,7 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
                     'name'       => 'KISSING FACE',
                     'char'       => '/u{1F603}',
                     'created_at' => date('Y-m-d h:i:s'),
-                    'category'   => 1
+                    'category'   => 1,
                 ]);
 
         $this->app->getContainer()['request'] = $req;
@@ -328,7 +328,7 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
         $req = Request::createFromEnvironment($env);
         $req = $req->withParsedBody(
                 [
-                    'name'       => 'WINKING FACE'
+                    'name'       => 'WINKING FACE',
                 ]);
 
         $this->app->getContainer()['request'] = $req;
@@ -352,7 +352,7 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
             ]);
 
         $req = Request::createFromEnvironment($env);
-        
+
         $this->app->getContainer()['request'] = $req;
 
         $response = $this->app->run(true);
