@@ -338,8 +338,8 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
         $req = Request::createFromEnvironment($env);
         $req = $req->withParsedBody(
                 [
-                    'name'       => 'SMUGLING FACE',
-                    'char'       => '/u{1F606}',
+                    'name'       => 'BONNY FACE',
+                    'char'       => '/u{1F608}',
                     'created_at' => date('Y-m-d h:i:s'),
                     'category'   => 1,
                     'created_by' => 1,
