@@ -368,6 +368,10 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
         $data = json_decode($response->getBody(), true);
 
         $this->assertSame($response->getStatusCode(), 200);
+
+        var_dump($data);
+        exit();
+        
         $this->assertSame($data[0]['id'], $emoji->id);
         $this->assertSame($data[0]['name'], $emoji->name);
     }
