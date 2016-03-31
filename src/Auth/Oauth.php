@@ -10,6 +10,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Laztopaz\EmojiRestfulAPI\UserController;
+use Laztopaz\EmojiRestfulAPI\EmojiController;
 
 class Oauth
 {
@@ -27,18 +28,31 @@ class Oauth
         $userParams = $request->getParsedBody();
 
         if (is_array($userParams)) {
-            $user = new UserController();
+            $user  = new UserController;
+            $emoji = new EmojiController($this);
+
+            $validateResponse = $emoji->validateUserInput([
+                'firstname',
+                'lastname',
+                'username',
+                'password',
+                'email'
+            ], $userParams);
+
+            if (is_array($validateResponse)) {
+                return $response->withJson($validateResponse, 400);
+            }
 
             if (!  $this->verifyUserRegistration($userParams['username'], $userParams['email'])) {
                 $boolResponse = $user->createUser([
                     'firstname'  => $userParams['firstname'],
                     'lastname'   => $userParams['lastname'],
-                    'username'   => $userParams['username'],
+                    'username'   => strtolower($userParams['username']),
                     'password'   => $userParams['password'],
-                    'email'      => $userParams['email'],
+                    'email'      => strtolower($userParams['email']),
                     'created_at' => date('Y-m-d h:i:s'),
                     'updated_at' => date('Y-m-d h:i:s')
-                ]);
+                ], new EmojiController);
 
                 if ($boolResponse) {
                     return $response->withJson(['message' => 'User successfully created'], 200);
@@ -65,18 +79,18 @@ class Oauth
         $loginParams = $request->getParsedBody();
 
         if (is_array($loginParams)) {
-            $user = User::where('username', '=', $loginParams['username'])->get();
-            $user = $user->first();
+            $user = User::where('username', '=', $loginParams['username'])->get()->first();
 
-            $userInfo = ['id' => $user->id, 'username' => $user->username, 'email' => $user->email];
+            if (count($user) > 0) {
+                $userInfo = ['id' => $user->id, 'username' => $user->username, 'email' => $user->email];
 
-            if (password_verify($loginParams['password'], $user->password)) {
-                $token = $this->buildAcessToken($userInfo);
-
-                return $response->withAddedHeader('HTTP_AUTHORIZATION', $token)->withStatus(200)->write($token);
+                if (password_verify($loginParams['password'], $user->password)) {
+                    $token = $this->buildAcessToken($userInfo);
+                    return $response->withAddedHeader('HTTP_AUTHORIZATION', $token)->withStatus(200)->write($token);
+                }
             }
 
-            return $response->withJson(['status'], 400);
+            return $response->withJson(['message' => 'Login credentials incorrect'], 400);
         }
     }
 
@@ -104,12 +118,8 @@ class Oauth
     {
         if (isset($username) && isset($email)) {
             $userFound = Capsule::table('users')
-            ->where('username', '=', strtoupper($username))
-            ->orWhere('username', '=', strtolower($username))
-            ->orWhere('username', '=', ucwords($username))
-            ->where('email', '=', strtoupper($email))
+            ->Where('username', '=', strtolower($username))
             ->orWhere('email', '=', strtolower($email))
-            ->orWhere('email', '=', ucwords($email))
             ->get();
 
             if (count($userFound) > 0) {
@@ -133,7 +143,7 @@ class Oauth
         $issuedAt = time();
         $notBefore = $issuedAt;
         $expire = $notBefore + (float) strtotime('+30 days'); // Adding 30 days expiry date
-        $serverName = 'http://sweatemoji.com/api'; // Retrieve the server name
+        $serverName = 'http://localhost:8000/emojis'; // the server name
 
         /*
          *
@@ -145,8 +155,7 @@ class Oauth
             'iss'  => $serverName,       // Issuer
             'nbf'  => $notBefore,        // Not before
             'exp'  => $expire,           // Expire
-
-            'dat'  => $userData         // User Information retrieved from the database
+            'dat'  => $userData          // User Information retrieved from the database
         ];
 
         $loadEnv = DatabaseConnection::loadEnv();
