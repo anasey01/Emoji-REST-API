@@ -19,7 +19,15 @@ class UserController
         if (is_array($data)) {
             $passwordHashed = password_hash($data['password'], PASSWORD_BCRYPT);
 
-            $user = User::create(['firstname' => $data['firstname'], 'lastname' => $data['lastname'], 'username' => $data['username'], 'password' => $passwordHashed, 'email' => $data['email'], 'created_at' => date('Y-m-d h:i:s'), 'updated_at' => date('Y-m-d h:i:s')]);
+            $user = User::create([
+                'firstname' => $data['firstname'],
+                'lastname' => $data['lastname'],
+                'username' => $data['username'], 
+                'password' => $passwordHashed,
+                'email' => $data['email'],
+                'created_at' => date('Y-m-d h:i:s'),
+                'updated_at' => date('Y-m-d h:i:s')
+            ]);
 
             if ($user->id) {
                 return true;

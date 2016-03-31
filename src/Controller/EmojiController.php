@@ -5,6 +5,7 @@
  */
 namespace Laztopaz\EmojiRestfulAPI;
 
+use Exception;
 use Firebase\JWT\JWT;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -28,8 +29,9 @@ class EmojiController
      */
     public function listAllEmoji(Response $response)
     {
-        $emojis = Emoji::with('keywords', 'category', 'created_by')->get();
-        $emojis = $emojis->toArray();
+        $emojis = Emoji::with('keywords', 'category', 'created_by')
+        ->get()
+        ->toArray();
 
         if (count($emojis) > 0) {
             return $response
@@ -49,10 +51,21 @@ class EmojiController
      */
     public function getSingleEmoji(Response $response, $args)
     {
-        $id = $args['id'];
+        $emoji = null;
 
-        $emoji = Emoji::where('id', '=', $id)->with('keywords', 'category', 'created_by')->get();
-        $emoji = $emoji->toArray();
+        if ($args['id']) {
+            $emoji = Emoji::where('id', '=', $args['id'])
+            ->with('keywords', 'category', 'created_by')
+            ->get();
+
+            if (count($emoji) <= 0) {
+                $emoji = Emoji::where('name', '=', strtolower($args['id']))
+                ->with('keywords', 'category', 'created_by')
+                ->get();
+            }
+        } 
+
+        $emoji = $emoji ->toArray();
 
         if (count($emoji) > 0) {
             return $response
@@ -73,17 +86,29 @@ class EmojiController
     {
         $requestParams = $request->getParsedBody();
 
-        $emojiKeyword = $requestParams['keywords'];
-
-        $userId = $this->getCurrentUserId($request, $response);
-
         if (is_array($requestParams)) {
             $created_at = date('Y-m-d h:i:s');
 
+            $userId = $this->getCurrentUserId($request, $response);
+
             if (! $this->checkForDuplicateEmoji($requestParams['name'])) {
+                // Validate the user input fields
+                $validateResponse = $this->validateUserInput([
+                    'name', 
+                    'char', 
+                    'category', 
+                    'keywords'
+                ], $requestParams);
+
+                if (is_array($validateResponse)) {
+                    return $response->withJson($validateResponse, 400);
+                }
+
+                $emojiKeyword = $requestParams['keywords'];
+
                 $emoji = Emoji::create(
                 [
-                    'name'       => $requestParams['name'],
+                    'name'       => strtolower($requestParams['name']),
                     'char'       => $requestParams['char'],
                     'created_at' => $created_at,
                     'category'   => $requestParams['category'],
@@ -114,21 +139,31 @@ class EmojiController
         $upateParams = $request->getParsedBody();
 
         if (is_array($upateParams)) {
-            $id = $args['id'];
 
-            $emoji = Emoji::find($id);
+            $emoji = Emoji::find($args['id']);
 
-            if ($emoji->id) {
+            if (count($emoji) > 0) {
+                // Validate the user input fields
+                $validateResponse =  $this->validateUserInput([
+                    'name', 
+                    'char', 
+                    'category'
+                ], $requestParams);
+
+                if (is_array($validateResponse)) {
+                    return $response->withJson($validateResponse, 400);
+                }
+
                 $emoji->name = $upateParams['name'];
                 $emoji->char = $upateParams['char'];
                 $emoji->category = $upateParams['category'];
                 $emoji->updated_at = date('Y-m-d h:i:s');
                 $emoji->save();
 
-                return $response->withJson(['message' => 'Record updated successfully'], 201);
+                return $response->withJson(['message' => 'Record updated successfully'], 200);
             }
 
-            return $response->withJson(['message' => 'Record cannot be updated'], 404);
+            return $response->withJson(['message' => 'Record cannot be updated because the id supplied is invalid'], 404);
         }
     }
 
@@ -145,18 +180,23 @@ class EmojiController
         $upateParams = $request->getParsedBody();
 
         if (is_array($upateParams)) {
-            $id = $args['id'];
+            $emoji = Emoji::find($args['id']);
 
-            $emoji = Emoji::find($id);
-            if ($emoji->id) {
+            if (count($emoji) > 0) {
+                //Validate user inputs 
+                $validateResponse = $this->validateUserInput(['name'], $requestParams);
+                if (is_array($validateResponse)) {
+                    return $response->withJson($validateResponse, 400);
+                }
+
                 $emoji->name = $upateParams['name'];
                 $emoji->updated_at = date('Y-m-d h:i:s');
                 $emoji->save();
 
-                return $response->withJson($emoji->toArray(), 201);
+                return $response->withJson($emoji->toArray(), 200);
             }
 
-            return $response->withJson(['message' => 'No record to update'], 404);
+            return $response->withJson(['message' => 'No record to update because the id supplied is invalid'], 404);
         }
     }
 
@@ -171,18 +211,16 @@ class EmojiController
      */
     public function deleteEmoji(Request $request, Response $response, $args)
     {
-        $id = $args['id'];
-
-        $emoji = Emoji::find($id);
-        if ($emoji->id) {
+        $emoji = Emoji::find($args['id']);
+        if (count($emoji) > 0) {
             $emoji->delete();
             // Delete keywords associated with the emoji
-            Keyword::where('emoji_id', '=', $id)->delete();
+            Keyword::where('emoji_id', '=', $args['id'])->delete();
 
             return $response->withJson(['message' => 'Emoji was sucessfully deleted'], 200);
         }
 
-        return $response->withJson(['message' => 'Emoji cannot be deleted'], 404);
+        return $response->withJson(['message' => 'Emoji cannot be deleted because the id supplied is invalid'], 404);
     }
 
     /**
@@ -255,7 +293,7 @@ class EmojiController
 
                 return $userInfo['id'];
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $response->withJson(['status' => $e->getMessage()], 401);
         }
     }
@@ -283,4 +321,49 @@ class EmojiController
         }
         return false;
     }
+
+    /**
+     * This method will
+     * verify the fields supplied by the user when posting to the API
+     * and also validate their input for empty values
+     *
+     * @param $expectedFields
+     * @param $suppliedFields
+     * 
+     * @return json response
+     */
+    public function validateUserInput(array $expectedFields, array $suppliedFields)
+    {
+        $counter = 0;
+
+        if (count($suppliedFields) < count($expectedFields)) {
+            return ['message' => 'All fields must be supplied'];
+
+        } else { // Check whether the field supplied by the user is what we expect from them
+            foreach ($suppliedFields as $key => $value) {
+                if (! in_array($key, $expectedFields)) {
+                    $counter++;
+                }
+            }
+            if ($counter > 0) {
+                $counter = 0;
+                return ['message' => 'Unwanted fields must be removed'];
+
+            } else { // Check whether all fields have corresponding values
+                foreach ($suppliedFields as $key => $value) {
+                    if ($value == "") {
+                        $counter++;
+                    }
+                }
+                if ($counter > 0) {
+                    return ['message' => 'All fields are required'];
+
+                } else {
+                    return true;
+
+                }
+            }
+        }
+    }
+
 }
