@@ -188,29 +188,6 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
         $this->assertSame($response->getStatusCode(), 200);
     }
 
-    private function getCurrentToken()
-    {
-        $env = Environment::mock([
-            'REQUEST_METHOD' => 'POST',
-            'REQUEST_URI'    => '/auth/login',
-            'CONTENT_TYPE'   => 'application/x-www-form-urlencoded',
-            'PATH_INFO'      => '/auth',
-            ]);
-
-        $req = Request::createFromEnvironment($env);
-        $req = $req->withParsedBody([
-            'username' => 'laztopaz',
-            'password' => 'tope0852',
-        ]);
-
-        $this->app->getContainer()['request'] = $req;
-        $response = $this->app->run(true);
-
-        $data = json_decode($response->getBody(), true);
-
-        return $data['jwt'];
-    }
-
     public function testuserLogin()
     {
         $env = Environment::mock([
@@ -268,12 +245,12 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
         $req = Request::createFromEnvironment($env);
         $req = $req->withParsedBody(
                 [
-                    'name'       => 'SMILING FACE',
-                    'char'       => '/u{1F604}',
+                    'name'       => 'SMUGLING FACE',
+                    'char'       => '/u{1F606}',
                     'created_at' => date('Y-m-d h:i:s'),
                     'category'   => 1,
                     'created_by' => 1,
-                    'keywords'   => 'eye, face, grin, person'
+                    'keywords'   => 'face, grin, person, eye',
                 ]);
 
         $this->app->getContainer()['request'] = $req;
@@ -283,6 +260,29 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
         $data = json_decode($response->getBody(), true);
 
         $this->assertSame($response->getStatusCode(), 201);
+    }
+
+    private function getCurrentToken()
+    {
+        $env = Environment::mock([
+            'REQUEST_METHOD' => 'POST',
+            'REQUEST_URI'    => '/auth/login',
+            'CONTENT_TYPE'   => 'application/x-www-form-urlencoded',
+            'PATH_INFO'      => '/auth',
+            ]);
+
+        $req = Request::createFromEnvironment($env);
+        $req = $req->withParsedBody([
+            'username' => 'laztopaz',
+            'password' => 'tope0852',
+        ]);
+
+        $this->app->getContainer()['request'] = $req;
+        $response = $this->app->run(true);
+
+        $data = json_decode($response->getBody(), true);
+
+        return $data['jwt'];
     }
 
     public function testPutEmoji()
