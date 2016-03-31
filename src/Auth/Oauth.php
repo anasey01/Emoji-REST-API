@@ -141,7 +141,7 @@ class Oauth
         $tokenId = base64_encode(mcrypt_create_iv(32));
         $issuedAt = time();
         $notBefore = $issuedAt;
-        $expire = $notBefore + (float) strtotime('+30 days'); // Adding 30 days expiry date
+        $expire =  (float) strtotime('+30 days'); // Adding 30 days expiry date
         $serverName = 'http://localhost:8000/emojis'; // the server name
 
         /*
