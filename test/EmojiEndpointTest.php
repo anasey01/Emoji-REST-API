@@ -33,8 +33,8 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
 
         new DatabaseConnection($capsule);
 
-        new Schema;
-        new UploadTableInfo;
+        //new Schema;
+        //new UploadTableInfo;
 
         $auth = new Oauth();
 
@@ -357,6 +357,7 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
     public function testGetSingleEmojiReturnsEmojiWithStatusCode200()
     {
         $emoji = Emoji::get()->first();
+
         $env = Environment::mock([
             'REQUEST_METHOD' => 'GET',
             'REQUEST_URI'    => '/emojis/'.$emoji->id,
@@ -366,12 +367,8 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
         $this->app->getContainer()['request'] = $req;
         $response = $this->app->run(true);
         $data = json_decode($response->getBody(), true);
-
+       
         $this->assertSame($response->getStatusCode(), 200);
-
-        var_dump($data);
-        exit();
-        
         $this->assertSame($data[0]['id'], $emoji->id);
         $this->assertSame($data[0]['name'], $emoji->name);
     }
