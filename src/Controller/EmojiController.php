@@ -7,9 +7,9 @@ namespace Laztopaz\EmojiRestfulAPI;
 
 use Exception;
 use Firebase\JWT\JWT;
+use Illuminate\Database\Capsule\Manager as Capsule;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Illuminate\Database\Capsule\Manager as Capsule;
 
 class EmojiController
 {
@@ -63,9 +63,9 @@ class EmojiController
                 ->with('keywords', 'category', 'created_by')
                 ->get();
             }
-        } 
+        }
 
-        $emoji = $emoji ->toArray();
+        $emoji = $emoji->toArray();
 
         if (count($emoji) > 0) {
             return $response
@@ -91,13 +91,13 @@ class EmojiController
 
             $userId = $this->getCurrentUserId($request, $response);
 
-            if (! $this->checkForDuplicateEmoji($requestParams['name'])) {
+            if (!$this->checkForDuplicateEmoji($requestParams['name'])) {
                 // Validate the user input fields
                 $validateResponse = $this->validateUserInput([
-                    'name', 
-                    'char', 
-                    'category', 
-                    'keywords'
+                    'name',
+                    'char',
+                    'category',
+                    'keywords',
                 ], $requestParams);
 
                 if (is_array($validateResponse)) {
@@ -139,15 +139,14 @@ class EmojiController
         $upateParams = $request->getParsedBody();
 
         if (is_array($upateParams)) {
-
             $emoji = Emoji::find($args['id']);
 
             if (count($emoji) > 0) {
                 // Validate the user input fields
-                $validateResponse =  $this->validateUserInput([
-                    'name', 
-                    'char', 
-                    'category'
+                $validateResponse = $this->validateUserInput([
+                    'name',
+                    'char',
+                    'category',
                 ], $requestParams);
 
                 if (is_array($validateResponse)) {
@@ -183,7 +182,7 @@ class EmojiController
             $emoji = Emoji::find($args['id']);
 
             if (count($emoji) > 0) {
-                //Validate user inputs 
+                //Validate user inputs
                 $validateResponse = $this->validateUserInput(['name'], $requestParams);
                 if (is_array($validateResponse)) {
                     return $response->withJson($validateResponse, 400);
@@ -252,7 +251,7 @@ class EmojiController
     }
 
     /**
-     * This method format emoji result
+     * This method format emoji result.
      *
      * @param $emojis
      *
@@ -299,11 +298,11 @@ class EmojiController
     }
 
     /**
-     * This method checks for duplicate emoji
+     * This method checks for duplicate emoji.
      *
      * @param $name
      *
-     * @return boolean true
+     * @return bool true
      */
     public function checkForDuplicateEmoji($emojiName)
     {
@@ -314,22 +313,23 @@ class EmojiController
             ->orWhere('name', '=', ucwords($emojiName))
             ->orWhere('name', '=', $emojiName)
             ->get();
-            
+
             if (count($emojiFound) > 0) {
                 return true;
             }
         }
+
         return false;
     }
 
     /**
      * This method will
      * verify the fields supplied by the user when posting to the API
-     * and also validate their input for empty values
+     * and also validate their input for empty values.
      *
      * @param $expectedFields
      * @param $suppliedFields
-     * 
+     *
      * @return json response
      */
     public function validateUserInput(array $expectedFields, array $suppliedFields)
@@ -338,32 +338,28 @@ class EmojiController
 
         if (count($suppliedFields) < count($expectedFields)) {
             return ['message' => 'All fields must be supplied'];
-
         } else { // Check whether the field supplied by the user is what we expect from them
             foreach ($suppliedFields as $key => $value) {
-                if (! in_array($key, $expectedFields)) {
+                if (!in_array($key, $expectedFields)) {
                     $counter++;
                 }
             }
             if ($counter > 0) {
                 $counter = 0;
-                return ['message' => 'Unwanted fields must be removed'];
 
+                return ['message' => 'Unwanted fields must be removed'];
             } else { // Check whether all fields have corresponding values
                 foreach ($suppliedFields as $key => $value) {
-                    if ($value == "") {
+                    if ($value == '') {
                         $counter++;
                     }
                 }
                 if ($counter > 0) {
                     return ['message' => 'All fields are required'];
-
                 } else {
                     return true;
-
                 }
             }
         }
     }
-
 }
