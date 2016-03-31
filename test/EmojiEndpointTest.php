@@ -33,8 +33,8 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
 
         new DatabaseConnection($capsule);
 
-        new Schema;
-        new UploadTableInfo;
+        //new Schema;
+        //new UploadTableInfo;
 
         $auth = new Oauth;
 
@@ -268,12 +268,12 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
         $req = Request::createFromEnvironment($env);
         $req = $req->withParsedBody(
                 [
-                    'name'       => 'FACE WITH TEARS OF JOY',
+                    'name'       => 'KISSING FACE',
                     'char'       => '/u{1F602}',
                     'created_at' => date('Y-m-d h:i:s'),
                     'category'   => 1,
                     'created_by' => 1,
-                    'keywords'   => 'eye,face,grin,person',
+                    'keywords'   => 'eye, face, grin, person',
                 ]);
 
         $this->app->getContainer()['request'] = $req;
@@ -299,7 +299,7 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
         $req = Request::createFromEnvironment($env);
         $req = $req->withParsedBody(
                 [
-                    'name'       => 'SMILING FACE WITH OPEN MOUTH',
+                    'name'       => 'KISSING FACE',
                     'char'       => '/u{1F603}',
                     'created_at' => date('Y-m-d h:i:s'),
                     'category'   => 1
