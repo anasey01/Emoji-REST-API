@@ -33,8 +33,8 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
 
         new DatabaseConnection($capsule);
 
-        new Schema;
-        new UploadTableInfo;
+        //new Schema;
+        //new UploadTableInfo;
 
         $auth = new Oauth;
 
@@ -172,7 +172,7 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
             ]);
 
         $req = Request::createFromEnvironment($env);
-        $req = $req->withParsedBody(['username' => 'Jacob', 'password' => 'pyjac2016']);
+        $req = $req->withParsedBody(['username' => 'demo', 'password' => 'demola']);
 
         $this->app->getContainer()['request'] = $req;
         $response = $this->app->run(true);
@@ -192,11 +192,11 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
             ]);
         $req = Request::createFromEnvironment($env);
         $req = $req->withParsedBody([
-            'firstname'  => 'Adegeye',
-            'lastname'   => 'Mayowa',
-            'username'   => 'Mayox',
-            'password'   => 'mayoxbaba',
-            'email'      => 'mayowa.adegeye@konga.com',
+            'firstname'  => 'Raimi',
+            'lastname'   => 'Ademola',
+            'username'   => 'demo',
+            'password'   => 'demola',
+            'email'      => 'ademola.raimi@andela.com',
             'created_at' => date('Y-m-d h:i:s'),
             'updated_at' => date('Y-m-d h:i:s'),
         ]);
@@ -236,8 +236,8 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
 
         $req = Request::createFromEnvironment($env);
         $req = $req->withParsedBody([
-            'username' => 'Jacob',
-            'password' => 'pyjac2016',
+            'username' => 'demo',
+            'password' => 'demola',
         ]);
 
         $this->app->getContainer()['request'] = $req;
