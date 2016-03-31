@@ -198,7 +198,10 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
             ]);
 
         $req = Request::createFromEnvironment($env);
-        $req = $req->withParsedBody(['username' => 'demo', 'password' => 'demola']);
+        $req = $req->withParsedBody([
+            'username' => 'laztopaz', 
+            'password' => 'tope0852'
+        ]);
 
         $this->app->getContainer()['request'] = $req;
         $response = $this->app->run(true);
@@ -236,8 +239,8 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
 
         $req = Request::createFromEnvironment($env);
         $req = $req->withParsedBody([
-            'username' => 'demo',
-            'password' => 'demola',
+            'username' => 'laztopaz',
+            'password' => 'tope0852',
         ]);
 
         $this->app->getContainer()['request'] = $req;
