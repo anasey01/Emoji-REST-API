@@ -34,13 +34,15 @@ class Oauth
                 'username',
                 'password',
                 'email',
+                'created_at',
+                'updated_at',
             ], $userParams);
 
             if (is_array($validateResponse)) {
                 return $response->withJson($validateResponse, 400);
             }
 
-            if (!$this->verifyUserRegistration($userParams['username'], $userParams['email'])) {
+            if (! $this->verifyUserRegistration($userParams['username'], $userParams['email'])) {
                 $boolResponse = $user->createUser([
                     'firstname'  => $userParams['firstname'],
                     'lastname'   => $userParams['lastname'],
@@ -49,7 +51,7 @@ class Oauth
                     'email'      => strtolower($userParams['email']),
                     'created_at' => date('Y-m-d h:i:s'),
                     'updated_at' => date('Y-m-d h:i:s'),
-                ], new EmojiController());
+                ]);
 
                 if ($boolResponse) {
                     return $response->withJson(['message' => 'User successfully created'], 200);

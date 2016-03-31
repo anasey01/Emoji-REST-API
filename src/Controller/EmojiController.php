@@ -98,6 +98,7 @@ class EmojiController
                     'char',
                     'category',
                     'keywords',
+                    'created_by',
                 ], $requestParams);
 
                 if (is_array($validateResponse)) {
@@ -346,7 +347,7 @@ class EmojiController
             }
             if ($counter > 0) {
                 $counter = 0;
-
+                
                 return ['message' => 'Unwanted fields must be removed'];
             } else { // Check whether all fields have corresponding values
                 foreach ($suppliedFields as $key => $value) {

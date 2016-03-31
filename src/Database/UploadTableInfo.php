@@ -38,7 +38,7 @@ class UploadTableInfo
 
         $emoji = Emoji::create([
             'name'       => 'GRINNING FACE',
-            'char'       => '😀',
+            'char'       => '\u{1F606}',
             'created_at' => $created_at,
             'category'   => 1,
             'created_by' => $userId,

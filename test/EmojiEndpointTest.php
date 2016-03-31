@@ -33,8 +33,8 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
 
         new DatabaseConnection($capsule);
 
-        new Schema;
-        new UploadTableInfo;
+        // new Schema;
+        // new UploadTableInfo;
 
         $auth = new Oauth();
 
@@ -262,18 +262,18 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
             'REQUEST_METHOD'     => 'POST',
             'REQUEST_URI'        => '/emojis',
             'CONTENT_TYPE'       => 'application/x-www-form-urlencoded',
-            'HTTP_AUTHORIZATION' => json_encode(['jwt' => $token]),
+            'HTTP_AUTHORIZATION' => json_encode(['jwt' => $token])
         ]);
 
         $req = Request::createFromEnvironment($env);
         $req = $req->withParsedBody(
                 [
-                    'name'       => 'KISSING FACE',
-                    'char'       => '/u{1F602}',
+                    'name'       => 'SMILING FACE',
+                    'char'       => '/u{1F604}',
                     'created_at' => date('Y-m-d h:i:s'),
                     'category'   => 1,
                     'created_by' => 1,
-                    'keywords'   => 'eye, face, grin, person',
+                    'keywords'   => 'eye, face, grin, person'
                 ]);
 
         $this->app->getContainer()['request'] = $req;
@@ -281,7 +281,7 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
         $response = $this->app->run(true);
 
         $data = json_decode($response->getBody(), true);
-
+        
         $this->assertSame($response->getStatusCode(), 201);
     }
 
@@ -302,7 +302,7 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
                     'name'       => 'KISSING FACE',
                     'char'       => '/u{1F603}',
                     'created_at' => date('Y-m-d h:i:s'),
-                    'category'   => 1,
+                    'category'   => 1
                 ]);
 
         $this->app->getContainer()['request'] = $req;
@@ -322,13 +322,13 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
             'REQUEST_METHOD'     => 'PATCH',
             'REQUEST_URI'        => '/emojis/1',
             'CONTENT_TYPE'       => 'application/x-www-form-urlencoded',
-            'HTTP_AUTHORIZATION' => json_encode(['jwt' => $token]),
+            'HTTP_AUTHORIZATION' => json_encode(['jwt' => $token])
             ]);
 
         $req = Request::createFromEnvironment($env);
         $req = $req->withParsedBody(
                 [
-                    'name'       => 'WINKING FACE',
+                    'name'       => 'WINKING FACE'
                 ]);
 
         $this->app->getContainer()['request'] = $req;
@@ -348,7 +348,7 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
             'REQUEST_METHOD'     => 'DELETE',
             'REQUEST_URI'        => '/emojis/1',
             'CONTENT_TYPE'       => 'application/x-www-form-urlencoded',
-            'HTTP_AUTHORIZATION' => json_encode(['jwt' => $token]),
+            'HTTP_AUTHORIZATION' => json_encode(['jwt' => $token])
             ]);
 
         $req = Request::createFromEnvironment($env);

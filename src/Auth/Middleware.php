@@ -19,7 +19,7 @@ class Middleware
         $authHeader = $request->getHeader('HTTP_AUTHORIZATION');
 
         try {
-            if (is_array($authHeader) && !empty($authHeader)) {
+            if (is_array($authHeader) && ! empty($authHeader)) {
                 $secretKey = base64_decode(getenv('secret'));
                 $jwt = json_decode($authHeader[0], true);
                 //decode the JWT using the key from config
