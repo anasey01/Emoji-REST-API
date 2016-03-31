@@ -8,11 +8,11 @@ namespace Laztopaz\EmojiRestfulAPI;
 class UserController
 {
     /**
-     * This method creates a user account
+     * This method creates a user account.
      *
      * @param $data
      *
-     * @return boolean true
+     * @return bool true
      */
     public function createUser(array $data)
     {
@@ -20,13 +20,13 @@ class UserController
             $passwordHashed = password_hash($data['password'], PASSWORD_BCRYPT);
 
             $user = User::create([
-                'firstname' => $data['firstname'],
-                'lastname' => $data['lastname'],
-                'username' => $data['username'], 
-                'password' => $passwordHashed,
-                'email' => $data['email'],
+                'firstname'  => $data['firstname'],
+                'lastname'   => $data['lastname'],
+                'username'   => $data['username'],
+                'password'   => $passwordHashed,
+                'email'      => $data['email'],
                 'created_at' => date('Y-m-d h:i:s'),
-                'updated_at' => date('Y-m-d h:i:s')
+                'updated_at' => date('Y-m-d h:i:s'),
             ]);
 
             if ($user->id) {

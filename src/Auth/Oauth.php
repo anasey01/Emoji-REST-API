@@ -6,17 +6,14 @@
 namespace Laztopaz\EmojiRestfulAPI;
 
 use Firebase\JWT\JWT;
+use Illuminate\Database\Capsule\Manager as Capsule;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Illuminate\Database\Capsule\Manager as Capsule;
-use Laztopaz\EmojiRestfulAPI\UserController;
-use Laztopaz\EmojiRestfulAPI\EmojiController;
 
 class Oauth
 {
-
     /**
-     * This method register a new user
+     * This method register a new user.
      *
      * @param $request
      * @param $response
@@ -28,7 +25,7 @@ class Oauth
         $userParams = $request->getParsedBody();
 
         if (is_array($userParams)) {
-            $user  = new UserController;
+            $user = new UserController();
             $emoji = new EmojiController($this);
 
             $validateResponse = $emoji->validateUserInput([
@@ -36,14 +33,14 @@ class Oauth
                 'lastname',
                 'username',
                 'password',
-                'email'
+                'email',
             ], $userParams);
 
             if (is_array($validateResponse)) {
                 return $response->withJson($validateResponse, 400);
             }
 
-            if (!  $this->verifyUserRegistration($userParams['username'], $userParams['email'])) {
+            if (!$this->verifyUserRegistration($userParams['username'], $userParams['email'])) {
                 $boolResponse = $user->createUser([
                     'firstname'  => $userParams['firstname'],
                     'lastname'   => $userParams['lastname'],
@@ -51,8 +48,8 @@ class Oauth
                     'password'   => $userParams['password'],
                     'email'      => strtolower($userParams['email']),
                     'created_at' => date('Y-m-d h:i:s'),
-                    'updated_at' => date('Y-m-d h:i:s')
-                ], new EmojiController);
+                    'updated_at' => date('Y-m-d h:i:s'),
+                ], new EmojiController());
 
                 if ($boolResponse) {
                     return $response->withJson(['message' => 'User successfully created'], 200);
@@ -63,7 +60,6 @@ class Oauth
 
             return $response->withJson(['message' => 'User already exists'], 400);
         }
-
     }
 
     /**
@@ -86,6 +82,7 @@ class Oauth
 
                 if (password_verify($loginParams['password'], $user->password)) {
                     $token = $this->buildAcessToken($userInfo);
+
                     return $response->withAddedHeader('HTTP_AUTHORIZATION', $token)->withStatus(200)->write($token);
                 }
             }
@@ -107,12 +104,12 @@ class Oauth
     }
 
     /**
-     * This method verifies a registered user
+     * This method verifies a registered user.
      *
      * @param $email
      * @param $username
      *
-     * @return boolean true
+     * @return bool true
      */
     public function verifyUserRegistration($username, $email)
     {
@@ -155,7 +152,7 @@ class Oauth
             'iss'  => $serverName,       // Issuer
             'nbf'  => $notBefore,        // Not before
             'exp'  => $expire,           // Expire
-            'dat'  => $userData          // User Information retrieved from the database
+            'dat'  => $userData,          // User Information retrieved from the database
         ];
 
         $loadEnv = DatabaseConnection::loadEnv();
@@ -171,5 +168,4 @@ class Oauth
 
         return json_encode($unencodedArray);
     }
-
 }

@@ -82,7 +82,6 @@ class SlimRouteApp
         $this->slimApp->post('/auth/register', function (Request $request, Response $response) use ($auth) {
             return $auth->registerUser($request, $response);
 
-
         });
 
         /*
