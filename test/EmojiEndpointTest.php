@@ -316,10 +316,7 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
     public function testPatchEmoji()
     {
         $token = $this->getCurrentToken();
-
-        var_dump($token);
-        exit();
-
+        
         $env = Environment::mock([
             'REQUEST_METHOD'     => 'PATCH',
             'REQUEST_URI'        => '/emojis/1',
