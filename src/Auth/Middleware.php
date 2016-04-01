@@ -29,7 +29,7 @@ class Middleware
                 
             }
         } catch (Exception $e) {
-            return $response->withJson(['message' => 'User unauthorized due to no token'], 401);
+            return $response->withJson(['message' => $e->getMessage()], 401);
         }
 
         return $response->withJson(['message' => 'User unauthorized due to invalid token'], 401);

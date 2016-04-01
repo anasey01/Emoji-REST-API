@@ -34,8 +34,6 @@ class Oauth
                 'username',
                 'password',
                 'email',
-                'created_at',
-                'updated_at',
             ], $userParams);
 
             if (is_array($validateResponse)) {
@@ -54,7 +52,7 @@ class Oauth
                 ]);
 
                 if ($boolResponse) {
-                    return $response->withJson(['message' => 'User successfully created'], 200);
+                    return $response->withJson(['message' => 'User successfully created'], 201);
                 }
 
                 return $response->withJson(['message' => 'User not created'], 400);
@@ -85,7 +83,9 @@ class Oauth
                 if (password_verify($loginParams['password'], $user->password)) {
                     $token = $this->buildAcessToken($userInfo);
 
-                    return $response->withAddedHeader('HTTP_AUTHORIZATION', $token)->withStatus(200)->write($token);
+                    return $response->withAddedHeader('HTTP_AUTHORIZATION', $token)
+                    ->withStatus(200)
+                    ->write($token);
                 }
             }
 
