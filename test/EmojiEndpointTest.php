@@ -248,7 +248,7 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
     {
         $env = Environment::mock([
             'REQUEST_METHOD' => 'GET',
-            'REQUEST_URI'    => '/emojis/2',
+            'REQUEST_URI'    => '/emojis/1',
             'CONTENT_TYPE'   => 'application/json',
             'PATH_INFO'      => '/emojis',
             ]);
@@ -265,7 +265,7 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
     {
         $env = Environment::mock([
             'REQUEST_METHOD'     => 'PUT',
-            'REQUEST_URI'        => '/emojis/2',
+            'REQUEST_URI'        => '/emojis/1',
             'CONTENT_TYPE'       => 'application/x-www-form-urlencoded',
             'HTTP_AUTHORIZATION' => json_encode(['jwt' => $this->getCurrentToken()])
         ]);
@@ -290,7 +290,7 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
     {
         $env = Environment::mock([
             'REQUEST_METHOD'     => 'PATCH',
-            'REQUEST_URI'        => '/emojis/2',
+            'REQUEST_URI'        => '/emojis/1',
             'CONTENT_TYPE'       => 'application/x-www-form-urlencoded',
             'HTTP_AUTHORIZATION' => json_encode(['jwt' => $this->getCurrentToken()])
             ]);
