@@ -146,9 +146,6 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
         $this->app->getContainer()['request'] = $req;
         $response = $this->app->run(true);
 
-        echo $response->getBody();
-        exit();
-
         $data = json_decode($response->getBody(), true);
         $this->assertSame($response->getStatusCode(), 201);
     }
@@ -204,6 +201,27 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
 
         $this->assertArrayHasKey('jwt', $data);
         $this->assertSame($response->getStatusCode(), 200);
+    }
+
+    public function testThatInCorrectLoginCredentialWhereUsedToLogin()
+    {
+        $env = Environment::mock([
+            'REQUEST_METHOD' => 'POST',
+            'REQUEST_URI'    => '/auth/login',
+            'CONTENT_TYPE'   => 'application/x-www-form-urlencoded',
+            'PATH_INFO'      => '/auth',
+        ]);
+
+        $req = Request::createFromEnvironment($env);
+        $req = $req->withParsedBody([
+            'username' => 'xxxx',
+            'password' => 'xxxxxxxx',
+        ]);
+
+        $this->app->getContainer()['request'] = $req;
+        $response = $this->app->run(true);
+       
+        $this->assertSame($response->getStatusCode(), 400);
     }
 
     private function getCurrentToken()
@@ -263,6 +281,23 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
         $this->assertSame($response->getStatusCode(), 200);
     }
 
+    public function testGetSingleEmojiNotExist()
+    {
+        $env = Environment::mock([
+            'REQUEST_METHOD' => 'GET',
+            'REQUEST_URI'    => '/emojis/11111',
+            'CONTENT_TYPE'   => 'application/json',
+            'PATH_INFO'      => '/emojis',
+            ]);
+
+        $req = Request::createFromEnvironment($env);
+        $this->app->getContainer()['request'] = $req;
+        $response = $this->app->run(true);
+
+        $data = json_decode($response->getBody(), true);
+        $this->assertSame($response->getStatusCode(), 404);
+    }
+
     public function testEditEmojiWithPut()
     {
         $env = Environment::mock([
@@ -288,6 +323,31 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
         $this->assertSame($response->getStatusCode(), 200);
     }
 
+    public function testEditEmojiWithPutWithInvalidID()
+    {
+        $env = Environment::mock([
+            'REQUEST_METHOD'     => 'PUT',
+            'REQUEST_URI'        => '/emojis/111111',
+            'CONTENT_TYPE'       => 'application/x-www-form-urlencoded',
+            'HTTP_AUTHORIZATION' => json_encode(['jwt' => $this->getCurrentToken()]),
+        ]);
+
+        $req = Request::createFromEnvironment($env);
+        $req = $req->withParsedBody(
+                [
+                    'name'       => 'KISSING FACE',
+                    'char'       => '/u{1F603}',
+                    'created_at' => date('Y-m-d h:i:s'),
+                    'category'   => 1,
+                ]);
+
+        $this->app->getContainer()['request'] = $req;
+        $response = $this->app->run(true);
+
+        $data = json_decode($response->getBody(), true);
+        $this->assertSame($response->getStatusCode(), 404);
+    }
+
     public function testEditEmojiPartially()
     {
         $env = Environment::mock([
@@ -310,6 +370,30 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
         $data = json_decode($response->getBody(), true);
 
         $this->assertSame($response->getStatusCode(), 200);
+    }
+
+    public function testEditEmojiPartiallyWithInvalidID()
+    {
+        $env = Environment::mock([
+            'REQUEST_METHOD'     => 'PATCH',
+            'REQUEST_URI'        => '/emojis/1222222',
+            'CONTENT_TYPE'       => 'application/x-www-form-urlencoded',
+            'HTTP_AUTHORIZATION' => json_encode(['jwt' => $this->getCurrentToken()]),
+            ]);
+
+        $req = Request::createFromEnvironment($env);
+        $req = $req->withParsedBody(
+                [
+                    'name'       => 'WINKING FACE',
+                ]);
+
+        $this->app->getContainer()['request'] = $req;
+
+        $response = $this->app->run(true);
+
+        $data = json_decode($response->getBody(), true);
+
+        $this->assertSame($response->getStatusCode(), 404);
     }
 
     public function testGetSingleEmojiReturnsEmojiWithStatusCode200()
