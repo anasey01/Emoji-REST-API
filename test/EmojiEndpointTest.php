@@ -469,7 +469,7 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
         $this->assertSame($response->getStatusCode(), 200);
     }
 
-    public function testuserWantToLogoutWithTokenButWithoutCorrectQueryParams()
+    public function testuserWantToLogoutWithoutCorrectQueryParams()
     {
         $env = Environment::mock([
             'REQUEST_METHOD' => 'GET',
@@ -483,9 +483,6 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
         $response = $this->app->run(true);
 
         $data = json_decode($response->getBody(), true);
-
-        echo $response->getBody();
-        exit();
         $this->assertSame($response->getStatusCode(), 404);
     }
 
