@@ -219,11 +219,11 @@ class EmojiController
             if ($emojis) {
                 // Delete keywords associated with the emoji
                 Keyword::where('emoji_id', '=', $args['id'])->delete();
+
                 return $response->withJson(['message' => 'Emoji was sucessfully deleted'], 200);
             }
 
             return $response->withJson(['message' => 'Emoji cannot be deleted because you are not the creator'], 401);
-            
         }
 
         return $response->withJson(['message' => 'Emoji cannot be deleted because the id supplied is invalid'], 404);
@@ -334,7 +334,7 @@ class EmojiController
      * @param $expectedFields
      * @param $suppliedFields
      *
-     * @return json response 
+     * @return json response
      */
     public function validateUserInput(array $expectedFields, array $suppliedFields)
     {
@@ -344,13 +344,13 @@ class EmojiController
             return ['message' => 'All fields must be supplied'];
         } else { // Check whether the field supplied by the user is what we expect from them
             foreach ($suppliedFields as $key => $value) {
-                if (! in_array($key, array_merge($expectedFields,['created_at', 'updated_at', 'created_by']))) {
+                if (!in_array($key, array_merge($expectedFields, ['created_at', 'updated_at', 'created_by']))) {
                     $counter++;
-                } 
+                }
             }
             if ($counter > 0) {
                 $counter = 0;
-                
+
                 return ['message' => 'Unwanted fields must be removed'];
             } else { // Check whether all fields have corresponding values
                 foreach ($suppliedFields as $key => $value) {
