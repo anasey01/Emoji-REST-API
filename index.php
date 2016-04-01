@@ -13,6 +13,8 @@ use Laztopaz\EmojiRestfulAPI\SlimRouteApp;
 
 $capsule = new Capsule();
 new DatabaseConnection($capsule);
+
 $emoji = new EmojiController(new Oauth());
+
 $app = new SlimRouteApp(new Oauth(), $emoji);
 $app->setUpSlimApp()->run();
