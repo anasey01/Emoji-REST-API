@@ -482,6 +482,9 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
         $this->app->getContainer()['request'] = $req;
         $response = $this->app->run(true);
 
+        echo $response->getBody();
+        exit();
+
         $data = json_decode($response->getBody(), true);
         $this->assertSame($response->getStatusCode(), 404);
     }
