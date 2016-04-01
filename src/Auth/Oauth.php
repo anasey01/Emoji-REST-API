@@ -114,12 +114,7 @@ class Oauth
      */
     public function logoutUser(Request $request, Response $response, $args)
     {
-        if ($args['logout']) {
-            return $response->withJson(['message' => 'Logout successful'], 200);
-
-        }
-
-        return $response->withJson(['message' => 'Logout not successful'], 400);
+        return $response->withJson(['message' => 'Logout successful'], 200);
     }
 
     /**
