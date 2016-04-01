@@ -40,7 +40,7 @@ class Oauth
                 return $response->withJson($validateResponse, 400);
             }
 
-            if (! $this->verifyUserRegistration($userParams['username'], $userParams['email'])) {
+            if (!$this->verifyUserRegistration($userParams['username'], $userParams['email'])) {
                 $boolResponse = $user->createUser([
                     'firstname'  => $userParams['firstname'],
                     'lastname'   => $userParams['lastname'],
@@ -141,7 +141,7 @@ class Oauth
         $tokenId = base64_encode(mcrypt_create_iv(32));
         $issuedAt = time();
         $notBefore = $issuedAt;
-        $expire =  (float) strtotime('+30 days'); // Adding 30 days expiry date
+        $expire = (float) strtotime('+30 days'); // Adding 30 days expiry date
         $serverName = 'http://localhost:8000/emojis'; // the server name
 
         /*
