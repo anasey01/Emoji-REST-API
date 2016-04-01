@@ -41,25 +41,39 @@ class Oauth
             }
 
             if (!$this->verifyUserRegistration($userParams['username'], $userParams['email'])) {
-                $boolResponse = $user->createUser([
-                    'firstname'  => $userParams['firstname'],
-                    'lastname'   => $userParams['lastname'],
-                    'username'   => strtolower($userParams['username']),
-                    'password'   => $userParams['password'],
-                    'email'      => strtolower($userParams['email']),
-                    'created_at' => date('Y-m-d h:i:s'),
-                    'updated_at' => date('Y-m-d h:i:s'),
-                ]);
-
-                if ($boolResponse) {
-                    return $response->withJson(['message' => 'User successfully created'], 201);
-                }
-
-                return $response->withJson(['message' => 'User not created'], 400);
+                $this->runRegisterUser($user, $userParams, $response)
             }
 
             return $response->withJson(['message' => 'User already exists'], 400);
         }
+    }
+
+    /**
+     * This method creates user
+     *
+     * @param $user
+     * @param $userParams
+     * @param $response
+     *
+     * @return json $response
+     */
+    public function runRegisterUser($user, $userParams, $response)
+    {
+        $boolResponse = $user->createUser([
+            'firstname'  => $userParams['firstname'],
+            'lastname'   => $userParams['lastname'],
+            'username'   => strtolower($userParams['username']),
+            'password'   => $userParams['password'],
+            'email'      => strtolower($userParams['email']),
+            'created_at' => date('Y-m-d h:i:s'),
+            'updated_at' => date('Y-m-d h:i:s'),
+        ]);
+
+        if ($boolResponse) {
+            return $response->withJson(['message' => 'User successfully created'], 201);
+        }
+
+        return $response->withJson(['message' => 'User not created'], 400);
     }
 
     /**

@@ -138,12 +138,13 @@ class EmojiController
      */
     public function updateEmojiByPutVerb(Request $request, Response $response, $args)
     {
-        $upateParams = $request->getParsedBody();
-        if (is_array($upateParams)) {
+        $updateParams = $request->getParsedBody();
+
+        if (is_array($updateParams)) {
             $emoji = Emoji::find($args['id']);
 
             if (count($emoji) > 0) { // Validate the user input fields
-                $validateResponse = $this->validateUserInput(['name','char','category',], $upateParams);
+                $validateResponse = $this->validateUserInput(['name','char','category',], $updateParams);
                 if (is_array($validateResponse)) {
                     return $response->withJson($validateResponse, 400);
                 }
@@ -168,9 +169,9 @@ class EmojiController
      */
     public function runUpdateEmoji($emoji, $response, $updateParams)
     {
-        $emoji->name = $upateParams['name'];
-        $emoji->char = $upateParams['char'];
-        $emoji->category = $upateParams['category'];
+        $emoji->name = $updateParams['name'];
+        $emoji->char = $updateParams['char'];
+        $emoji->category = $updateParams['category'];
         $emoji->updated_at = date('Y-m-d h:i:s');
         $emoji->save();
 
