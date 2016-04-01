@@ -41,7 +41,7 @@ class Oauth
             }
 
             if (!$this->verifyUserRegistration($userParams['username'], $userParams['email'])) {
-                $this->runRegisterUser($user, $userParams, $response)
+                $this->runRegisterUser($user, $userParams, $response);
             }
 
             return $response->withJson(['message' => 'User already exists'], 400);
