@@ -80,8 +80,6 @@ class Oauth
      * This method authenticate the user and log them in if the supplied
      * credentials are valid.
      *
-     * @param array $loginParams
-     *
      * @return json jwt
      */
     public function loginUser(Request $request, Response $response)
@@ -116,7 +114,12 @@ class Oauth
      */
     public function logoutUser(Request $request, Response $response, $args)
     {
-        return $response->withJson(['message' => 'Logout successful'], 200);
+        if ($args['logout']) {
+            return $response->withJson(['message' => 'Logout successful'], 200);
+
+        }
+
+        return $response->withJson(['message' => 'Logout not successful'], 400);
     }
 
     /**

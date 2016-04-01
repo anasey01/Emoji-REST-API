@@ -452,6 +452,42 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
         $this->assertSame($response->getStatusCode(), 200);
     }
 
+    public function testuserLogoutWithToken()
+    {
+        $env = Environment::mock([
+            'REQUEST_METHOD' => 'GET',
+            'REQUEST_URI'    => '/auth/logout',
+            'CONTENT_TYPE'   => 'application/json',
+            'PATH_INFO'      => '/auth',
+            'HTTP_AUTHORIZATION' => json_encode(['jwt' => $this->getCurrentToken()]),
+            ]);
+
+        $req = Request::createFromEnvironment($env);
+        $this->app->getContainer()['request'] = $req;
+        $response = $this->app->run(true);
+
+        $data = json_decode($response->getBody(), true);
+        $this->assertSame($response->getStatusCode(), 200);
+    }
+
+    public function testuserWantToLogoutWithTokenButWithoutCorrectQueryParams()
+    {
+        $env = Environment::mock([
+            'REQUEST_METHOD' => 'GET',
+            'REQUEST_URI'    => '/auth/signout',
+            'CONTENT_TYPE'   => 'application/json',
+            'PATH_INFO'      => '/auth',
+            'HTTP_AUTHORIZATION' => json_encode(['jwt' => $this->getCurrentToken()]),
+            ]);
+
+        $req = Request::createFromEnvironment($env);
+        $this->app->getContainer()['request'] = $req;
+        $response = $this->app->run(true);
+
+        $data = json_decode($response->getBody(), true);
+        $this->assertSame($response->getStatusCode(), 400);
+    }
+
     public function testuserLogoutWithoutToken()
     {
         $env = Environment::mock([
