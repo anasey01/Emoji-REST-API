@@ -134,18 +134,21 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
             ]);
         $req = Request::createFromEnvironment($env);
         $req = $req->withParsedBody([
-            'firstname'  => 'Okocha',
-            'lastname'   => 'Daniel',
-            'username'   => 'chuks',
-            'password'   => 'dannychuks',
-            'email'      => 'daniel.okocha@andela.com',
+            'firstname'  => 'Kuti',
+            'lastname'   => 'Gbolahan',
+            'username'   => 'kuti',
+            'password'   => 'gamik2k16',
+            'email'      => 'gbolahan.kuti@andela.com',
             'created_at' => date('Y-m-d h:i:s'),
             'updated_at' => date('Y-m-d h:i:s'),
         ]);
 
         $this->app->getContainer()['request'] = $req;
         $response = $this->app->run(true);
-        
+
+        echo $response->getBody();
+        exit();
+
         $data = json_decode($response->getBody(), true);
         $this->assertSame($response->getStatusCode(), 201);
     }

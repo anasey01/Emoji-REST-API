@@ -41,7 +41,7 @@ class Oauth
             }
 
             if (!$this->verifyUserRegistration($userParams['username'], $userParams['email'])) {
-                $this->runRegisterUser($user, $userParams, $response);
+                return $this->runRegisterUser($user, $userParams, $response);
             }
 
             return $response->withJson(['message' => 'User already exists'], 400);
@@ -112,7 +112,7 @@ class Oauth
      *
      * @param $args logout
      *
-     * @return $reponse
+     * @return $response
      */
     public function logoutUser(Request $request, Response $response, $args)
     {
