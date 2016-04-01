@@ -220,7 +220,7 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
 
         $this->app->getContainer()['request'] = $req;
         $response = $this->app->run(true);
-       
+
         $this->assertSame($response->getStatusCode(), 400);
     }
 
@@ -455,9 +455,9 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
     public function testuserLogoutWithToken()
     {
         $env = Environment::mock([
-            'REQUEST_METHOD' => 'GET',
-            'REQUEST_URI'    => '/auth/logout',
-            'CONTENT_TYPE'   => 'application/json',
+            'REQUEST_METHOD'     => 'GET',
+            'REQUEST_URI'        => '/auth/logout',
+            'CONTENT_TYPE'       => 'application/json',
             'HTTP_AUTHORIZATION' => json_encode(['jwt' => $this->getCurrentToken()]),
             ]);
 
@@ -472,9 +472,9 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
     public function testuserWantToLogoutWithoutCorrectQueryParams()
     {
         $env = Environment::mock([
-            'REQUEST_METHOD' => 'GET',
-            'REQUEST_URI'    => '/auth/signout',
-            'CONTENT_TYPE'   => 'application/json',
+            'REQUEST_METHOD'     => 'GET',
+            'REQUEST_URI'        => '/auth/signout',
+            'CONTENT_TYPE'       => 'application/json',
             'HTTP_AUTHORIZATION' => json_encode(['jwt' => $this->getCurrentToken()]),
             ]);
 

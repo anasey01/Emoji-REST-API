@@ -89,13 +89,13 @@ class EmojiController
         if (is_array($requestParams)) {
             if (!$this->checkForDuplicateEmoji($requestParams['name'])) {
                 // Validate the user input fields
-                $validateResponse = $this->validateUserInput(['name','char','category','keywords',], $requestParams);
+                $validateResponse = $this->validateUserInput(['name', 'char', 'category', 'keywords'], $requestParams);
 
                 if (is_array($validateResponse)) {
                     return $response->withJson($validateResponse, 400);
                 }
+
                 return $this->runCreateEmoji($request, $response, $requestParams);
-                
             }
 
             return $response->withJson(['message' => 'Emoji cannot be duplicated'], 400);
@@ -103,8 +103,8 @@ class EmojiController
     }
 
     /**
+     * This method creates emoji and keywords associated with it.
      *
-     * This method creates emoji and keywords associated with it
      * @param $emoji
      * @param $request
      * @param $response
@@ -144,7 +144,7 @@ class EmojiController
             $emoji = Emoji::find($args['id']);
 
             if (count($emoji) > 0) { // Validate the user input fields
-                $validateResponse = $this->validateUserInput(['name','char','category',], $updateParams);
+                $validateResponse = $this->validateUserInput(['name', 'char', 'category'], $updateParams);
                 if (is_array($validateResponse)) {
                     return $response->withJson($validateResponse, 400);
                 }
@@ -153,13 +153,13 @@ class EmojiController
             }
 
             return $response->withJson([
-                'message' => 'Record cannot be updated because the id supplied is invalid'
+                'message' => 'Record cannot be updated because the id supplied is invalid',
             ], 404);
         }
     }
 
     /**
-     * This method updates an emoji
+     * This method updates an emoji.
      *
      * @param $emoji
      * @param $response
@@ -207,7 +207,7 @@ class EmojiController
             }
 
             return $response->withJson([
-                'message' => 'No record to update because the id supplied is invalid'
+                'message' => 'No record to update because the id supplied is invalid',
             ], 404);
         }
     }
@@ -238,12 +238,12 @@ class EmojiController
             }
 
             return $response->withJson([
-                'message' => 'Emoji cannot be deleted because you are not the creator'
+                'message' => 'Emoji cannot be deleted because you are not the creator',
             ], 401);
         }
 
         return $response->withJson([
-            'message' => 'Emoji cannot be deleted because the id supplied is invalid'
+            'message' => 'Emoji cannot be deleted because the id supplied is invalid',
         ], 404);
     }
 

@@ -49,7 +49,7 @@ class Oauth
     }
 
     /**
-     * This method creates user
+     * This method creates user.
      *
      * @param $user
      * @param $userParams
