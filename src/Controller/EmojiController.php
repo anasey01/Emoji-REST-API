@@ -87,42 +87,44 @@ class EmojiController
         $requestParams = $request->getParsedBody();
 
         if (is_array($requestParams)) {
-            $created_at = date('Y-m-d h:i:s');
-
-            $userId = $this->getCurrentUserId($request, $response);
-
             if (!$this->checkForDuplicateEmoji($requestParams['name'])) {
                 // Validate the user input fields
-                $validateResponse = $this->validateUserInput([
-                    'name',
-                    'char',
-                    'category',
-                    'keywords',
-                ], $requestParams);
+                $validateResponse = $this->validateUserInput(['name','char','category','keywords',], $requestParams);
 
                 if (is_array($validateResponse)) {
                     return $response->withJson($validateResponse, 400);
                 }
-
-                $emojiKeyword = $requestParams['keywords'];
-
-                $emoji = Emoji::create(
-                [
-                    'name'       => strtolower($requestParams['name']),
-                    'char'       => $requestParams['char'],
-                    'created_at' => $created_at,
-                    'category'   => $requestParams['category'],
-                    'created_by' => $userId,
-                ]);
-
-                if ($emoji->id) {
-                    $createdKeyword = $this->createEmojiKeywords($emoji->id, $emojiKeyword);
-
-                    return $response->withJson($emoji->toArray(), 201);
-                }
+                return $this->runCreateEmoji($request, $response, $requestParams);
+                
             }
 
             return $response->withJson(['message' => 'Emoji cannot be duplicated'], 400);
+        }
+    }
+
+    /**
+     *
+     * This method creates emoji and keywords associated with it
+     * @param $emoji
+     * @param $request
+     * @param $response
+     * @param $requestParams
+     *
+     * @return json response
+     */
+    public function runCreateEmoji($request, $response, $requestParams)
+    {
+        $emoji = Emoji::create([
+            'name'       => strtolower($requestParams['name']),
+            'char'       => $requestParams['char'],
+            'created_at' => date('Y-m-d h:i:s'),
+            'category'   => $requestParams['category'],
+            'created_by' => $this->getCurrentUserId($request, $response),
+        ]);
+        if ($emoji->id) {
+            $createdKeyword = $this->createEmojiKeywords($emoji->id, $requestParams['keywords']);
+
+            return $response->withJson($emoji->toArray(), 201);
         }
     }
 
@@ -137,32 +139,42 @@ class EmojiController
     public function updateEmojiByPutVerb(Request $request, Response $response, $args)
     {
         $upateParams = $request->getParsedBody();
-
         if (is_array($upateParams)) {
             $emoji = Emoji::find($args['id']);
 
             if (count($emoji) > 0) { // Validate the user input fields
-                $validateResponse = $this->validateUserInput([
-                    'name',
-                    'char',
-                    'category',
-                ], $upateParams);
-
+                $validateResponse = $this->validateUserInput(['name','char','category',], $upateParams);
                 if (is_array($validateResponse)) {
                     return $response->withJson($validateResponse, 400);
                 }
 
-                $emoji->name = $upateParams['name'];
-                $emoji->char = $upateParams['char'];
-                $emoji->category = $upateParams['category'];
-                $emoji->updated_at = date('Y-m-d h:i:s');
-                $emoji->save();
-
-                return $response->withJson(['message' => 'Record updated successfully'], 200);
+                return $this->runUpdateEmoji($emoji, $response, $updateParams);
             }
 
-            return $response->withJson(['message' => 'Record cannot be updated because the id supplied is invalid'], 404);
+            return $response->withJson([
+                'message' => 'Record cannot be updated because the id supplied is invalid'
+            ], 404);
         }
+    }
+
+    /**
+     * This method updates an emoji
+     *
+     * @param $emoji
+     * @param $response
+     * @param $updateParams
+     *
+     * @return json $response
+     */
+    public function runUpdateEmoji($emoji, $response, $updateParams)
+    {
+        $emoji->name = $upateParams['name'];
+        $emoji->char = $upateParams['char'];
+        $emoji->category = $upateParams['category'];
+        $emoji->updated_at = date('Y-m-d h:i:s');
+        $emoji->save();
+
+        return $response->withJson(['message' => 'Record updated successfully'], 200);
     }
 
     /**
@@ -179,7 +191,6 @@ class EmojiController
 
         if (is_array($upateParams)) {
             $emoji = Emoji::find($args['id']);
-
             if (count($emoji) > 0) {
                 //Validate user inputs
                 $validateResponse = $this->validateUserInput(['name'], $upateParams);
@@ -194,7 +205,9 @@ class EmojiController
                 return $response->withJson($emoji->toArray(), 200);
             }
 
-            return $response->withJson(['message' => 'No record to update because the id supplied is invalid'], 404);
+            return $response->withJson([
+                'message' => 'No record to update because the id supplied is invalid'
+            ], 404);
         }
     }
 
@@ -223,10 +236,14 @@ class EmojiController
                 return $response->withJson(['message' => 'Emoji was sucessfully deleted'], 200);
             }
 
-            return $response->withJson(['message' => 'Emoji cannot be deleted because you are not the creator'], 401);
+            return $response->withJson([
+                'message' => 'Emoji cannot be deleted because you are not the creator'
+            ], 401);
         }
 
-        return $response->withJson(['message' => 'Emoji cannot be deleted because the id supplied is invalid'], 404);
+        return $response->withJson([
+            'message' => 'Emoji cannot be deleted because the id supplied is invalid'
+        ], 404);
     }
 
     /**
