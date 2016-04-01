@@ -38,7 +38,7 @@ class EmojiController
             ->withJson($this->formatEmoji($emojis), 200);
         }
 
-        return $response->withJson(['status'], 404);
+        return $response->withJson(['message' => 'No Emoji to display now'], 404);
     }
 
     /**
@@ -98,7 +98,6 @@ class EmojiController
                     'char',
                     'category',
                     'keywords',
-                    'created_by',
                 ], $requestParams);
 
                 if (is_array($validateResponse)) {
@@ -142,13 +141,12 @@ class EmojiController
         if (is_array($upateParams)) {
             $emoji = Emoji::find($args['id']);
 
-            if (count($emoji) > 0) {
-                // Validate the user input fields
+            if (count($emoji) > 0) { // Validate the user input fields
                 $validateResponse = $this->validateUserInput([
                     'name',
                     'char',
                     'category',
-                ], $requestParams);
+                ], $upateParams);
 
                 if (is_array($validateResponse)) {
                     return $response->withJson($validateResponse, 400);
@@ -184,7 +182,7 @@ class EmojiController
 
             if (count($emoji) > 0) {
                 //Validate user inputs
-                $validateResponse = $this->validateUserInput(['name'], $requestParams);
+                $validateResponse = $this->validateUserInput(['name'], $upateParams);
                 if (is_array($validateResponse)) {
                     return $response->withJson($validateResponse, 400);
                 }
@@ -213,11 +211,19 @@ class EmojiController
     {
         $emoji = Emoji::find($args['id']);
         if (count($emoji) > 0) {
-            $emoji->delete();
-            // Delete keywords associated with the emoji
-            Keyword::where('emoji_id', '=', $args['id'])->delete();
+            $emojis = Capsule::table('emojis')
+            ->where('id', '=', $args['id'])
+            ->where('created_by', '=', $this->getCurrentUserId($request, $response))
+            ->delete();
 
-            return $response->withJson(['message' => 'Emoji was sucessfully deleted'], 200);
+            if ($emojis) {
+                // Delete keywords associated with the emoji
+                Keyword::where('emoji_id', '=', $args['id'])->delete();
+                return $response->withJson(['message' => 'Emoji was sucessfully deleted'], 200);
+            }
+
+            return $response->withJson(['message' => 'Emoji cannot be deleted because you are not the creator'], 401);
+            
         }
 
         return $response->withJson(['message' => 'Emoji cannot be deleted because the id supplied is invalid'], 404);
@@ -309,10 +315,7 @@ class EmojiController
     {
         if (isset($emojiName)) {
             $emojiFound = Capsule::table('emojis')
-            ->where('name', '=', strtoupper($emojiName))
-            ->orWhere('name', '=', strtolower($emojiName))
-            ->orWhere('name', '=', ucwords($emojiName))
-            ->orWhere('name', '=', $emojiName)
+            ->where('name', '=', strtolower($emojiName))
             ->get();
 
             if (count($emojiFound) > 0) {
@@ -331,7 +334,7 @@ class EmojiController
      * @param $expectedFields
      * @param $suppliedFields
      *
-     * @return json response
+     * @return json response 
      */
     public function validateUserInput(array $expectedFields, array $suppliedFields)
     {
@@ -341,9 +344,9 @@ class EmojiController
             return ['message' => 'All fields must be supplied'];
         } else { // Check whether the field supplied by the user is what we expect from them
             foreach ($suppliedFields as $key => $value) {
-                if (!in_array($key, $expectedFields)) {
+                if (! in_array($key, array_merge($expectedFields,['created_at', 'updated_at', 'created_by']))) {
                     $counter++;
-                }
+                } 
             }
             if ($counter > 0) {
                 $counter = 0;

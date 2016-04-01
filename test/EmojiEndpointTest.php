@@ -157,7 +157,7 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
             'REQUEST_METHOD'     => 'POST',
             'REQUEST_URI'        => '/emojis',
             'CONTENT_TYPE'       => 'application/x-www-form-urlencoded',
-            'HTTP_AUTHORIZATION' => json_encode(['jwt' => $this->token])
+            'HTTP_AUTHORIZATION' => json_encode(['jwt' => $this->getCurrentToken()])
         ]);
 
         $req = Request::createFromEnvironment($env);
