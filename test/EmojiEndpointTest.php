@@ -458,7 +458,6 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
             'REQUEST_METHOD' => 'GET',
             'REQUEST_URI'    => '/auth/logout',
             'CONTENT_TYPE'   => 'application/json',
-            'PATH_INFO'      => '/auth',
             'HTTP_AUTHORIZATION' => json_encode(['jwt' => $this->getCurrentToken()]),
             ]);
 
@@ -476,7 +475,6 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
             'REQUEST_METHOD' => 'GET',
             'REQUEST_URI'    => '/auth/signout',
             'CONTENT_TYPE'   => 'application/json',
-            'PATH_INFO'      => '/auth',
             'HTTP_AUTHORIZATION' => json_encode(['jwt' => $this->getCurrentToken()]),
             ]);
 
@@ -485,7 +483,7 @@ class EmojiEndpointTest extends PHPUnit_Framework_TestCase
         $response = $this->app->run(true);
 
         $data = json_decode($response->getBody(), true);
-        $this->assertSame($response->getStatusCode(), 400);
+        $this->assertSame($response->getStatusCode(), 404);
     }
 
     public function testuserLogoutWithoutToken()
