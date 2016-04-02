@@ -15,7 +15,7 @@ PHP 5.5+ and Composer are required.
 
 ### Via composer
 
-    $ composer require Laztopaz\EmojiRestfulAPI
+    $ composer require laztopaz/emoji-restful-api
 ### Install
 
     $ composer install 
