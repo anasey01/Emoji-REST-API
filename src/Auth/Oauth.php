@@ -90,7 +90,7 @@ class Oauth
             $user = User::where('username', '=', $loginParams['username'])->get()->first();
 
             if (count($user) > 0) {
-                $userInfo = ['id' => $user->id, 'username' => $user->username, 'email' => $user->email];
+                $userInfo = ['id' => $user->id,];
 
                 if (password_verify($loginParams['password'], $user->password)) {
                     $token = $this->buildAcessToken($userInfo);
@@ -127,7 +127,7 @@ class Oauth
      */
     public function verifyUserRegistration($username, $email)
     {
-        if (isset($username) && isset($email)) {
+        if (isset($username, $email)) {
             $userFound = Capsule::table('users')
             ->Where('username', '=', strtolower($username))
             ->orWhere('email', '=', strtolower($email))
@@ -166,7 +166,7 @@ class Oauth
             'iss'  => $serverName,       // Issuer
             'nbf'  => $notBefore,        // Not before
             'exp'  => $expire,           // Expire
-            'dat'  => $userData,          // User Information retrieved from the database
+            'dat'  => $userData,         // User Information retrieved from the database
         ];
 
         $loadEnv = DatabaseConnection::loadEnv();
