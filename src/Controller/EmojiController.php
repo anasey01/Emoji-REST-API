@@ -73,6 +73,7 @@ class EmojiController
         }
 
         return $response->withJson(['message' => 'Emoji not found'], 404);
+
     }
 
     /**
@@ -99,6 +100,7 @@ class EmojiController
             }
 
             return $response->withJson(['message' => 'Emoji cannot be duplicated'], 400);
+
         }
     }
 
@@ -125,6 +127,7 @@ class EmojiController
             $createdKeyword = $this->createEmojiKeywords($emoji->id, $requestParams['keywords']);
 
             return $response->withJson($emoji->toArray(), 201);
+
         }
     }
 
@@ -149,12 +152,19 @@ class EmojiController
                     return $response->withJson($validateResponse, 400);
                 }
 
+                if (is_null($this->findTheOwner($args, $request, $response)->first())) {
+                    return $response->withJson([
+                        'message' => 'Emoji cannot be updated because you are not the creator',
+                    ], 401);
+                }
+
                 return $this->runUpdateEmoji($emoji, $response, $updateParams);
             }
 
             return $response->withJson([
                 'message' => 'Record cannot be updated because the id supplied is invalid',
             ], 404);
+            
         }
     }
 
@@ -199,6 +209,12 @@ class EmojiController
                     return $response->withJson($validateResponse, 400);
                 }
 
+                if (is_null($this->findTheOwner($args, $request, $response)->first())) {
+                    return $response->withJson([
+                        'message' => 'Emoji cannot be updated because you are not the creator',
+                    ], 401);
+                }
+
                 $emoji->name = $upateParams['name'];
                 $emoji->updated_at = date('Y-m-d h:i:s');
                 $emoji->save();
@@ -225,10 +241,11 @@ class EmojiController
     {
         $emoji = Emoji::find($args['id']);
         if (count($emoji) > 0) {
-            $emojis = Capsule::table('emojis')
-            ->where('id', '=', $args['id'])
-            ->where('created_by', '=', $this->getCurrentUserId($request, $response))
-            ->delete();
+            $emojis = $this->findTheOwner($args, $request, $response);
+
+            if (! is_null($emojis)) {
+                $emojis->delete();
+            }
 
             if ($emojis) {
                 // Delete keywords associated with the emoji
@@ -342,6 +359,16 @@ class EmojiController
         }
 
         return false;
+    }
+
+    /**
+     * This method solves for rightful of a record
+     */
+    public function findTheOwner($args, $request, $response)
+    {
+        return Capsule::table('emojis')
+        ->where('id', '=', $args['id'])
+        ->where('created_by', '=', $this->getCurrentUserId($request, $response));
     }
 
     /**
